@@ -74,13 +74,18 @@ void Update(sf::RenderWindow& _window, float _dt)
 		sf::Vector2f AB = vertexArray[b].position - vertexArray[a].position;
 		sf::Vector2f AM = mousePose - vertexArray[a].position;
 
-		float dot = AB.x * AM.y + AB.y * AM.x;
+		float dot = AB.x * AM.y - AB.y * AM.x;
 
 		if (dot == 0.0f)
 		{
 			vertexArray[a].color = sf::Color::Red;
 			vertexArray[b].color = sf::Color::Red;
 			std::cout << a << b << std::endl;
+		}
+		else
+		{
+			vertexArray[a].color = sf::Color::White;
+			vertexArray[b].color = sf::Color::White;
 		}
 	}
 }

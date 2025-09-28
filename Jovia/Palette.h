@@ -5,7 +5,6 @@
 class Palette
 {
 private:
-	std::vector<sf::VertexArray>
 public:
 	
 };
