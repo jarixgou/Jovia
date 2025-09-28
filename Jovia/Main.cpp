@@ -3,6 +3,7 @@
 
 #include "Palette/Palette.h"
 #include "Debug/Debug.h"
+#include "Map editor/MapEditor.h"
 
 // Prototypes
 void Init();
@@ -12,6 +13,8 @@ void Display(sf::RenderWindow&);
 sf::VertexArray vertexArray;
 
 WindowState windowState;
+
+Grid grid({ 30, 30 }, { 32, 32 });
 
 int main()
 {
@@ -131,7 +134,7 @@ void Display(sf::RenderWindow& _window)
 {
 	_window.clear(sf::Color::Black);
 
-	_window.draw(vertexArray);
+	grid.Draw(_window);
 
 	ImGui::SFML::Render(_window);
 	_window.display();

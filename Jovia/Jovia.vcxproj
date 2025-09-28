@@ -177,6 +177,7 @@
     <ClCompile Include="Dependencies\include\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Map editor\MapEditor.cpp" />
     <ClCompile Include="Palette\Palette.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
@@ -300,6 +301,7 @@
     <ClInclude Include="Dependencies\include\SFML\Window\Window.hpp" />
     <ClInclude Include="Dependencies\include\SFML\Window\WindowHandle.hpp" />
     <ClInclude Include="Dependencies\include\SFML\Window\WindowStyle.hpp" />
+    <ClInclude Include="Map editor\MapEditor.h" />
     <ClInclude Include="Palette\Palette.h" />
     <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>
