@@ -2,47 +2,47 @@
 
 Utils::ModifiableRect::ModifiableRect(sf::Vector2f _pos, sf::Vector2f _size)
 {
-	this->rect.setPrimitiveType(sf::PrimitiveType::Lines);
+	this->m_rect.setPrimitiveType(sf::PrimitiveType::Lines);
 
 	sf::Vertex a(sf::Vector2f(_pos.x, _pos.y));
 	sf::Vertex b(sf::Vector2f(_pos.x + _size.x, _pos.y));
 	sf::Vertex c(sf::Vector2f(_pos.x + _size.x, _pos.y + _size.y));
 	sf::Vertex d(sf::Vector2f(_pos.x, _pos.y + _size.y));
 
-	this->rect.append(a);
-	this->rect.append(b);
+	this->m_rect.append(a);
+	this->m_rect.append(b);
 
-	this->rect.append(b);
-	this->rect.append(c);
+	this->m_rect.append(b);
+	this->m_rect.append(c);
 
-	this->rect.append(c);
-	this->rect.append(d);
+	this->m_rect.append(c);
+	this->m_rect.append(d);
 
-	this->rect.append(d);
-	this->rect.append(a);
+	this->m_rect.append(d);
+	this->m_rect.append(a);
 
-	this->bounds.left = _pos.x;
-	this->bounds.top = _pos.y;
-	this->bounds.width = _size.x;
-	this->bounds.height = _size.y;
+	this->m_bounds.left = _pos.x;
+	this->m_bounds.top = _pos.y;
+	this->m_bounds.width = _size.x;
+	this->m_bounds.height = _size.y;
 
-	this->center.x = _pos.x + _size.x / 2;
-	this->center.y = _pos.y + _size.y / 2;
+	this->m_center.x = _pos.x + _size.x / 2;
+	this->m_center.y = _pos.y + _size.y / 2;
 }
 
 void Utils::ModifiableRect::UpdateRect(sf::Vector2f _mousePos)
 {
 	const float epsilon = 1e-2f;
 
-	for (size_t i = 0; i < this->rect.getVertexCount(); ++i)
+	for (size_t i = 0; i < this->m_rect.getVertexCount(); ++i)
 	{
-		this->rect[i].color = sf::Color::White;
+		this->m_rect[i].color = sf::Color::White;
 	}
 
-	for (size_t i = 0; i < this->rect.getVertexCount(); i += 2)
+	for (size_t i = 0; i < this->m_rect.getVertexCount(); i += 2)
 	{
-		sf::Vector2f A = this->rect[i].position;
-		sf::Vector2f B = this->rect[i + 1].position;
+		sf::Vector2f A = this->m_rect[i].position;
+		sf::Vector2f B = this->m_rect[i + 1].position;
 		sf::Vector2f AB = B - A;
 		sf::Vector2f AM = _mousePos - A;
 
@@ -53,8 +53,8 @@ void Utils::ModifiableRect::UpdateRect(sf::Vector2f _mousePos)
 			float lenSq = AB.x * AB.x + AB.y * AB.y;
 			if (dot >= 0 && dot <= lenSq)
 			{
-				this->rect[i].color = sf::Color::Red;
-				this->rect[i + 1].color = sf::Color::Red;
+				this->m_rect[i].color = sf::Color::Red;
+				this->m_rect[i + 1].color = sf::Color::Red;
 			}
 		}
 	}
@@ -62,10 +62,10 @@ void Utils::ModifiableRect::UpdateRect(sf::Vector2f _mousePos)
 
 sf::FloatRect Utils::ModifiableRect::GetBounds() const
 {
-	return this->bounds;
+	return this->m_bounds;
 }
 
 sf::Vector2f Utils::ModifiableRect::GetCenter() const
 {
-	return this->center;
+	return this->m_center;
 }
