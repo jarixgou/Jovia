@@ -60,12 +60,12 @@ void Utils::ModifiableRect::UpdateRect(sf::Vector2f _mousePos)
 	}
 }
 
-sf::FloatRect Utils::ModifiableRect::GetBounds()
+sf::FloatRect Utils::ModifiableRect::GetBounds() const
 {
 	return this->bounds;
 }
 
-sf::Vector2f Utils::ModifiableRect::GetCenter()
+sf::Vector2f Utils::ModifiableRect::GetCenter() const
 {
 	return this->center;
 }
