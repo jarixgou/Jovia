@@ -24,10 +24,14 @@ void Debug::Update(float _dt, WindowState& _windowState, sf::RenderWindow& _wind
 	{
 		sf::Vector2i mousePosPixel = sf::Mouse::getPosition(_window);
 		sf::Vector2f mousePose = _window.mapPixelToCoords(mousePosPixel);
+		sf::Vector2f mouseIsoPos = Utils::OrthoToIso({ mousePose.x, mousePose.y, 0 }, { 64 * 0.5f, 32 * 0.5f });
 
 		ImGui::Text("Mouse Pos : (%.f,", mousePose.x);
 		ImGui::SameLine();
 		ImGui::Text("%.f)", mousePose.y);
+		ImGui::Text("Mouse ISO Pos : (%.f,", mouseIsoPos.x);
+		ImGui::SameLine();
+		ImGui::Text("%.f)", mouseIsoPos.y);
 		ImGui::Text("Mouse delta: (%g, %g)", mouseDelta.x, mouseDelta.y);
 
 		ImGui::TreePop();

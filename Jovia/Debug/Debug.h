@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../Common.h"
+#include "../Utils/Utils.h"
+
 
 namespace Debug
 {
