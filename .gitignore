@@ -32,3 +32,4 @@ Jovia/x64
 .vs/
 .idea/
 
+*.vcxproj
