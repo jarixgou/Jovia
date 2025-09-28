@@ -5,6 +5,6 @@
 class Palette
 {
 private:
+
 public:
-	
 };
