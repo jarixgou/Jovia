@@ -1,13 +1,14 @@
 #pragma once
 
 #include "../Common.h"
+#include "../Utils/Utils.h"
 
 class Cell
 {
 public : 
 	sf::Vector2i position;
 	int id;
-	sf::RectangleShape rectangle;
+	sf::Sprite sprite;
 };
 
 class Grid
@@ -15,6 +16,9 @@ class Grid
 public :
 	Grid(sf::Vector2f _gridSize, sf::Vector2f _cellSize);
 	~Grid();
+
+	sf::Texture cellTexture;
+	sf::Texture cellSelectorTexture;
 
 	sf::Vector2f gridSize;
 	sf::Vector2f cellSize;

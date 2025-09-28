@@ -14,7 +14,7 @@ sf::VertexArray vertexArray;
 
 WindowState windowState;
 
-Grid grid({ 30, 30 }, { 32, 32 });
+Grid grid({ 30, 30 }, { 64, 32 });
 
 int main()
 {

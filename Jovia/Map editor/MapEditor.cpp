@@ -7,6 +7,11 @@ Grid::Grid(sf::Vector2f _gridSize, sf::Vector2f _cellSize)
 
 	this->cellList.resize(_gridSize.y);
 
+	this->cellTexture.loadFromFile("Assets/Cell.png");
+	this->cellSelectorTexture.loadFromFile("Assets/CellSelector.png");
+
+	int cellId = 0;
+
 	for (int y = 0; y < _gridSize.y; y++)
 	{
 		this->cellList[y].resize(_gridSize.x);
@@ -14,13 +19,15 @@ Grid::Grid(sf::Vector2f _gridSize, sf::Vector2f _cellSize)
 		for (int x = 0; x < _gridSize.x; x++)
 		{
 			Cell* cell = &this->cellList[y][x];
-			cell->id = x + y;
+			cell->id = cellId;
 			cell->position = { x, y };
+		
+			cell->sprite.setTexture(this->cellTexture);
 
-			cell->rectangle.setSize(_cellSize);
-			cell->rectangle.setOutlineThickness(3);
-			cell->rectangle.setOutlineColor(sf::Color::Red);
-			cell->rectangle.setPosition(_cellSize.x * x, _cellSize.y * y);
+			sf::Vector2f isoPos = Utils::OrthoToIso({ (float)x, (float)y, 0}, _cellSize * 0.5f);
+			cell->sprite.setPosition(isoPos);
+
+			cellId++;
 		}
 	}
 }
@@ -36,7 +43,7 @@ void Grid::Draw(sf::RenderWindow& _window)
 	{
 		for (Cell& cell : cellList)
 		{
-			_window.draw(cell.rectangle);
+			_window.draw(cell.sprite);
 		}
 	}
 }
