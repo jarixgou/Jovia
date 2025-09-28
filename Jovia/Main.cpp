@@ -1,7 +1,7 @@
 #include "Common.h"
 #include <cmath> // pour std::abs
 
-#include <windows.h>
+#include "Palette/Palette.h"
 
 // Prototypes
 void Init();
@@ -94,6 +94,8 @@ void Init()
 
 void Update(sf::RenderWindow& _window, float _dt)
 {
+	Palette::Update(_window, _dt);
+
 	sf::Vector2i mousePosPixel = sf::Mouse::getPosition(_window);
 	sf::Vector2f mousePose = _window.mapPixelToCoords(mousePosPixel);
 

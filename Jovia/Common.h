@@ -16,6 +16,8 @@
 #include <GL/freeglut.h>
 #include "SFML/OpenGL.hpp"
 
+#include <windows.h>
+
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 

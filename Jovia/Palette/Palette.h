@@ -7,5 +7,5 @@ class Palette
 private:
 
 public:
-	void Update(sf::RenderWindow& _window, float _dt);
+	static void Update(sf::RenderWindow& _window, float _dt);
 };
