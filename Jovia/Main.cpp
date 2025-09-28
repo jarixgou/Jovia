@@ -1,6 +1,8 @@
 #include "Common.h"
 #include <cmath> // pour std::abs
 
+#include <windows.h>
+
 // Prototypes
 void Init();
 void Update(sf::RenderWindow& _window, float);
@@ -8,12 +10,17 @@ void Display(sf::RenderWindow&);
 
 sf::VertexArray vertexArray;
 
+bool vsync = false;
+
+bool requestFullscreen = false;
+bool fullscreen = false;
+
 int main()
 {
 	srand(time(NULL));
 
-	sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia");
-	ImGui::SFML::Init(window);
+	std::unique_ptr<sf::RenderWindow> window = std::make_unique<sf::RenderWindow>(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia");
+	ImGui::SFML::Init(*window);
 
 	Init();
 
@@ -37,25 +44,44 @@ int main()
 	vertexArray.append(a);
 
 	sf::Clock deltaTime;
-	while (window.isOpen())
+	while (window->isOpen())
 	{
 		sf::Time time = deltaTime.restart();
 		float dt = time.asSeconds();
 
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (window->pollEvent(event))
 		{
-			ImGui::SFML::ProcessEvent(window, event);
+			ImGui::SFML::ProcessEvent(*window, event);
 			if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
 			{
-				window.close();
+				window->close();
 			}
 		}
 
-		ImGui::SFML::Update(window, time);
+		ImGui::SFML::Update(*window, time);
 
-		Update(window, dt);
-		Display(window);
+		Update(*window, dt);
+		Display(*window);
+
+		if (requestFullscreen)
+		{
+			window->close();
+			if (fullscreen)
+			{
+				window->create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia", sf::Style::Fullscreen);
+			}
+			else
+			{ 
+				RECT rect;
+				SystemParametersInfo(SPI_GETWORKAREA, 0, &rect, 0);
+
+				window->create(sf::VideoMode(rect.right, rect.bottom), "Jovia", sf::Style::Default);
+			}
+
+			ImGui::SFML::Init(*window); // Réinitialise ImGui-SFML
+			requestFullscreen = false;
+		}
 	}
 }
 
@@ -98,6 +124,36 @@ void Update(sf::RenderWindow& _window, float _dt)
 			}
 		}
 	}
+
+	ImGui::Begin("Debug");
+	ImGui::Text("FPS : %.2f", 1 / _dt);
+
+	
+	if (ImGui::Checkbox("Vsync", &vsync))
+	{
+		_window.setVerticalSyncEnabled(vsync);
+	}
+
+	if (ImGui::Checkbox("Fullscreen", &fullscreen))
+	{
+		requestFullscreen = true;
+	}
+
+	ImGui::Separator();
+
+	sf::Vector2f mouseDelta = { ImGui::GetIO().MouseDelta.x, ImGui::GetIO().MouseDelta.y };
+
+	if (ImGui::TreeNode("Inputs"))
+	{
+		ImGui::Text("Mouse Pos : (%.f,", mousePose.x);
+		ImGui::SameLine();
+		ImGui::Text("%.f)", mousePose.y);
+		ImGui::Text("Mouse delta: (%g, %g)", mouseDelta.x, mouseDelta.y);
+
+		ImGui::TreePop();
+	}
+
+	ImGui::End();
 }
 
 void Display(sf::RenderWindow& _window)
