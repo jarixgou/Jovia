@@ -69,14 +69,13 @@ int main()
 			window->close();
 			if (fullscreen)
 			{
-				window->create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia", sf::Style::Fullscreen);
+				RECT rect;
+				SystemParametersInfo(SPI_GETWORKAREA, 0, &rect, 0);
+				window->create(sf::VideoMode(rect.right, rect.bottom), "Jovia", sf::Style::Fullscreen);
 			}
 			else
 			{ 
-				RECT rect;
-				SystemParametersInfo(SPI_GETWORKAREA, 0, &rect, 0);
-
-				window->create(sf::VideoMode(rect.right, rect.bottom), "Jovia", sf::Style::Default);
+				window->create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia", sf::Style::Default);
 			}
 
 			ImGui::SFML::Init(*window); // Réinitialise ImGui-SFML
