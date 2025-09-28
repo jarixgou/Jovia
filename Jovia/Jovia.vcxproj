@@ -176,7 +176,6 @@
     <ClCompile Include="Dependencies\include\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -298,7 +297,6 @@
     <ClInclude Include="Dependencies\include\SFML\Window\WindowHandle.hpp" />
     <ClInclude Include="Dependencies\include\SFML\Window\WindowStyle.hpp" />
     <ClInclude Include="Palette.h" />
-    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\DLL\x64\Debug\openal32.dll" />
