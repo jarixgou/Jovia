@@ -2,6 +2,7 @@
 #include <cmath> // pour std::abs
 
 #include "Palette/Palette.h"
+#include "Debug/Debug.h"
 
 // Prototypes
 void Init();
@@ -10,10 +11,7 @@ void Display(sf::RenderWindow&);
 
 sf::VertexArray vertexArray;
 
-bool vsync = false;
-
-bool requestFullscreen = false;
-bool fullscreen = false;
+WindowState windowState;
 
 int main()
 {
@@ -64,10 +62,10 @@ int main()
 		Update(*window, dt);
 		Display(*window);
 
-		if (requestFullscreen)
+		if (windowState.requestFullscreen)
 		{
 			window->close();
-			if (fullscreen)
+			if (windowState.fullscreen)
 			{
 				RECT rect;
 				SystemParametersInfo(SPI_GETWORKAREA, 0, &rect, 0);
@@ -79,7 +77,7 @@ int main()
 			}
 
 			ImGui::SFML::Init(*window); // Réinitialise ImGui-SFML
-			requestFullscreen = false;
+			windowState.requestFullscreen = false;
 		}
 	}
 }
@@ -126,35 +124,7 @@ void Update(sf::RenderWindow& _window, float _dt)
 		}
 	}
 
-	ImGui::Begin("Debug");
-	ImGui::Text("FPS : %.2f", 1 / _dt);
-
-	
-	if (ImGui::Checkbox("Vsync", &vsync))
-	{
-		_window.setVerticalSyncEnabled(vsync);
-	}
-
-	if (ImGui::Checkbox("Fullscreen", &fullscreen))
-	{
-		requestFullscreen = true;
-	}
-
-	ImGui::Separator();
-
-	sf::Vector2f mouseDelta = { ImGui::GetIO().MouseDelta.x, ImGui::GetIO().MouseDelta.y };
-
-	if (ImGui::TreeNode("Inputs"))
-	{
-		ImGui::Text("Mouse Pos : (%.f,", mousePose.x);
-		ImGui::SameLine();
-		ImGui::Text("%.f)", mousePose.y);
-		ImGui::Text("Mouse delta: (%g, %g)", mouseDelta.x, mouseDelta.y);
-
-		ImGui::TreePop();
-	}
-
-	ImGui::End();
+	Debug::Update(_dt, windowState, _window);
 }
 
 void Display(sf::RenderWindow& _window)

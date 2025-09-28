@@ -169,6 +169,7 @@
   </Target>
   <ItemGroup>
     <ClCompile Include="Common.cpp" />
+    <ClCompile Include="Debug\Debug.cpp" />
     <ClCompile Include="Dependencies\include\ImGui\imgui-SFML.cpp" />
     <ClCompile Include="Dependencies\include\ImGui\imgui.cpp" />
     <ClCompile Include="Dependencies\include\ImGui\imgui_demo.cpp" />
@@ -181,6 +182,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Debug\Debug.h" />
     <ClInclude Include="Dependencies\include\GL\freeglut.h" />
     <ClInclude Include="Dependencies\include\GL\freeglut_ext.h" />
     <ClInclude Include="Dependencies\include\GL\freeglut_std.h" />
