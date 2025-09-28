@@ -1,4 +1,5 @@
 #include "Common.h"
+#include <cmath> // pour std::abs
 
 // Prototypes
 void Init();
@@ -21,11 +22,17 @@ int main()
 	sf::Vertex c(sf::Vector2f(SCREEN_WIDTH / 2 + 32, SCREEN_HEIGHT / 2 + 32));
 	sf::Vertex d(sf::Vector2f(SCREEN_WIDTH / 2 - 32, SCREEN_HEIGHT / 2 + 32));
 
-	vertexArray.setPrimitiveType(sf::PrimitiveType::LineStrip);
+	vertexArray.setPrimitiveType(sf::PrimitiveType::Lines);
 
 	vertexArray.append(a);
 	vertexArray.append(b);
+
+	vertexArray.append(b);
 	vertexArray.append(c);
+
+	vertexArray.append(c);
+	vertexArray.append(d);
+
 	vertexArray.append(d);
 	vertexArray.append(a);
 
@@ -65,27 +72,30 @@ void Update(sf::RenderWindow& _window, float _dt)
 	sf::Vector2i mousePosPixel = sf::Mouse::getPosition(_window);
 	sf::Vector2f mousePose = _window.mapPixelToCoords(mousePosPixel);
 
-	int size = static_cast<int>(vertexArray.getVertexCount() - 1);
-	for (int i = 0; i < size; ++i)
+	const float epsilon = 1e-2f;
+
+	for (size_t i = 0; i < vertexArray.getVertexCount(); ++i)
 	{
-		int a = i % size;
-		int b = (i + 1) % size;
+		vertexArray[i].color = sf::Color::White;
+	}
 
-		sf::Vector2f AB = vertexArray[b].position - vertexArray[a].position;
-		sf::Vector2f AM = mousePose - vertexArray[a].position;
+	for (size_t i = 0; i < vertexArray.getVertexCount(); i += 2)
+	{
+		sf::Vector2f A = vertexArray[i].position;
+		sf::Vector2f B = vertexArray[i + 1].position;
+		sf::Vector2f AB = B - A;
+		sf::Vector2f AM = mousePose - A;
 
-		float dot = AB.x * AM.y - AB.y * AM.x;
-
-		if (dot == 0.0f)
+		float cross = AB.x * AM.y - AB.y * AM.x;
+		if (std::abs(cross) < epsilon)
 		{
-			vertexArray[a].color = sf::Color::Red;
-			vertexArray[b].color = sf::Color::Red;
-			std::cout << a << b << std::endl;
-		}
-		else
-		{
-			vertexArray[a].color = sf::Color::White;
-			vertexArray[b].color = sf::Color::White;
+			float dot = AM.x * AB.x + AM.y * AB.y;
+			float lenSq = AB.x * AB.x + AB.y * AB.y;
+			if (dot >= 0 && dot <= lenSq)
+			{
+				vertexArray[i].color = sf::Color::Red;
+				vertexArray[i + 1].color = sf::Color::Red;
+			}
 		}
 	}
 }
