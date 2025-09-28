@@ -81,6 +81,9 @@
     <ClCompile Include="Dependencies\include\ImGui\imgui-SFML.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\include\GL\freeglut.h">
@@ -438,6 +441,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Palette.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Palette\Palette.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
