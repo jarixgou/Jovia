@@ -169,7 +169,6 @@
   </Target>
   <ItemGroup>
     <ClCompile Include="Common.cpp" />
-    <ClCompile Include="Debug\Debug.cpp" />
     <ClCompile Include="Dependencies\include\ImGui\imgui-SFML.cpp" />
     <ClCompile Include="Dependencies\include\ImGui\imgui.cpp" />
     <ClCompile Include="Dependencies\include\ImGui\imgui_demo.cpp" />
@@ -179,11 +178,12 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map editor\MapEditor.cpp" />
     <ClCompile Include="Palette\Palette.cpp" />
+    <ClCompile Include="Palette\PaletteEditor.cpp" />
+    <ClCompile Include="Utils\ModifiableRect.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
-    <ClInclude Include="Debug\Debug.h" />
     <ClInclude Include="Dependencies\include\GL\freeglut.h" />
     <ClInclude Include="Dependencies\include\GL\freeglut_ext.h" />
     <ClInclude Include="Dependencies\include\GL\freeglut_std.h" />
@@ -303,6 +303,8 @@
     <ClInclude Include="Dependencies\include\SFML\Window\WindowStyle.hpp" />
     <ClInclude Include="Map editor\MapEditor.h" />
     <ClInclude Include="Palette\Palette.h" />
+    <ClInclude Include="Palette\PaletteEditor.h" />
+    <ClInclude Include="Utils\ModifiableRect.h" />
     <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>
   <ItemGroup>
