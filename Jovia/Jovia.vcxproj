@@ -178,7 +178,7 @@
     <ClCompile Include="Dependencies\include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map editor\MapEditor.cpp" />
-    <ClCompile Include="Palette\PaletteEditor.cpp" />
+    <ClCompile Include="Palette\PaletteInterface.cpp" />
     <ClCompile Include="Utils\ModifiableRect.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
@@ -303,7 +303,7 @@
     <ClInclude Include="Dependencies\include\SFML\Window\WindowHandle.hpp" />
     <ClInclude Include="Dependencies\include\SFML\Window\WindowStyle.hpp" />
     <ClInclude Include="Map editor\MapEditor.h" />
-    <ClInclude Include="Palette\PaletteEditor.h" />
+    <ClInclude Include="Palette\PaletteInterface.h" />
     <ClInclude Include="Utils\ModifiableRect.h" />
     <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>
