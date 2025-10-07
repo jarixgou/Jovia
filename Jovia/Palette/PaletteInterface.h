@@ -13,7 +13,7 @@ private:
 
 		sf::Texture m_texture;
 		sf::Sprite m_sprite;
-		std::vector<Utils::ModifiableRect> m_rectsList;
+		std::vector<std::vector<Utils::ModifiableRect>> m_rectsList;
 
 		bool m_selected;
 	};
