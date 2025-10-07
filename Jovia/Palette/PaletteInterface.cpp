@@ -51,6 +51,7 @@ void PaletteInterface::Update(sf::RenderWindow& _window, float _dt)
 			}
 		}
 	}
+	ImGui::EndTabBar();
 
 	ImGui::End();
 }
