@@ -1,5 +1,30 @@
 #include "ModifiableRect.h"
 
+Utils::ModifiableRect::ModifiableRect()
+{
+	this->m_rect.setPrimitiveType(sf::PrimitiveType::Lines);
+
+	sf::Vector2f _pos(0, 0);
+	sf::Vector2f _size(1, 1);
+
+	sf::Vertex a(sf::Vector2f(_pos.x, _pos.y));
+	sf::Vertex b(sf::Vector2f(_pos.x + _size.x, _pos.y));
+	sf::Vertex c(sf::Vector2f(_pos.x + _size.x, _pos.y + _size.y));
+	sf::Vertex d(sf::Vector2f(_pos.x, _pos.y + _size.y));
+
+	this->m_rect.append(a);
+	this->m_rect.append(b);
+	this->m_rect.append(b);
+	this->m_rect.append(c);
+	this->m_rect.append(c);
+	this->m_rect.append(d);
+	this->m_rect.append(d);
+	this->m_rect.append(a);
+
+	this->m_bounds = sf::FloatRect(_pos, _size);
+	this->m_center = sf::Vector2f(_pos.x + _size.x / 2, _pos.y + _size.y / 2);
+}
+
 Utils::ModifiableRect::ModifiableRect(sf::Vector2f _pos, sf::Vector2f _size)
 {
 	this->m_rect.setPrimitiveType(sf::PrimitiveType::Lines);
@@ -68,4 +93,9 @@ sf::FloatRect Utils::ModifiableRect::GetBounds() const
 sf::Vector2f Utils::ModifiableRect::GetCenter() const
 {
 	return this->m_center;
+}
+
+sf::VertexArray Utils::ModifiableRect::GetShape()
+{
+	return this->m_rect;
 }
