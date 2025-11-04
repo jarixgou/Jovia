@@ -14,6 +14,7 @@
 #include <GL/glew.h>
 #include <GL/wglew.h>
 #include <GL/freeglut.h>
+#include <Engine/Logger/Logger.hpp>
 #include "SFML/OpenGL.hpp"
 
 #include <windows.h>
