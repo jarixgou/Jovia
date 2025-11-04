@@ -24,7 +24,7 @@ void Menu::PollEvents(sf::RenderWindow& _window, sf::Event& _event)
 
 void Menu::Update(sf::RenderWindow& _renderWindow, float _dt)
 {
-	Engine::AssetsInterface::Update();
+
 }
 
 void Menu::Display(sf::RenderWindow& _window)
