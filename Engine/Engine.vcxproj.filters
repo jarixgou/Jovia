@@ -96,6 +96,9 @@
     <ClCompile Include="Engine\Scene\ScenesManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\TextureSlice\TextureSlice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\include\GL\freeglut.h">

@@ -181,6 +181,7 @@
     <ClCompile Include="Engine\Logger\Logger.cpp" />
     <ClCompile Include="Engine\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Scene\ScenesManager.cpp" />
+    <ClCompile Include="Engine\TextureSlice\TextureSlice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\include\GL\freeglut.h" />
