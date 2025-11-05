@@ -1,0 +1,62 @@
+﻿  Common.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Common.cpp')
+  
+  Debug.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Debug/Debug.cpp')
+  
+  imgui-SFML.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  Cleanup.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Game/Cleanup/Cleanup.cpp')
+  
+  Display.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Game/Display/Display.cpp')
+  
+  Init.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Game/Init/Init.cpp')
+  
+  PollEvents.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Game/PollEvents/PollEvents.cpp')
+  
+  Update.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Game/Update/Update.cpp')
+  
+  Main.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Main.cpp')
+  
+  MapEditor.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Map%20editor/MapEditor.cpp')
+  
+  PaletteInterface.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Palette/PaletteInterface.cpp')
+  
+  Game.cpp
+D:\Jovia\Jovia\Scene\Game\Game.hpp(4,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Scene/Scene.hpp' : No such file or directory
+  (compiler le fichier source 'Scene/Game/Game.cpp')
+  
+  Menu.cpp
+D:\Jovia\Jovia\Scene\Menu\Menu.hpp(4,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Scene/Scene.hpp' : No such file or directory
+  (compiler le fichier source 'Scene/Menu/Menu.cpp')
+  
+  ModifiableRect.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Utils/ModifiableRect.cpp')
+  
+  Utils.cpp
+D:\Jovia\Jovia\Common.h(17,10): error C1083: Impossible d'ouvrir le fichier include : 'Engine/Logger/Logger.hpp' : No such file or directory
+  (compiler le fichier source 'Utils/Utils.cpp')
+  

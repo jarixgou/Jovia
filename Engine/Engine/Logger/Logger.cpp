@@ -1,5 +1,7 @@
 #include "Logger.hpp"
 
+#include <iomanip>
+
 #define RESET   "\033[0m"
 
 Engine::LogLevel Engine::Logger::m_minimumLevel = LogLevel::DEBUG;

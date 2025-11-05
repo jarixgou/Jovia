@@ -1,6 +1,6 @@
 #include "AssetsInterface.hpp"
 
-#include "../../../../Jovia/Dependencies/include/ImGui/imgui.h"
+#include <ImGui/imgui.h>
 #include "../../Asset/AssetsManager.hpp"
 
 namespace Engine

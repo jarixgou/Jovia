@@ -8,7 +8,7 @@ std::vector<Engine::TextureSliced> Engine::SliceTexture(const sf::Texture& _text
 
 	sf::Image image = _texture.copyToImage();
 
-	int id = 0;
+	int id = 1;
 
 	for (int y = 0; y < textureSize.y / _cellSize.y; ++y)
 	{
@@ -22,18 +22,16 @@ std::vector<Engine::TextureSliced> Engine::SliceTexture(const sf::Texture& _text
 			if (texture.rect.top + texture.rect.height <= textureSize.y && 
 				texture.rect.left + texture.rect.width <= textureSize.x)
 			{
-				for (int yI = texture.rect.top; yI <= texture.rect.top + texture.rect.height; ++yI)
+				bool found = false;
+				for (int yI = texture.rect.top; yI <= texture.rect.top + texture.rect.height && !found; ++yI)
 				{
-					for (int xI = texture.rect.left; xI <= texture.rect.left + texture.rect.width; ++xI)
+					for (int xI = texture.rect.left; xI <= texture.rect.left + texture.rect.width && !found; ++xI)
 					{
-						if (image.getPixel(xI, yI).a > 0)
+						if (image.getPixel(xI, yI).a > 0 && !found)
 						{
 							textureSliced.push_back(texture);
-
-							yI = std::numeric_limits<int>::max();
-							xI = std::numeric_limits<int>::max();
-
 							id++;
+							found = true;
 						}
 					}
 				}

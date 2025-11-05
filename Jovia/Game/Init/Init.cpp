@@ -30,5 +30,5 @@ void InitScene()
 	Engine::ScenesManager::CreateScene<Menu>("Menu");
 	Engine::ScenesManager::CreateScene<Game>("Game");
 
-	Engine::ScenesManager::LoadScene("Menu");
+	Engine::ScenesManager::LoadScene("Game");
 }

@@ -4,11 +4,20 @@
 #include <Engine/Scene/Scene.hpp>
 
 #include "../../Common.h"
+#include "Engine/TextureSlice/TextureSlice.hpp"
+
 
 class Game : public Engine::Scene
 {
 private:
-	public:
+	sf::Sprite tileSheet;
+	float timer = 0.f;
+	int searchID = 1;
+
+	int map[50][50] = { 0 };
+
+	std::vector<Engine::TextureSliced> textureSliced;
+public:
 	Game();
 	virtual ~Game();
 

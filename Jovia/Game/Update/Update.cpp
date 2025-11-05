@@ -4,7 +4,7 @@
 
 #include "Engine/Interface/Assets/AssetsInterface.hpp"
 
-void Update(sf::RenderWindow& _window, const sf::Time& _time, float _dt)
+void Update(sf::RenderWindow& _window, sf::Time _time, float _dt)
 {
 	ImGui::SFML::Update(_window, _time);
 
