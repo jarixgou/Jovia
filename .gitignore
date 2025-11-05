@@ -29,7 +29,6 @@
 *.app
 
 Jovia/x64
+Engine/x64
 .vs/
 .idea/
-
-*.vcxproj

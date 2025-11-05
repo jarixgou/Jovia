@@ -1,4 +1,17 @@
-﻿  AssetsInterface.cpp
+﻿  imgui-SFML.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  Asset.cpp
+  AssetsManager.cpp
+  AssetsInterface.cpp
+  Interpolator.cpp
+D:\SVN\Eleves\mtena\Projet\Jovia\Engine\Engine\Interpolator\Interpolator.cpp(33,30): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+  Logger.cpp
+  Scene.cpp
+  ScenesManager.cpp
 glew64.lib(glew64.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR déjà défini dans freeglut.lib(freeglut.dll) ; seconde définition ignorée
 sfml-audio-d.lib(sfml-audio-d-2.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR déjà défini dans freeglut.lib(freeglut.dll) ; seconde définition ignorée
 sfml-graphics-d.lib(sfml-graphics-d-2.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR déjà défini dans freeglut.lib(freeglut.dll) ; seconde définition ignorée
@@ -3969,4 +3982,4 @@ sfml-window.lib(sfml-window-2.dll) : warning LNK4006: "public: __cdecl sf::Conte
 sfml-window.lib(sfml-window-2.dll) : warning LNK4006: "__declspec(dllimport) public: __cdecl sf::Context::Context(struct sf::ContextSettings const &,unsigned int,unsigned int)" (__imp_??0Context@sf@@QEAA@AEBUContextSettings@1@II@Z) déjà défini dans sfml-window-d.lib(sfml-window-d-2.dll) ; seconde définition ignorée
 sfml-window.lib(sfml-window-2.dll) : warning LNK4006: "public: __cdecl sf::Context::Context(struct sf::ContextSettings const &,unsigned int,unsigned int)" (??0Context@sf@@QEAA@AEBUContextSettings@1@II@Z) déjà défini dans sfml-window-d.lib(sfml-window-d-2.dll) ; seconde définition ignorée
 sfml-window.lib(sfml-window-2.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR déjà défini dans freeglut.lib(freeglut.dll) ; seconde définition ignorée
-  Engine.vcxproj -> D:\Jovia\x64\Release\Engine.lib
+  Engine.vcxproj -> D:\SVN\Eleves\mtena\Projet\Jovia\x64\Release\Engine.lib

@@ -57,10 +57,31 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Dependencies\include\ImGui\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\include\ImGui\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\include\ImGui\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\include\ImGui\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\include\ImGui\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\include\ImGui\imgui-SFML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\Asset\Asset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Asset\AssetsManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Interface\Assets\AssetsInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Interpolator\Interpolator.cpp">
@@ -73,9 +94,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Scene\ScenesManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Interface\Assets\AssetsInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -404,10 +422,40 @@
     <ClInclude Include="Dependencies\include\SFML\Window\WindowStyle.hpp">
       <Filter>Resource Files\include\SFML\Window</Filter>
     </ClInclude>
+    <ClInclude Include="Dependencies\include\ImGui\imconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\include\ImGui\imconfig-SFML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\include\ImGui\imgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\include\ImGui\imgui_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\include\ImGui\imgui-SFML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\include\ImGui\imgui-SFML_export.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\include\ImGui\imstb_rectpack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\include\ImGui\imstb_textedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\include\ImGui\imstb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Asset\Asset.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Asset\AssetsManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Interface\Assets\AssetsInterface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Interpolator\Interpolator.hpp">
@@ -423,9 +471,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\TextureSlice\TextureSlice.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Interface\Assets\AssetsInterface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -456,45 +501,6 @@
     </None>
     <None Include="Dependencies\include\SFML\System\Vector3.inl">
       <Filter>Resource Files\include\SFML\System</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Debug\openal32.dll">
-      <Filter>Resource Files\DLL\Debug</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Debug\sfml-audio-d-2.dll">
-      <Filter>Resource Files\DLL\Debug</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Debug\sfml-graphics-d-2.dll">
-      <Filter>Resource Files\DLL\Debug</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Debug\sfml-network-d-2.dll">
-      <Filter>Resource Files\DLL\Debug</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Debug\sfml-system-d-2.dll">
-      <Filter>Resource Files\DLL\Debug</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Debug\sfml-window-d-2.dll">
-      <Filter>Resource Files\DLL\Debug</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Release\glew64.dll">
-      <Filter>Resource Files\DLL\Release</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Release\openal32.dll">
-      <Filter>Resource Files\DLL\Release</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Release\sfml-audio-2.dll">
-      <Filter>Resource Files\DLL\Release</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Release\sfml-graphics-2.dll">
-      <Filter>Resource Files\DLL\Release</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Release\sfml-network-2.dll">
-      <Filter>Resource Files\DLL\Release</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Release\sfml-system-2.dll">
-      <Filter>Resource Files\DLL\Release</Filter>
-    </None>
-    <None Include="Dependencies\DLL\x64\Release\sfml-window-2.dll">
-      <Filter>Resource Files\DLL\Release</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
