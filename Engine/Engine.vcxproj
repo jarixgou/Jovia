@@ -24,9 +24,9 @@
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Interface\Assets\AssetsInterface.cpp" />
     <ClCompile Include="Engine\Interface\Camera\CameraInterface.cpp" />
+    <ClCompile Include="Engine\Interface\Debug\DebugInterface.cpp" />
     <ClCompile Include="Engine\Interpolator\Interpolator.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />
-    <ClCompile Include="Engine\QuadTree\QuadTree.cpp" />
     <ClCompile Include="Engine\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Scene\ScenesManager.cpp" />
     <ClCompile Include="Engine\TextureSlice\TextureSlice.cpp" />
@@ -37,6 +37,7 @@
     <ClInclude Include="Engine\Camera\Camera.hpp" />
     <ClInclude Include="Engine\Interface\Assets\AssetsInterface.hpp" />
     <ClInclude Include="Engine\Interface\Camera\CameraInterface.hpp" />
+    <ClInclude Include="Engine\Interface\Debug\DebugInterface.hpp" />
     <ClInclude Include="Engine\Interpolator\Interpolator.hpp" />
     <ClInclude Include="Engine\Logger\Logger.hpp" />
     <ClInclude Include="Engine\QuadTree\QuadTree.hpp" />
@@ -144,7 +145,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)lib/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib</AdditionalDependencies>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;glew32.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -168,7 +169,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)lib/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system.lib;sfml-window.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-system.lib;sfml-window.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

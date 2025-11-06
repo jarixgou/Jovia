@@ -51,8 +51,8 @@ void Game::PollEvents(sf::RenderWindow& _window, sf::Event& _event)
 
 void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 {
-	m_camera->Update(_dt);
 	Engine::CameraInterface::Update(m_camera);
+	m_camera->Update(_dt);
 }
 
 void Game::Display(sf::RenderWindow& _window)

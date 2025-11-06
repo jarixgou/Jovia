@@ -42,10 +42,10 @@
     <ClCompile Include="Engine\Camera\Camera.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\QuadTree\QuadTree.cpp">
+    <ClCompile Include="Engine\Interface\Camera\CameraInterface.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Interface\Camera\CameraInterface.cpp">
+    <ClCompile Include="Engine\Interface\Debug\DebugInterface.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,6 +81,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Interface\Camera\CameraInterface.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Interface\Debug\DebugInterface.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

@@ -63,24 +63,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\include\ImGui\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\include\ImGui\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\include\ImGui\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\include\ImGui\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\include\ImGui\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Dependencies\include\ImGui\imgui-SFML.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Utils\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,360 +99,27 @@
     <ClCompile Include="Scene\Menu\Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ImGui\imgui-SFML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Dependencies\include\GL\freeglut.h">
-      <Filter>Resource Files\include\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\GL\freeglut_ext.h">
-      <Filter>Resource Files\include\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\GL\freeglut_std.h">
-      <Filter>Resource Files\include\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\GL\glew.h">
-      <Filter>Resource Files\include\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\GL\glext.h">
-      <Filter>Resource Files\include\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\GL\glut.h">
-      <Filter>Resource Files\include\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\GL\glxew.h">
-      <Filter>Resource Files\include\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\GL\glxext.h">
-      <Filter>Resource Files\include\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\GL\wglew.h">
-      <Filter>Resource Files\include\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\GL\wglext.h">
-      <Filter>Resource Files\include\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio.hpp">
-      <Filter>Resource Files\include\SFML</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Config.hpp">
-      <Filter>Resource Files\include\SFML</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\GpuPreference.hpp">
-      <Filter>Resource Files\include\SFML</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics.hpp">
-      <Filter>Resource Files\include\SFML</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Main.hpp">
-      <Filter>Resource Files\include\SFML</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network.hpp">
-      <Filter>Resource Files\include\SFML</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\OpenGL.hpp">
-      <Filter>Resource Files\include\SFML</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System.hpp">
-      <Filter>Resource Files\include\SFML</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window.hpp">
-      <Filter>Resource Files\include\SFML</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\AlResource.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\Export.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\InputSoundFile.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\Listener.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\Music.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\OutputSoundFile.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\Sound.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\SoundBuffer.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\SoundBufferRecorder.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\SoundFileFactory.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\SoundFileReader.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\SoundFileWriter.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\SoundRecorder.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\SoundSource.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Audio\SoundStream.hpp">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network\Export.hpp">
-      <Filter>Resource Files\include\SFML\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network\Ftp.hpp">
-      <Filter>Resource Files\include\SFML\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network\Http.hpp">
-      <Filter>Resource Files\include\SFML\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network\IpAddress.hpp">
-      <Filter>Resource Files\include\SFML\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network\Packet.hpp">
-      <Filter>Resource Files\include\SFML\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network\Socket.hpp">
-      <Filter>Resource Files\include\SFML\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network\SocketHandle.hpp">
-      <Filter>Resource Files\include\SFML\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network\SocketSelector.hpp">
-      <Filter>Resource Files\include\SFML\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network\TcpListener.hpp">
-      <Filter>Resource Files\include\SFML\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network\TcpSocket.hpp">
-      <Filter>Resource Files\include\SFML\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Network\UdpSocket.hpp">
-      <Filter>Resource Files\include\SFML\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\BlendMode.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\CircleShape.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Color.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\ConvexShape.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Drawable.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Export.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Font.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Glsl.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Glyph.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Image.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\PrimitiveType.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Rect.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\RectangleShape.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\RenderStates.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\RenderTarget.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\RenderTexture.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\RenderWindow.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Shader.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Shape.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Sprite.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Text.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Texture.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Transform.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Transformable.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\Vertex.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\VertexArray.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\VertexBuffer.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Graphics\View.hpp">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\Clock.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\Err.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\Export.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\FileInputStream.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\InputStream.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\Lock.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\MemoryInputStream.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\Mutex.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\NativeActivity.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\NonCopyable.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\Sleep.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\String.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\Thread.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\ThreadLocal.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\ThreadLocalPtr.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\Time.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\Utf.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\Vector2.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\System\Vector3.hpp">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\Clipboard.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\Context.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\ContextSettings.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\Cursor.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\Event.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\Export.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\GlResource.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\Joystick.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\Keyboard.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\Mouse.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\Sensor.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\Touch.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\VideoMode.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\Window.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\WindowHandle.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\SFML\Window\WindowStyle.hpp">
-      <Filter>Resource Files\include\SFML\Window</Filter>
-    </ClInclude>
     <ClInclude Include="Common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\ImGui\imconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\ImGui\imconfig-SFML.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\ImGui\imgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\ImGui\imgui_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\ImGui\imgui-SFML.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\ImGui\imgui-SFML_export.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\ImGui\imstb_rectpack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\ImGui\imstb_textedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\include\ImGui\imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\Utils.h">
@@ -509,35 +158,35 @@
     <ClInclude Include="Scene\Menu\Menu.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ImGui\imconfig-SFML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui-SFML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui-SFML_export.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_rectpack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_textedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dependencies\include\SFML\Audio\SoundFileFactory.inl">
-      <Filter>Resource Files\include\SFML\Audio</Filter>
-    </None>
-    <None Include="Dependencies\include\SFML\Graphics\Glsl.inl">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </None>
-    <None Include="Dependencies\include\SFML\Graphics\Rect.inl">
-      <Filter>Resource Files\include\SFML\Graphics</Filter>
-    </None>
-    <None Include="Dependencies\include\SFML\System\String.inl">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </None>
-    <None Include="Dependencies\include\SFML\System\Thread.inl">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </None>
-    <None Include="Dependencies\include\SFML\System\ThreadLocalPtr.inl">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </None>
-    <None Include="Dependencies\include\SFML\System\Utf.inl">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </None>
-    <None Include="Dependencies\include\SFML\System\Vector2.inl">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </None>
-    <None Include="Dependencies\include\SFML\System\Vector3.inl">
-      <Filter>Resource Files\include\SFML\System</Filter>
-    </None>
     <None Include="Dependencies\DLL\x64\Debug\openal32.dll">
       <Filter>Resource Files\DLL\Debug</Filter>
     </None>
@@ -577,55 +226,5 @@
     <None Include="Dependencies\DLL\x64\Release\sfml-window-2.dll">
       <Filter>Resource Files\DLL\Release</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="Dependencies\lib\Debug\freeglut.lib">
-      <Filter>Resource Files\lib\Debug</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Debug\glew64.lib">
-      <Filter>Resource Files\lib\Debug</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Debug\sfml-audio-d.lib">
-      <Filter>Resource Files\lib\Debug</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Debug\sfml-graphics-d.lib">
-      <Filter>Resource Files\lib\Debug</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Debug\sfml-main-d.lib">
-      <Filter>Resource Files\lib\Debug</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Debug\sfml-network-d.lib">
-      <Filter>Resource Files\lib\Debug</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Debug\sfml-system-d.lib">
-      <Filter>Resource Files\lib\Debug</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Debug\sfml-window-d.lib">
-      <Filter>Resource Files\lib\Debug</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Release\freeglut.lib">
-      <Filter>Resource Files\lib\Release</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Release\glew64.lib">
-      <Filter>Resource Files\lib\Release</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Release\sfml-audio.lib">
-      <Filter>Resource Files\lib\Release</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Release\sfml-graphics.lib">
-      <Filter>Resource Files\lib\Release</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Release\sfml-main.lib">
-      <Filter>Resource Files\lib\Release</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Release\sfml-network.lib">
-      <Filter>Resource Files\lib\Release</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Release\sfml-system.lib">
-      <Filter>Resource Files\lib\Release</Filter>
-    </Library>
-    <Library Include="Dependencies\lib\Release\sfml-window.lib">
-      <Filter>Resource Files\lib\Release</Filter>
-    </Library>
   </ItemGroup>
 </Project>

@@ -17,7 +17,27 @@ void Init(sf::RenderWindow& _window)
 void InitSystem(sf::RenderWindow& _window)
 {
 	_window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia");
-	LOG_DEBUG("Render window was created successfully");
+
+    _window.setActive(true);
+
+    // INITIALISER GLEW ICI
+    GLenum err = glewInit();
+    if (err != GLEW_OK)
+    {
+        std::string message = std::string("GLEW initialization failed: ") +
+            reinterpret_cast<const char*>(glewGetErrorString(err));
+		LOG_CRITICAL(message.c_str());
+    }
+
+    // Vérifier que les extensions nécessaires sont disponibles
+    if (!GLEW_ARB_timer_query)
+    {
+        LOG_WARNING("Query timer not supported");
+    }
+
+    _window.setActive(false);
+
+    LOG_DEBUG("Render window was created successfully");
 
 	ImGui::SFML::Init(_window);
 	ImGuiIO& io = ImGui::GetIO();
