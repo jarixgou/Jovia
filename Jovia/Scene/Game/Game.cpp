@@ -58,7 +58,7 @@ void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 		}
 		else
 		{
-			searchID = 0; // Optionnel : boucle l'animation
+			searchID = 0;
 		}
 	}
 }
