@@ -6,10 +6,16 @@
 #include "../../Common.h"
 #include "Engine/TextureSlice/TextureSlice.hpp"
 
+namespace Engine
+{
+	class Camera;
+}
 
 class Game : public Engine::Scene
 {
 private:
+	Engine::Camera* m_camera;
+
 	sf::Sprite tileSheet;
 	float timer = 0.f;
 	int searchID = 1;

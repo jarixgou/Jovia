@@ -23,9 +23,19 @@ namespace Engine
 		sf::Vector2f m_size = { 1920,1080 };
 		float m_zoom = 0;
 		float m_angle = 0.f;
+		bool m_free = false;
 
-		CameraType type = CameraType::ORTHOGRAPHIC;
+		sf::Vector3f m_target = { 0,0,0 };
+
+		CameraType m_type = CameraType::ORTHOGRAPHIC;
 	public:
+		Camera() = default;
+		~Camera() = default;
+
+		void Update(float _dt);
+
+		void SetFree(bool _free = true);
+		void SetFollow(sf::Vector3f _target);
 		void SetPos(sf::Vector3f _pos);
 		void SetSize(sf::Vector2f _size);
 		void SetZoom(float _zoom);
@@ -33,6 +43,12 @@ namespace Engine
 		void SetType(CameraType _type);
 
 		sf::FloatRect GetVisibleArea();
+		sf::Vector3f GetPos();
+		sf::Vector2f GetSize();
+		bool GetFree();
+		float GetZoom();
+		float GetAngle();
+		CameraType GetType();
 
 		void DrawObject(sf::Sprite& _object, sf::Vector3f _pos, sf::Vector2f _size, sf::RenderWindow& _window);
 		void DrawObject(sf::RectangleShape& _object, sf::Vector3f _pos, sf::Vector2f _size, sf::RenderWindow& _window);
