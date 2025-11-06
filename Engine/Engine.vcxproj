@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\Asset\Asset.cpp" />
     <ClCompile Include="Engine\Asset\AssetsManager.cpp" />
+    <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Interface\Assets\AssetsInterface.cpp" />
     <ClCompile Include="Engine\Interpolator\Interpolator.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />
@@ -31,6 +32,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\Asset\Asset.hpp" />
     <ClInclude Include="Engine\Asset\AssetsManager.hpp" />
+    <ClInclude Include="Engine\Camera\Camera.hpp" />
     <ClInclude Include="Engine\Interface\Assets\AssetsInterface.hpp" />
     <ClInclude Include="Engine\Interpolator\Interpolator.hpp" />
     <ClInclude Include="Engine\Logger\Logger.hpp" />
