@@ -42,7 +42,7 @@ namespace Engine
 		void SetAngle(float _angle);
 		void SetType(CameraType _type);
 
-		sf::FloatRect GetVisibleArea();
+		sf::FloatRect GetVisibleArea(sf::Vector2f _tileSize);
 		sf::Vector3f GetPos();
 		sf::Vector2f GetSize();
 		bool GetFree();

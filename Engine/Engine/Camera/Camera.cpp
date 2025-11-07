@@ -113,13 +113,73 @@ namespace Engine
 		m_type = _type;
 	}
 
-	sf::FloatRect Camera::GetVisibleArea()
+	sf::FloatRect Camera::GetVisibleArea(sf::Vector2f _tileSize)
 	{
-		float w = m_size.x / m_zoom;
-		float h = m_size.y / m_zoom;
+		if (m_type == CameraType::ORTHOGRAPHIC)
+		{
+			float w = m_size.x / (m_zoom * _tileSize.x);
+			float h = m_size.y / (m_zoom * _tileSize.y);
 
-		return { m_pos.x - w / 2.0f, m_pos.y - h / 2.0f,
-			w, h };
+			return { m_pos.x - w / 2.0f, m_pos.y - h / 2.0f, w, h };
+		}
+		else if (m_type == CameraType::ISOMETRIC)
+		{
+			// Transformation inverse isométrique pour trouver les bounds monde
+			float halfWidth = m_size.x * 0.5f;
+			float halfHeight = m_size.y * 0.5f;
+
+			// Les 4 coins de l'écran en coordonnées écran (relatif au centre)
+			sf::Vector2f screenCorners[4] = {
+				{ -halfWidth, -halfHeight },  // Haut-gauche
+				{  halfWidth, -halfHeight },  // Haut-droite
+				{ -halfWidth,  halfHeight },  // Bas-gauche
+				{  halfWidth,  halfHeight }   // Bas-droite
+			};
+
+			float minX = std::numeric_limits<float>::max();
+			float maxX = std::numeric_limits<float>::lowest();
+			float minY = std::numeric_limits<float>::max();
+			float maxY = std::numeric_limits<float>::lowest();
+
+			// Pour chaque coin de l'écran, calculer la position monde correspondante
+			for (const auto& screenPos : screenCorners)
+			{
+				// Transformation inverse isométrique
+				// Dans WorldToScreen :
+				// screenX = (worldX - worldY) * (_tileSize.x * zoom) * 0.5
+				// screenY = (worldX + worldY) * (_tileSize.y * zoom) * 0.25
+				//
+				// Inverse :
+				// worldX - worldY = screenX / (_tileSize.x * zoom * 0.5)
+				// worldX + worldY = screenY / (_tileSize.y * zoom * 0.25)
+				//
+				// Résolution :
+				// worldX = [(screenX / (_tileSize.x * zoom * 0.5)) + (screenY / (_tileSize.y * zoom * 0.25))] / 2
+				// worldY = [(screenY / (_tileSize.y * zoom * 0.25)) - (screenX / (_tileSize.x * zoom * 0.5))] / 2
+
+				float a = screenPos.x / (_tileSize.x * m_zoom * 0.5f);  // worldX - worldY
+				float b = screenPos.y / (_tileSize.y * m_zoom * 0.25f); // worldX + worldY
+
+				float worldX = (a + b) * 0.5f;
+				float worldY = (b - a) * 0.5f;
+
+				minX = std::min(minX, worldX);
+				maxX = std::max(maxX, worldX);
+				minY = std::min(minY, worldY);
+				maxY = std::max(maxY, worldY);
+			}
+
+			// Ajouter la position de la caméra et une marge
+			float margin = 5.0f;
+			return {
+				m_pos.x + minX - margin,
+				m_pos.y + minY - margin,
+				(maxX - minX) + margin * 2.0f,
+				(maxY - minY) + margin * 2.0f
+			};
+		}
+
+		return { 0.0f, 0.0f, 0.0f, 0.0f };
 	}
 
 	sf::Vector3f Camera::GetPos()

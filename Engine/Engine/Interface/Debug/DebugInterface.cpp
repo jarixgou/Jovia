@@ -76,8 +76,7 @@ void Engine::DebugInterface::Update(sf::RenderWindow& _window, float _dt, float 
 	if (ImGui::CollapsingHeader("System Info"))
 	{
 		ImGui::Text("OS: Windows");
-		ImGui::Text("OpenGL: %s", glGetString(GL_VERSION));
-		ImGui::Text("OpenGL: %s", glGetString(GL_VENDOR));
+		ImGui::Text("OpenGL: %s", glGetString(GL_VERSION)); 
 		ImGui::Text("CPU Cores: %d", std::thread::hardware_concurrency());
 		ImGui::Text("CPU Name: %s", GetCPUName().c_str());
 		ImGui::Text("GPU Name: %s", glGetString(GL_RENDERER));
