@@ -20,7 +20,7 @@ private:
 	float timer = 0.f;
 	int searchID = 1;
 
-	int map[50][50] = { 0 };
+	int map[500][500] = { 0 };
 
 	std::vector<Engine::TextureSliced> textureSliced;
 public:

@@ -35,9 +35,9 @@ void Game::Init()
 	m_camera->SetZoom(1.f);
 	m_camera->SetFree(false);
 
-	for (int y = 0; y < 50; ++y)
+	for (int y = 0; y < 500; ++y)
 	{
-		for (int x = 0; x < 50; ++x)
+		for (int x = 0; x < 500; ++x)
 		{
 			map[y][x] = rand() % textureSliced.size();
 		}
@@ -57,12 +57,27 @@ void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 
 void Game::Display(sf::RenderWindow& _window)
 {
-	for (int y = 0; y < 50; ++y)
+	// Frustum culling - ne dessiner que les tiles visibles
+	sf::Vector2f camSize = m_camera->GetSize();
+	sf::Vector2f camPos = { m_camera->GetPos().x, m_camera->GetPos().y };
+	float zoom = m_camera->GetZoom();
+
+	sf::FloatRect visibleArea = m_camera->GetVisibleArea();
+
+	// Calculer les bounds visibles (en tiles)
+	int startX = std::max(0, (int)(visibleArea.left - 1));
+	int endX = std::min(500, (int)(visibleArea.width));
+	int startY = std::max(0, (int)(visibleArea.top - 1));
+	int endY = std::min(500, (int)(visibleArea.height + 2));
+
+	int tilesRendered = 0;
+	for (int y = startY; y < endY; ++y)
 	{
-		for (int x = 0; x < 50; ++x)
+		for (int x = startX; x < endX; ++x)
 		{
 			tileSheet.setTextureRect(textureSliced[map[y][x]].rect);
 			m_camera->DrawObject(tileSheet, { static_cast<float>(x), static_cast<float>(y), 3 }, { 32.f, 32.f }, _window);
+			tilesRendered++;
 		}
 	}
 	/*_window.draw(tileSheet);*/
