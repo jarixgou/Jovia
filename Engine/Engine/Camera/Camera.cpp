@@ -212,43 +212,46 @@ namespace Engine
 		return m_type;
 	}
 
-	void Camera::DrawObject(sf::Sprite& _object, sf::Vector3f _pos, sf::Vector2f _size, sf::RenderWindow& _window)
+	void Camera::DrawObject(const sf::Sprite& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
 		float scaleX = (_size.x * m_zoom) / _size.x;
 		float scaleY = (_size.y * m_zoom) / _size.y;
 
-		_object.setScale(scaleX, scaleY);
-		_object.setPosition(screenPos);
-		_window.draw(_object);
+		sf::Sprite spr = _object;
+		spr.setScale(scaleX, scaleY);
+		spr.setPosition(screenPos);
+		_window.draw(spr);
 	}
 
-	void Camera::DrawObject(sf::RectangleShape& _object, sf::Vector3f _pos, sf::Vector2f _size, sf::RenderWindow& _window)
+	void Camera::DrawObject(const sf::RectangleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
 		float scaleX = (_size.x * m_zoom) / _size.x;
 		float scaleY = (_size.y * m_zoom) / _size.y;
 
-		_object.setScale(scaleX, scaleY);
-		_object.setPosition(screenPos);
-		_window.draw(_object);
+		sf::RectangleShape rect = _object;
+		rect.setScale(scaleX, scaleY);
+		rect.setPosition(screenPos);
+		_window.draw(rect);
 	}
 
-	void Camera::DrawObject(sf::CircleShape& _object, sf::Vector3f _pos, sf::Vector2f _size, sf::RenderWindow& _window)
+	void Camera::DrawObject(const sf::CircleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
 		float scaleX = (_size.x * m_zoom) / _size.x;
 		float scaleY = (_size.y * m_zoom) / _size.y;
 
-		_object.setScale(scaleX, scaleY);
-		_object.setPosition(screenPos);
-		_window.draw(_object);
+		sf::CircleShape circle = _object;
+		circle.setScale(scaleX, scaleY);
+		circle.setPosition(screenPos);
+		_window.draw(circle);
 	}
 
-	sf::Vector2f Camera::WorldToScreen(sf::Vector3f _objectPos, sf::Vector2f _objectSize)
+	sf::Vector2f Camera::WorldToScreen(const sf::Vector3f& _objectPos, const sf::Vector2f& _objectSize)
 	{
 		sf::Vector2f screenPos = { 0,0 };
 

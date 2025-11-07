@@ -26,6 +26,7 @@
     <ClCompile Include="Engine\Interface\Camera\CameraInterface.cpp" />
     <ClCompile Include="Engine\Interface\Debug\DebugInterface.cpp" />
     <ClCompile Include="Engine\Interpolator\Interpolator.cpp" />
+    <ClCompile Include="Engine\Layer\LayerManager.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />
     <ClCompile Include="Engine\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Scene\ScenesManager.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="Engine\Interface\Camera\CameraInterface.hpp" />
     <ClInclude Include="Engine\Interface\Debug\DebugInterface.hpp" />
     <ClInclude Include="Engine\Interpolator\Interpolator.hpp" />
+    <ClInclude Include="Engine\Layer\LayerManager.hpp" />
     <ClInclude Include="Engine\Logger\Logger.hpp" />
     <ClInclude Include="Engine\QuadTree\QuadTree.hpp" />
     <ClInclude Include="Engine\Scene\Scene.hpp" />

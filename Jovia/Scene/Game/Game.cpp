@@ -3,6 +3,7 @@
 #include <Engine/Asset/AssetsManager.hpp>
 #include <Engine/Scene/ScenesManager.hpp>
 
+#include <Engine/Layer/LayerManager.hpp>
 #include <Engine/Camera/Camera.hpp>
 
 #include "Engine/Interface/Camera/CameraInterface.hpp"
@@ -51,14 +52,10 @@ void Game::PollEvents(sf::RenderWindow& _window, sf::Event& _event)
 
 void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 {
-	Engine::CameraInterface::Update(m_camera);
-	m_camera->Update(_dt);
-}
+	Engine::LayerManager::Clear();
 
-void Game::Display(sf::RenderWindow& _window)
-{
 	// Frustum culling - ne dessiner que les tiles visibles
-	sf::FloatRect visibleArea = m_camera->GetVisibleArea({32,32});
+	sf::FloatRect visibleArea = m_camera->GetVisibleArea({ 32,32 });
 
 	const float tileSize = 32.f;
 	int startX = std::max(0, static_cast<int>(visibleArea.left));
@@ -71,11 +68,22 @@ void Game::Display(sf::RenderWindow& _window)
 	{
 		for (int x = startX; x < endX; ++x)
 		{
-			tileSheet.setTextureRect(textureSliced[map[y][x]].rect);
-			m_camera->DrawObject(tileSheet, { static_cast<float>(x), static_cast<float>(y), 0 }, { 32.f, 32.f }, _window);
+			sf::Sprite spr = tileSheet;
+			spr.setTextureRect(textureSliced[map[y][x]].rect);
+			Engine::LayerManager::Add(spr, {static_cast<float>(x), static_cast<float>(y), 0}, {32, 32}, 0);
 			tilesRendered++;
 		}
 	}
+
+	Engine::LayerManager::Update(m_camera->GetType());
+
+	Engine::CameraInterface::Update(m_camera);
+	m_camera->Update(_dt);
+}
+
+void Game::Display(sf::RenderWindow& _window)
+{
+	Engine::LayerManager::Draw(m_camera, _window);
 	/*_window.draw(tileSheet);*/
 }
 

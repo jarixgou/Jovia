@@ -50,11 +50,11 @@ namespace Engine
 		float GetAngle();
 		CameraType GetType();
 
-		void DrawObject(sf::Sprite& _object, sf::Vector3f _pos, sf::Vector2f _size, sf::RenderWindow& _window);
-		void DrawObject(sf::RectangleShape& _object, sf::Vector3f _pos, sf::Vector2f _size, sf::RenderWindow& _window);
-		void DrawObject(sf::CircleShape& _object, sf::Vector3f _pos, sf::Vector2f _size, sf::RenderWindow& _window);
+		void DrawObject(const sf::Sprite& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window);
+		void DrawObject(const sf::RectangleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window);
+		void DrawObject(const sf::CircleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window);
 	private:
-		sf::Vector2f WorldToScreen(sf::Vector3f _objectPos, sf::Vector2f _objectSize);
+		sf::Vector2f WorldToScreen(const sf::Vector3f& _objectPos, const sf::Vector2f& _objectSize);
 
 	};
 }
