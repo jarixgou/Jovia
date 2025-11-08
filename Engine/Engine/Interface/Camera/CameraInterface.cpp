@@ -11,6 +11,7 @@ void Engine::CameraInterface::Update(Camera* _cam)
 
 	sf::Vector3f camPos = _cam->GetPos();
 	sf::Vector2f camSize = _cam->GetSize();
+	float camAngle = _cam->GetAngle();
 	float camZoom = _cam->GetZoom();
 	bool camFree = _cam->GetFree();
 
@@ -48,6 +49,12 @@ void Engine::CameraInterface::Update(Camera* _cam)
 	ImGui::DragFloat("##sizeY", &camSize.y, 1.0f);
 	ImGui::PopStyleColor();
 
+	// Rotation
+	ImGui::Text("Rotation ");
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(190);
+	ImGui::DragFloat("##rotation", &camAngle, 0.1f);
+
 	// Zoom
 	ImGui::Text("Zoom    ");
 	ImGui::SameLine();
@@ -63,6 +70,7 @@ void Engine::CameraInterface::Update(Camera* _cam)
 	_cam->SetSize(camSize);
 	_cam->SetZoom(camZoom);
 	_cam->SetFree(camFree);
+	_cam->SetAngle(camAngle);
 
 	ImGui::End();
 }

@@ -76,6 +76,15 @@ namespace Engine
 		{
 			m_zoom = 0;
 		}
+
+		if (m_angle > 359.f)
+		{
+			m_angle = 0.f;
+		}
+		else if (m_angle < 0.f)
+		{
+			m_angle = 359.f;
+		}
 	}
 
 	void Camera::SetFree(bool _free)
@@ -222,6 +231,7 @@ namespace Engine
 		sf::Sprite spr = _object;
 		spr.setScale(scaleX, scaleY);
 		spr.setPosition(screenPos);
+		spr.setRotation(m_angle);
 		_window.draw(spr);
 	}
 
@@ -235,6 +245,7 @@ namespace Engine
 		sf::RectangleShape rect = _object;
 		rect.setScale(scaleX, scaleY);
 		rect.setPosition(screenPos);
+		rect.setRotation(m_angle);
 		_window.draw(rect);
 	}
 
@@ -248,6 +259,7 @@ namespace Engine
 		sf::CircleShape circle = _object;
 		circle.setScale(scaleX, scaleY);
 		circle.setPosition(screenPos);
+		circle.setRotation(m_angle);
 		_window.draw(circle);
 	}
 
@@ -275,7 +287,12 @@ namespace Engine
 			iso.x = (relativePos.x - relativePos.y) * ((_objectSize.x * m_zoom) * 0.5f);
 			iso.y = (relativePos.x + relativePos.y - relativePos.z) * ((_objectSize.y * m_zoom) * 0.25f);
 
-			screenPos = { iso.x + cameraMiddlePoint.x, iso.y + cameraMiddlePoint.y };
+			sf::Vector2f rotatedPos = { 0,0 };
+			float angleRad = m_angle * (3.14159265f / 180.f);
+			rotatedPos.x = iso.x * cos(angleRad) - iso.y * sin(angleRad);
+			rotatedPos.y = iso.x * sin(angleRad) + iso.y * cos(angleRad);
+
+			screenPos = { rotatedPos.x + cameraMiddlePoint.x, rotatedPos.y + cameraMiddlePoint.y };
 		}
 
 		return screenPos;

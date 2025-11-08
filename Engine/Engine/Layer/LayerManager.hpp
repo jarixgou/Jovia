@@ -1,5 +1,6 @@
 #ifndef LAYER_MANAGER__HPP
 #define LAYER_MANAGER__HPP
+#include <future>
 #include <variant>
 #include <vector>
 #include <SFML/Graphics/CircleShape.hpp>
@@ -22,12 +23,14 @@ namespace Engine
 		int order;
 		DrawableObject object;
 	};
+
 	class LayerManager
 	{
 	private:
 		static std::vector<Layer> m_layers;
+		static std::future<void> m_sortTask;
 	public:
-		static void Add(sf::Sprite&& _sprite, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
+		            static void Add(sf::Sprite&& _sprite, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
 		static void Add(sf::RectangleShape&& _rectangleShape, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
 		static void Add(sf::CircleShape&& _circleShape, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
 
