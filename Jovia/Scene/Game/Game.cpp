@@ -1,4 +1,4 @@
-#include  "Game.hpp"
+﻿#include  "Game.hpp"
 
 #include <Engine/Asset/AssetsManager.hpp>
 #include <Engine/Scene/ScenesManager.hpp>
@@ -63,14 +63,16 @@ void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 	int startY = std::max(0, static_cast<int>(visibleArea.top));
 	int endY = std::min(500, static_cast<int>((visibleArea.top + visibleArea.height)) + 1);
 
+	int estimatedTiles = (endX - startX) * (endY - startY);
+	Engine::LayerManager::Reserve(estimatedTiles);
+
 	int tilesRendered = 0;
 	for (int y = startY; y < endY; ++y)
 	{
 		for (int x = startX; x < endX; ++x)
 		{
-			sf::Sprite spr = tileSheet;
-			spr.setTextureRect(textureSliced[map[y][x]].rect);
-			Engine::LayerManager::Add(spr, {static_cast<float>(x), static_cast<float>(y), 0}, {32, 32}, 0);
+			sf::Sprite spr(*tileSheet.getTexture(), textureSliced[map[y][x]].rect);
+			Engine::LayerManager::Add(std::move(spr), {static_cast<float>(x), static_cast<float>(y), 0}, {32, 32}, 0);
 			tilesRendered++;
 		}
 	}

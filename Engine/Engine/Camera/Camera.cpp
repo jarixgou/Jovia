@@ -170,7 +170,7 @@ namespace Engine
 			}
 
 			// Ajouter la position de la caméra et une marge
-			float margin = 5.0f;
+			float margin = 1.0f;
 			return {
 				m_pos.x + minX - margin,
 				m_pos.y + minY - margin,

@@ -27,10 +27,11 @@ namespace Engine
 	private:
 		static std::vector<Layer> m_layers;
 	public:
-		static void Add(const sf::Sprite& _sprite, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
-		static void Add(const sf::RectangleShape& _rectangleShape, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
-		static void Add(const sf::CircleShape& _circleShape, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
+		static void Add(sf::Sprite&& _sprite, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
+		static void Add(sf::RectangleShape&& _rectangleShape, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
+		static void Add(sf::CircleShape&& _circleShape, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
 
+		static void Reserve(int _size);
 		static void Clear();
 		static void Update(CameraType _camType);
 		static void Draw(Camera* _cam, sf::RenderWindow& _window);
