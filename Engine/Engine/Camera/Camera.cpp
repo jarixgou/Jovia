@@ -276,9 +276,19 @@ namespace Engine
 
 		if (m_type == CameraType::ORTHOGRAPHIC)
 		{
+			sf::Vector2f orthoPos = {
+				(relativePos.x * m_zoom) / relativePos.z,
+				(relativePos.y * m_zoom) / relativePos.z 
+			};
+
+			sf::Vector2f rotatedPos = { 0,0 };
+			float angleRad = m_angle * (3.14159265f / 180.f);
+			rotatedPos.x = orthoPos.x * cos(angleRad) - orthoPos.y * sin(angleRad);
+			rotatedPos.y = orthoPos.x * sin(angleRad) + orthoPos.y * cos(angleRad);
+
 			screenPos = {
-				(relativePos.x * m_zoom) / relativePos.z + cameraMiddlePoint.x,
-				(relativePos.y * m_zoom) / relativePos.z + cameraMiddlePoint.y
+				rotatedPos.x + cameraMiddlePoint.x,
+				rotatedPos.y + cameraMiddlePoint.y
 			};
 		}
 		else if (m_type == CameraType::ISOMETRIC)
@@ -292,7 +302,10 @@ namespace Engine
 			rotatedPos.x = iso.x * cos(angleRad) - iso.y * sin(angleRad);
 			rotatedPos.y = iso.x * sin(angleRad) + iso.y * cos(angleRad);
 
-			screenPos = { rotatedPos.x + cameraMiddlePoint.x, rotatedPos.y + cameraMiddlePoint.y };
+			screenPos = {
+				rotatedPos.x + cameraMiddlePoint.x,
+				rotatedPos.y + cameraMiddlePoint.y
+			};
 		}
 
 		return screenPos;
