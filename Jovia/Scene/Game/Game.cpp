@@ -23,10 +23,10 @@ void Game::Init()
 	Engine::AssetsManager::Add<sf::Texture>("Assets/spritesheet.png");
 
 	const sf::Texture* spritesheetTexture = Engine::AssetsManager::Get<sf::Texture>("spritesheet");
-	tileSheet.setTexture(*spritesheetTexture);
+	m_tileSheet.setTexture(*spritesheetTexture);
 
-	textureSliced = Engine::SliceTexture(*spritesheetTexture, { 32,32 });
-	std::string message = "Sliced texture into " + std::to_string(textureSliced.size()) + " sprites.";
+	m_textureSliced = Engine::SliceTexture(*spritesheetTexture, { 32,32 });
+	std::string message = "Sliced texture into " + std::to_string(m_textureSliced.size()) + " sprites.";
 	LOG_DEBUG(message.c_str());
 
 	m_camera = new Engine::Camera();
@@ -36,11 +36,18 @@ void Game::Init()
 	m_camera->SetZoom(1.f);
 	m_camera->SetFree(false);
 
+	m_tileSprites.reserve(m_textureSliced.size());
+	for (int i = 0; i < m_textureSliced.size(); ++i)
+	{
+		sf::Sprite spr(*spritesheetTexture, m_textureSliced[i].rect);
+		m_tileSprites.emplace_back(spr);
+	}
+
 	for (int y = 0; y < 500; ++y)
 	{
 		for (int x = 0; x < 500; ++x)
 		{
-			map[y][x] = rand() % textureSliced.size();
+			map[y][x] = rand() % m_textureSliced.size();
 		}
 	}
 }
@@ -72,8 +79,7 @@ void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 	{
 		for (int x = startX; x < endX; ++x)
 		{
-			sf::Sprite spr(*tileSheet.getTexture(), textureSliced[map[y][x]].rect);
-			Engine::LayerManager::Add(std::move(spr), {static_cast<float>(x), static_cast<float>(y), 0}, {32, 32}, 0);
+			Engine::LayerManager::Add(&m_tileSprites[map[y][x]], {static_cast<float>(x), static_cast<float>(y), 0}, {32, 32}, 0);
 			tilesRendered++;
 		}
 	}

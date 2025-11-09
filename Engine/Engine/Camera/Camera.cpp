@@ -179,7 +179,7 @@ namespace Engine
 			}
 
 			// Ajouter la position de la caméra et une marge
-			float margin = 1.0f;
+			float margin = 1.7f;
 			return {
 				m_pos.x + minX - margin,
 				m_pos.y + minY - margin,
@@ -221,46 +221,43 @@ namespace Engine
 		return m_type;
 	}
 
-	void Camera::DrawObject(const sf::Sprite& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
+	void Camera::DrawObject(sf::Sprite& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
 		float scaleX = (_size.x * m_zoom) / _size.x;
 		float scaleY = (_size.y * m_zoom) / _size.y;
 
-		sf::Sprite spr = _object;
-		spr.setScale(scaleX, scaleY);
-		spr.setPosition(screenPos);
-		spr.setRotation(m_angle);
-		_window.draw(spr);
+		_object.setScale(scaleX, scaleY);
+		_object.setPosition(screenPos);
+		_object.setRotation(m_angle);
+		_window.draw(_object);
 	}
 
-	void Camera::DrawObject(const sf::RectangleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
+	void Camera::DrawObject(sf::RectangleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
 		float scaleX = (_size.x * m_zoom) / _size.x;
 		float scaleY = (_size.y * m_zoom) / _size.y;
 
-		sf::RectangleShape rect = _object;
-		rect.setScale(scaleX, scaleY);
-		rect.setPosition(screenPos);
-		rect.setRotation(m_angle);
-		_window.draw(rect);
+		_object.setScale(scaleX, scaleY);
+		_object.setPosition(screenPos);
+		_object.setRotation(m_angle);
+		_window.draw(_object);
 	}
 
-	void Camera::DrawObject(const sf::CircleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
+	void Camera::DrawObject(sf::CircleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
 		float scaleX = (_size.x * m_zoom) / _size.x;
 		float scaleY = (_size.y * m_zoom) / _size.y;
 
-		sf::CircleShape circle = _object;
-		circle.setScale(scaleX, scaleY);
-		circle.setPosition(screenPos);
-		circle.setRotation(m_angle);
-		_window.draw(circle);
+		_object.setScale(scaleX, scaleY);
+		_object.setPosition(screenPos);
+		_object.setRotation(m_angle);
+		_window.draw(_object);
 	}
 
 	sf::Vector2f Camera::WorldToScreen(const sf::Vector3f& _objectPos, const sf::Vector2f& _objectSize)
@@ -269,9 +266,9 @@ namespace Engine
 
 		sf::Vector2f cameraMiddlePoint = { m_size.x * 0.5f, m_size.y * 0.5f };
 		sf::Vector3f relativePos = {
-		_objectPos.x - m_pos.x,
-		_objectPos.y - m_pos.y,
-		_objectPos.z - m_pos.z
+			_objectPos.x - m_pos.x,
+			_objectPos.y - m_pos.y,
+			_objectPos.z - m_pos.z
 		};
 
 		if (m_type == CameraType::ORTHOGRAPHIC)
