@@ -20,7 +20,6 @@ void InitSystem(sf::RenderWindow& _window)
 
     _window.setActive(true);
 
-    // INITIALISER GLEW ICI
     GLenum err = glewInit();
     if (err != GLEW_OK)
     {
@@ -29,7 +28,6 @@ void InitSystem(sf::RenderWindow& _window)
 		LOG_CRITICAL(message.c_str());
     }
 
-    // Vérifier que les extensions nécessaires sont disponibles
     if (!GLEW_ARB_timer_query)
     {
         LOG_WARNING("Query timer not supported");

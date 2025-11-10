@@ -31,9 +31,14 @@ namespace Engine
 			sf::CircleShape* circleShape;
 		};
 
+		DrawableObject() noexcept = default;
+
 		DrawableObject(sf::Sprite* _sprite) : type(DrawableType::SPRITE), sprite(_sprite) {};
 		DrawableObject(sf::RectangleShape* _rectangleShape) : type(DrawableType::RECTANGLE_SHAPE), rectangleShape(_rectangleShape) {};
 		DrawableObject(sf::CircleShape* _circleShape) : type(DrawableType::CIRCLE_SHAPE), circleShape(_circleShape) {};
+
+		DrawableObject(const DrawableObject& _other) noexcept;
+		DrawableObject& operator=(const DrawableObject& _other) noexcept;
 	};
 
 	struct Layer

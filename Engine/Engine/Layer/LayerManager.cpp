@@ -12,6 +12,44 @@ namespace Engine
 	std::future<void> LayerManager::m_sortTask;
 	std::atomic<bool> LayerManager::m_useBuffer = false;
 
+	DrawableObject::DrawableObject(const DrawableObject& _other) noexcept
+	{
+		type = _other.type;
+		switch (type)
+		{
+		case DrawableType::SPRITE:
+			sprite = _other.sprite;
+			break;
+		case DrawableType::RECTANGLE_SHAPE:
+			rectangleShape = _other.rectangleShape;
+			break;
+		case DrawableType::CIRCLE_SHAPE:
+			circleShape = _other.circleShape;
+			break;
+		}
+	}
+
+	DrawableObject& DrawableObject::operator=(const DrawableObject& _other) noexcept
+	{
+		if (this != &_other)
+		{
+			type = _other.type;
+			switch (type)
+			{
+			case DrawableType::SPRITE:
+				sprite = _other.sprite;
+				break;
+			case DrawableType::RECTANGLE_SHAPE:
+				rectangleShape = _other.rectangleShape;
+				break;
+			case DrawableType::CIRCLE_SHAPE:
+				circleShape = _other.circleShape;
+				break;
+			}
+		}
+		return *this;
+	}
+
 	void LayerManager::Add(sf::Sprite* _sprite, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order)
 	{
 		m_layers.emplace_back(Layer{ _pos, _size, _order, DrawableObject(_sprite) });
@@ -57,7 +95,8 @@ namespace Engine
 		}
 
 		m_useBuffer = false;
-		m_layersBuffer = m_layers;
+		m_layersBuffer.resize(m_layers.size());
+		std::copy(std::execution::par_unseq, m_layers.begin(), m_layers.end(), m_layersBuffer.begin());
 
 		m_sortTask = std::async(std::launch::async, [_camType, &layers = m_layersBuffer]()
 			{
@@ -69,11 +108,11 @@ namespace Engine
 								std::tie(b.order, a.pos.z, b.pos.y, b.pos.x);
 						};
 
-					if (layers.size() > 10000)
+					if (layers.size() > 5000)
 					{
 						std::sort(std::execution::par_unseq, layers.begin(), layers.end(), orthographiqueCompare);
 					}
-					else if (layers.size() > 1000)
+					else if (layers.size() > 500)
 					{
 						std::sort(std::execution::par, layers.begin(), layers.end(), orthographiqueCompare);
 					}
@@ -110,11 +149,11 @@ namespace Engine
 							return a.pos.x < b.pos.x;
 						};
 
-					if (layers.size() > 10000)
+					if (layers.size() > 5000)
 					{
 						std::sort(std::execution::par_unseq, layers.begin(), layers.end(), isometricCompare);
 					}
-					else if (layers.size() > 1000)
+					else if (layers.size() > 500)
 					{
 						std::sort(std::execution::par, layers.begin(), layers.end(), isometricCompare);
 					}
