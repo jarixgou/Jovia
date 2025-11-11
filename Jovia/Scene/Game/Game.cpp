@@ -62,7 +62,6 @@ void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 	Engine::LayerManager::Clear();
 	Engine::LayerManager::Update(m_camera->GetType());
 
-	// Frustum culling - ne dessiner que les tiles visibles
 	sf::FloatRect visibleArea = m_camera->GetVisibleArea({ 32,32 });
 
 	const float tileSize = 32.f;
