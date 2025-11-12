@@ -23,8 +23,8 @@ void InitSystem(sf::RenderWindow& _window)
     GLenum err = glewInit();
     if (err != GLEW_OK)
     {
-        std::string message = std::string("GLEW initialization failed: ") +
-            reinterpret_cast<const char*>(glewGetErrorString(err));
+        std::string message = "GLEW initialization failed: " +
+            std::string(reinterpret_cast<const char*>(glewGetErrorString(err)));
 		LOG_CRITICAL(message.c_str());
     }
 

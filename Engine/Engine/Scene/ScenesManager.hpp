@@ -35,7 +35,7 @@ namespace Engine
 				return false;
 			}
 
-			if (m_scenesList.find(_sceneName) != m_scenesList.end())
+			if (m_scenesList.contains(_sceneName))
 			{
 				std::string message = "Scene " + std::string(_sceneName) + " already exists.";
 				LOG_WARNING(message.c_str());

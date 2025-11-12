@@ -1,72 +1,104 @@
 #include "Logger.hpp"
 
+#include <fstream>
 #include <iomanip>
 
 #define RESET   "\033[0m"
 
-Engine::LogLevel Engine::Logger::m_minimumLevel = LogLevel::DEBUG;
-std::vector<std::string> Engine::Logger::m_logHistory;
+namespace Engine
 
-std::string Engine::Logger::GetLevelPrefix(LogLevel _level)
 {
-	switch (_level)
-	{
-	case LogLevel::DEBUG:			return "[DEBUG]";
-	case LogLevel::INFO:			return "[INFO]";
-	case LogLevel::WARNING:			return "[WARNING]";
-	case LogLevel::LOG_ERROR:		return "[ERROR]";
-	case LogLevel::CRITICAL:		return "[CRITICAL]";
-	default:						return "[UNKNOWN]";
-	}
-}
+	LogLevel Logger::m_minimumLevel = LogLevel::DEBUG;
+	std::vector<std::string> Logger::m_logHistory;
 
-std::string Engine::Logger::GetLevelColor(LogLevel _level)
-{
-	switch (_level)
+	std::string Logger::GetLevelPrefix(LogLevel _level)
 	{
-	case LogLevel::DEBUG:		return CYAN;
-	case LogLevel::INFO:		return GREEN;
-	case LogLevel::WARNING:		return YELLOW;
-	case LogLevel::LOG_ERROR:	return RED;
-	case LogLevel::CRITICAL:	return PURPLE;
-	default:					return WHITE;
-	}
-}
-
-void Engine::Logger::Log(LogLevel _level, const char* _message)
-{
-	if (_level < m_minimumLevel)
-	{
-		return;	
+		switch (_level)
+		{
+		case LogLevel::DEBUG:			return "[DEBUG]";
+		case LogLevel::INFO:			return "[INFO]";
+		case LogLevel::WARNING:			return "[WARNING]";
+		case LogLevel::LOG_ERROR:		return "[ERROR]";
+		case LogLevel::CRITICAL:		return "[CRITICAL]";
+		default:						return "[UNKNOWN]";
+		}
 	}
 
-	auto now = std::chrono::system_clock::now();
-	std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
-	std::tm localTime;
-	localtime_s(&localTime, &currentTime);
+	std::string Logger::GetLevelColor(LogLevel _level)
+	{
+		switch (_level)
+		{
+		case LogLevel::DEBUG:		return CYAN;
+		case LogLevel::INFO:		return GREEN;
+		case LogLevel::WARNING:		return YELLOW;
+		case LogLevel::LOG_ERROR:	return RED;
+		case LogLevel::CRITICAL:	return PURPLE;
+		default:					return WHITE;
+		}
+	}
 
-	std::string color = GetLevelColor(_level);
-	std::string prefix = GetLevelPrefix(_level);
+	void Logger::Log(LogLevel _level, const char* _message)
+	{
+		if (_level < m_minimumLevel)
+		{
+			return;
+		}
 
-	std::ostringstream oss;
-	oss << color << "[" << std::put_time(&localTime, "%H:%M:%S") << "] "
-		<< prefix << " - " << _message << RESET << "\n";
-	std::string outPut = oss.str();
-	
-	std::cout << outPut;
+		auto now = std::chrono::system_clock::now();
+		std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+		std::tm localTime;
+		localtime_s(&localTime, &currentTime);
 
-	std::ostringstream logFile;
-	logFile << "[" << std::put_time(&localTime, "%H:%M:%S") << "] " << prefix << " - " << _message << "\n";
-	outPut = logFile.str();
-	m_logHistory.push_back(outPut);
-}
+		std::string color = GetLevelColor(_level);
+		std::string prefix = GetLevelPrefix(_level);
 
-void Engine::Logger::SetMinimumLogLevel(LogLevel _level)
-{
-	m_minimumLevel = _level;
-}
+		std::ostringstream oss;
+		oss << color << "[" << std::put_time(&localTime, "%H:%M:%S") << "] "
+			<< prefix << " - " << _message << RESET << "\n";
+		std::string outPut = oss.str();
 
-const std::vector<std::string>& Engine::Logger::GetLogHistory()
-{
-	return m_logHistory;
+		std::cout << outPut;
+
+		std::ostringstream logFile;
+		logFile << "[" << std::put_time(&localTime, "%H:%M:%S") << "] " << prefix << " - " << _message << "\n";
+		outPut = logFile.str();
+		m_logHistory.push_back(outPut);
+
+		if (_level == LogLevel::CRITICAL)
+		{
+			WriteLogFile();
+			exit(-1);
+		}
+	}
+
+	void Logger::SetMinimumLogLevel(LogLevel _level)
+	{
+		m_minimumLevel = _level;
+	}
+
+	const std::vector<std::string>& Logger::GetLogHistory()
+	{
+		return m_logHistory;
+	}
+
+	void Logger::WriteLogFile()
+	{
+		std::ofstream logFile("log.txt");
+
+		if (!logFile.is_open())
+		{
+			LOG_ERROR("can't open file");
+			return;
+		}
+
+		for (const auto& entry : m_logHistory)
+		{
+			logFile << entry;
+		}
+	}
+
+	void Logger::Clear()
+	{
+		m_logHistory.clear();
+	}
 }

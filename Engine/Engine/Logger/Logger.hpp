@@ -39,6 +39,8 @@ namespace Engine
 		static void Log(LogLevel _level, const char* _message);
 		static void SetMinimumLogLevel(LogLevel _level);
 		static const std::vector<std::string>& GetLogHistory();
+		static void WriteLogFile();
+		static void Clear();
 	};
 }
 
