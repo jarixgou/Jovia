@@ -14,39 +14,14 @@ namespace Engine
 	class Camera;
 	enum class CameraType : uint8_t;
 
-	enum class DrawableType : uint8_t
-	{
-		SPRITE,
-		RECTANGLE_SHAPE,
-		CIRCLE_SHAPE
-	};
-
-	struct DrawableObject
-	{
-		DrawableType type;
-		union
-		{
-			sf::Sprite* sprite;
-			sf::RectangleShape* rectangleShape;
-			sf::CircleShape* circleShape;
-		};
-
-		DrawableObject() noexcept = default;
-
-		DrawableObject(sf::Sprite* _sprite) : type(DrawableType::SPRITE), sprite(_sprite) {};
-		DrawableObject(sf::RectangleShape* _rectangleShape) : type(DrawableType::RECTANGLE_SHAPE), rectangleShape(_rectangleShape) {};
-		DrawableObject(sf::CircleShape* _circleShape) : type(DrawableType::CIRCLE_SHAPE), circleShape(_circleShape) {};
-
-		DrawableObject(const DrawableObject& _other) noexcept;
-		DrawableObject& operator=(const DrawableObject& _other) noexcept;
-	};
+	class DrawableObject;
 
 	struct Layer
 	{
 		sf::Vector3f pos;
 		sf::Vector2f size;
 		int order;
-		DrawableObject object;
+		DrawableObject* object;
 	};
 
 	class LayerManager
@@ -57,9 +32,7 @@ namespace Engine
 		static std::future<void> m_sortTask;
 		static std::atomic<bool> m_useBuffer;
 	public:
-		static void Add(sf::Sprite* _sprite, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
-		static void Add(sf::RectangleShape* _rectangleShape, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
-		static void Add(sf::CircleShape* _circleShape, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
+		static void Add(DrawableObject* _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
 
 		static void Reserve(int _size);
 		static void Clear();

@@ -1,12 +1,14 @@
 ﻿#include  "Game.hpp"
 
+#include <Engine/DrawableObject/DrawableObject.hpp>
+
 #include <Engine/Asset/AssetsManager.hpp>
 #include <Engine/Scene/ScenesManager.hpp>
 
 #include <Engine/Layer/LayerManager.hpp>
 #include <Engine/Camera/Camera.hpp>
 
-#include "Engine/Interface/Camera/CameraInterface.hpp"
+#include <Engine/Interface/Camera/CameraInterface.hpp>
 
 Game::Game()
 {
@@ -35,6 +37,9 @@ void Game::Init()
 	m_camera->SetSize({ 1920.f,1080.f});
 	m_camera->SetZoom(1.f);
 	m_camera->SetFree(false);
+
+	mapVertex = new Engine::DrawableObject();
+	mapVertex->type = Engine::DrawableType::SHAPE;
 
 	m_tileSprites.reserve(m_textureSliced.size());
 	for (int i = 0; i < m_textureSliced.size(); ++i)
@@ -73,16 +78,34 @@ void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 	int estimatedTiles = (endX - startX) * (endY - startY);
 	Engine::LayerManager::Reserve(estimatedTiles);
 
-	int tilesRendered = 0;
+	sf::VertexArray vertexArray(sf::Quads, estimatedTiles);
 	for (int y = startY; y < endY; ++y)
 	{
 		for (int x = startX; x < endX; ++x)
 		{
+			sf::IntRect textureRect = m_textureSliced[map[y][x]].rect;
+			sf::Vector2f screenPos = m_camera->WorldToScreen({ static_cast<float>(x), static_cast<float>(y), 0 }, { 32,32 });
+
+			vertexArray.append(sf::Vertex({ screenPos.x, screenPos.y },
+				sf::Color::White,
+				{ (float)textureRect.left, (float)textureRect.top }));
+
+			vertexArray.append(sf::Vertex({ screenPos.x + 32, screenPos.y },
+				sf::Color::White,
+				{ (float)textureRect.left + textureRect.width, (float)textureRect.top }));
+
+			vertexArray.append(sf::Vertex({ screenPos.x, screenPos.y + 32 },
+				sf::Color::White,
+				{ (float)textureRect.left, (float)textureRect.top + textureRect.height }));
+
+			vertexArray.append(sf::Vertex({ screenPos.x + 32, screenPos.y + 32},
+				sf::Color::White,
+				{ (float)textureRect.left + textureRect.width, (float)textureRect.top + textureRect.height }));
+
 			Engine::LayerManager::Add(&m_tileSprites[map[y][x]], {static_cast<float>(x), static_cast<float>(y), 0}, {32, 32}, 0);
-			tilesRendered++;
 		}
 	}
-
+	mapVertex->shape = vertexArray;
 
 	Engine::CameraInterface::Update(m_camera);
 	m_camera->Update(_dt);

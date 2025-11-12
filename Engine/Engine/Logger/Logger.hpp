@@ -50,4 +50,4 @@ namespace Engine
 #define LOG_ERROR(text)    Engine::Logger::Log(Engine::LogLevel::LOG_ERROR, text)
 #define LOG_CRITICAL(text) Engine::Logger::Log(Engine::LogLevel::CRITICAL, text)
 
-#endif // !1
+#endif // !LOGGER__HPP

@@ -5,6 +5,8 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
+#include "../DrawableObject/DrawableObject.hpp"
+
 namespace Engine
 {
 	void Camera::Update(float _dt)
@@ -225,10 +227,9 @@ namespace Engine
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
-		float scaleX = (_size.x * m_zoom) / _size.x;
-		float scaleY = (_size.y * m_zoom) / _size.y;
+		sf::Vector2f scale = { (_size.x * m_zoom) / _size.x,(_size.y * m_zoom) / _size.y };
 
-		_object.setScale(scaleX, scaleY);
+		_object.setScale(scale.x, scale.y);
 		_object.setPosition(screenPos);
 		_object.setRotation(m_angle);
 		_window.draw(_object);
@@ -238,10 +239,9 @@ namespace Engine
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
-		float scaleX = (_size.x * m_zoom) / _size.x;
-		float scaleY = (_size.y * m_zoom) / _size.y;
+		sf::Vector2f scale = { (_size.x * m_zoom) / _size.x,(_size.y * m_zoom) / _size.y };
 
-		_object.setScale(scaleX, scaleY);
+		_object.setScale(scale.x, scale.y);
 		_object.setPosition(screenPos);
 		_object.setRotation(m_angle);
 		_window.draw(_object);
@@ -251,13 +251,56 @@ namespace Engine
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
-		float scaleX = (_size.x * m_zoom) / _size.x;
-		float scaleY = (_size.y * m_zoom) / _size.y;
+		sf::Vector2f scale = { (_size.x * m_zoom) / _size.x,(_size.y * m_zoom) / _size.y };
 
-		_object.setScale(scaleX, scaleY);
+		_object.setScale(scale.x, scale.y);
 		_object.setPosition(screenPos);
 		_object.setRotation(m_angle);
 		_window.draw(_object);
+	}
+
+	void Camera::DrawObject(DrawableObject& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
+	{
+		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
+
+		sf::Vector2f scale = { (_size.x * m_zoom) / _size.x,(_size.y * m_zoom) / _size.y };
+
+		switch (_object.type)
+		{
+		case DrawableType::SPRITE:
+			_object.sprite.setScale(scale.x, scale.y);
+			_object.sprite.setPosition(screenPos);
+			_object.sprite.setRotation(m_angle);
+
+			_window.draw(_object.sprite, _object.states);
+			break;
+		case DrawableType::RECTANGLE:
+			_object.rectangle.setScale(scale.x, scale.y);
+			_object.rectangle.setPosition(screenPos);
+			_object.rectangle.setRotation(m_angle);
+
+			_window.draw(_object.sprite, _object.states);
+			break;
+		case DrawableType::CIRCLE:
+			_object.circle.setScale(scale.x, scale.y);
+			_object.circle.setPosition(screenPos);
+			_object.circle.setRotation(m_angle);
+
+			_window.draw(_object.sprite, _object.states);
+			break;
+		case DrawableType::SHAPE:
+
+			for (size_t i = 0; i < _object.shape.getVertexCount(); ++i)
+			{
+				sf::Vector2f& worldPos = _object.shape[i].position;
+				screenPos = WorldToScreen({ worldPos.x, worldPos.y, _pos.z }, _size);
+				screenPos = {screenPos.x * scale.x, screenPos.y * scale.y};
+				worldPos = screenPos;
+			}
+
+			_window.draw(_object.shape, _object.states);
+			break;
+		}
 	}
 
 	sf::Vector2f Camera::WorldToScreen(const sf::Vector3f& _objectPos, const sf::Vector2f& _objectSize)
@@ -275,7 +318,7 @@ namespace Engine
 		{
 			sf::Vector2f orthoPos = {
 				(relativePos.x * m_zoom) / relativePos.z,
-				(relativePos.y * m_zoom) / relativePos.z 
+				(relativePos.y * m_zoom) / relativePos.z
 			};
 
 			sf::Vector2f rotatedPos = { 0,0 };

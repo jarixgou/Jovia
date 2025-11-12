@@ -22,6 +22,7 @@
     <ClCompile Include="Engine\Asset\Asset.cpp" />
     <ClCompile Include="Engine\Asset\AssetsManager.cpp" />
     <ClCompile Include="Engine\Camera\Camera.cpp" />
+    <ClCompile Include="Engine\DrawableObject\DrawableObject.cpp" />
     <ClCompile Include="Engine\Interface\Assets\AssetsInterface.cpp" />
     <ClCompile Include="Engine\Interface\Camera\CameraInterface.cpp" />
     <ClCompile Include="Engine\Interface\Debug\DebugInterface.cpp" />
@@ -36,6 +37,7 @@
     <ClInclude Include="Engine\Asset\Asset.hpp" />
     <ClInclude Include="Engine\Asset\AssetsManager.hpp" />
     <ClInclude Include="Engine\Camera\Camera.hpp" />
+    <ClInclude Include="Engine\DrawableObject\DrawableObject.hpp" />
     <ClInclude Include="Engine\Interface\Assets\AssetsInterface.hpp" />
     <ClInclude Include="Engine\Interface\Camera\CameraInterface.hpp" />
     <ClInclude Include="Engine\Interface\Debug\DebugInterface.hpp" />

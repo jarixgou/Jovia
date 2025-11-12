@@ -9,6 +9,7 @@
 namespace Engine
 {
 	class Camera;
+	class DrawableObject;
 }
 
 class Game : public Engine::Scene
@@ -24,6 +25,8 @@ private:
 	std::vector<sf::Sprite> m_tileSprites;
 
 	std::vector<Engine::TextureSliced> m_textureSliced;
+
+	Engine::DrawableObject* mapVertex;
 public:
 	Game();
 	virtual ~Game();

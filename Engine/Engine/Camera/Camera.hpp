@@ -10,6 +10,8 @@
 
 namespace Engine
 {
+	class DrawableObject;
+
 	enum class CameraType : uint8_t
 	{
 		ORTHOGRAPHIC,
@@ -53,9 +55,10 @@ namespace Engine
 		void DrawObject(sf::Sprite& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window);
 		void DrawObject(sf::RectangleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window);
 		void DrawObject(sf::CircleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window);
-	private:
-		sf::Vector2f WorldToScreen(const sf::Vector3f& _objectPos, const sf::Vector2f& _objectSize);
+		void DrawObject(DrawableObject& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window);
 
+		sf::Vector2f WorldToScreen(const sf::Vector3f& _objectPos, const sf::Vector2f& _objectSize);
+	private:
 	};
 }
 

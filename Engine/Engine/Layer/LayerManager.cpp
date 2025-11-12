@@ -5,6 +5,8 @@
 
 #include "../Camera/Camera.hpp"
 
+#include "../DrawableObject/DrawableObject.hpp"
+
 namespace Engine
 {
 	std::vector<Layer> LayerManager::m_layers;
@@ -12,57 +14,9 @@ namespace Engine
 	std::future<void> LayerManager::m_sortTask;
 	std::atomic<bool> LayerManager::m_useBuffer = false;
 
-	DrawableObject::DrawableObject(const DrawableObject& _other) noexcept
+	void LayerManager::Add(DrawableObject* _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order)
 	{
-		type = _other.type;
-		switch (type)
-		{
-		case DrawableType::SPRITE:
-			sprite = _other.sprite;
-			break;
-		case DrawableType::RECTANGLE_SHAPE:
-			rectangleShape = _other.rectangleShape;
-			break;
-		case DrawableType::CIRCLE_SHAPE:
-			circleShape = _other.circleShape;
-			break;
-		}
-	}
-
-	DrawableObject& DrawableObject::operator=(const DrawableObject& _other) noexcept
-	{
-		if (this != &_other)
-		{
-			type = _other.type;
-			switch (type)
-			{
-			case DrawableType::SPRITE:
-				sprite = _other.sprite;
-				break;
-			case DrawableType::RECTANGLE_SHAPE:
-				rectangleShape = _other.rectangleShape;
-				break;
-			case DrawableType::CIRCLE_SHAPE:
-				circleShape = _other.circleShape;
-				break;
-			}
-		}
-		return *this;
-	}
-
-	void LayerManager::Add(sf::Sprite* _sprite, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order)
-	{
-		m_layers.emplace_back(Layer{ _pos, _size, _order, DrawableObject(_sprite) });
-	}
-
-	void LayerManager::Add(sf::RectangleShape* _rectangleShape, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order)
-	{
-		m_layers.emplace_back(Layer{ _pos, _size, _order, DrawableObject(_rectangleShape) });
-	}
-
-	void LayerManager::Add(sf::CircleShape* _circleShape, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order)
-	{
-		m_layers.emplace_back(Layer{ _pos, _size, _order, DrawableObject(_circleShape) });
+		m_layers.emplace_back(Layer{ _pos, _size, _order, _object });
 	}
 
 	void LayerManager::Reserve(int _size)
@@ -77,6 +31,12 @@ namespace Engine
 		{
 			m_sortTask.wait();
 		}
+
+		for (auto & layer : m_layers)
+		{
+			
+		}
+
 		m_layers.clear();
 		m_layersBuffer.clear();
 		m_useBuffer = false;
@@ -180,16 +140,19 @@ namespace Engine
 		{
 			const Layer& layer = *it;
 
-			switch (layer.object.type)
+			switch (layer.object->type)
 			{
 			case DrawableType::SPRITE:
-				_cam->DrawObject(*layer.object.sprite, layer.pos, layer.size, _window);
+				_cam->DrawObject(layer.object->sprite, layer.pos, layer.size, _window);
 				break;
-			case DrawableType::RECTANGLE_SHAPE:
-				_cam->DrawObject(*layer.object.rectangleShape, layer.pos, layer.size, _window);
+			case DrawableType::RECTANGLE:
+				_cam->DrawObject(layer.object->rectangle, layer.pos, layer.size, _window);
 				break;
-			case DrawableType::CIRCLE_SHAPE:
-				_cam->DrawObject(*layer.object.circleShape, layer.pos, layer.size, _window);
+			case DrawableType::CIRCLE:
+				_cam->DrawObject(layer.object->circle, layer.pos, layer.size, _window);
+				break;
+			case DrawableType::SHAPE:
+				_cam->DrawObject(*layer.object, layer.pos, layer.size, _window);
 				break;
 			default:;
 			}
