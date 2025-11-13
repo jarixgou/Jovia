@@ -1,5 +1,6 @@
 ﻿#include  "Game.hpp"
 
+#include <execution>
 #include <Engine/DrawableObject/DrawableObject.hpp>
 
 #include <Engine/Asset/AssetsManager.hpp>
@@ -38,8 +39,11 @@ void Game::Init()
 	m_camera->SetZoom(1.f);
 	m_camera->SetFree(false);
 
-	mapVertex = new Engine::DrawableObject();
-	mapVertex->type = Engine::DrawableType::SHAPE;
+	mapVertex = new Engine::DrawableObject(sf::VertexArray(), sf::RenderStates());
+	mapVertex->states.texture = spritesheetTexture;
+
+	mapVertexBuffer = new Engine::DrawableObject(sf::VertexArray(), sf::RenderStates());
+	mapVertexBuffer->states.texture = spritesheetTexture;
 
 	m_tileSprites.reserve(m_textureSliced.size());
 	for (int i = 0; i < m_textureSliced.size(); ++i)
@@ -55,6 +59,47 @@ void Game::Init()
 			map[y][x] = rand() % m_textureSliced.size();
 		}
 	}
+
+	// ✅ Créer les vertices avec le bon ordre pour les quads
+	for (int y = 0; y < 500; ++y)
+	{
+		for (int x = 0; x < 500; ++x)
+		{
+			sf::IntRect rect = m_textureSliced[map[y][x]].rect;
+
+			float worldX = static_cast<float>(x);
+			float worldY = static_cast<float>(y);
+
+			// ✅ Ordre correct pour sf::Quads (sens horaire ou anti-horaire cohérent)
+			// Top-Left
+			mapVertex->shape.append({
+				{worldX, worldY},
+				sf::Color::White,
+				{static_cast<float>(rect.left), static_cast<float>(rect.top)}
+				});
+
+			// Top-Right
+			mapVertex->shape.append({
+				{worldX + 1.f, worldY},
+				sf::Color::White,
+				{static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top)}
+				});
+
+			// Bottom-Right
+			mapVertex->shape.append({
+				{worldX + 1.f, worldY + 1.f},
+				sf::Color::White,
+				{static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top + rect.height)}
+				});
+
+			// Bottom-Left
+			mapVertex->shape.append({
+				{worldX, worldY + 1.f},
+				sf::Color::White,
+				{static_cast<float>(rect.left), static_cast<float>(rect.top + rect.height)}
+				});
+		}
+	}
 }
 
 void Game::PollEvents(sf::RenderWindow& _window, sf::Event& _event)
@@ -65,47 +110,84 @@ void Game::PollEvents(sf::RenderWindow& _window, sf::Event& _event)
 void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 {
 	Engine::LayerManager::Clear();
-	Engine::LayerManager::Update(m_camera->GetType());
 
-	sf::FloatRect visibleArea = m_camera->GetVisibleArea({ 32,32 });
+	// ✅ Vérifier si la caméra a changé
+	sf::Vector3f currentPos = m_camera->GetPos();
+	float currentZoom = m_camera->GetZoom();
 
-	const float tileSize = 32.f;
-	int startX = std::max(0, static_cast<int>(visibleArea.left));
-	int endX = std::min(500, static_cast<int>((visibleArea.left + visibleArea.width)) + 1);
-	int startY = std::max(0, static_cast<int>(visibleArea.top));
-	int endY = std::min(500, static_cast<int>((visibleArea.top + visibleArea.height)) + 1);
+	bool cameraMoved = (currentPos.x != m_lastCameraPos.x) ||
+		(currentPos.y != m_lastCameraPos.y) ||
+		(currentPos.z != m_lastCameraPos.z) ||
+		(currentZoom != m_lastCameraZoom);
 
-	int estimatedTiles = (endX - startX) * (endY - startY);
-	Engine::LayerManager::Reserve(estimatedTiles);
-
-	sf::VertexArray vertexArray(sf::Quads, estimatedTiles);
-	for (int y = startY; y < endY; ++y)
+	// ✅ Ne recalculer QUE si la caméra a bougé
+	if (cameraMoved)
 	{
-		for (int x = startX; x < endX; ++x)
+		sf::FloatRect visibleArea = m_camera->GetVisibleArea({ 32,32 });
+
+		int startX = std::max(0, static_cast<int>(visibleArea.left));
+		int endX = std::min(500, static_cast<int>((visibleArea.left + visibleArea.width)) + 1);
+		int startY = std::max(0, static_cast<int>(visibleArea.top));
+		int endY = std::min(500, static_cast<int>((visibleArea.top + visibleArea.height)) + 1);
+
+		int estimatedTiles = (endX - startX) * (endY - startY);
+
+		mapVertexBuffer->shape.clear();
+		mapVertexBuffer->shape.setPrimitiveType(sf::Quads);
+
+		const float scaledTileX = 32.f * currentZoom;
+		const float scaledTileY = scaledTileX;
+
+		for (int y = startY; y < endY; ++y)
 		{
-			sf::IntRect textureRect = m_textureSliced[map[y][x]].rect;
-			sf::Vector2f screenPos = m_camera->WorldToScreen({ static_cast<float>(x), static_cast<float>(y), 0 }, { 32,32 });
+			for (int x = startX; x < endX; ++x)
+			{
+				const sf::IntRect& rect = m_textureSliced[map[y][x]].rect;
 
-			vertexArray.append(sf::Vertex({ screenPos.x, screenPos.y },
-				sf::Color::White,
-				{ (float)textureRect.left, (float)textureRect.top }));
+				const sf::Vector2f screenPos = m_camera->WorldToScreen(
+					{ static_cast<float>(x), static_cast<float>(y), 0.f },
+					{ 32.f, 32.f }
+				);
 
-			vertexArray.append(sf::Vertex({ screenPos.x + 32, screenPos.y },
-				sf::Color::White,
-				{ (float)textureRect.left + textureRect.width, (float)textureRect.top }));
+				// Top-Left
+				mapVertexBuffer->shape.append({
+					screenPos,
+					sf::Color::White,
+					{static_cast<float>(rect.left), static_cast<float>(rect.top)}
+					});
 
-			vertexArray.append(sf::Vertex({ screenPos.x, screenPos.y + 32 },
-				sf::Color::White,
-				{ (float)textureRect.left, (float)textureRect.top + textureRect.height }));
+				// Top-Right
+				mapVertexBuffer->shape.append({
+					{screenPos.x + scaledTileX, screenPos.y},
+					sf::Color::White,
+					{static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top)}
+					});
 
-			vertexArray.append(sf::Vertex({ screenPos.x + 32, screenPos.y + 32},
-				sf::Color::White,
-				{ (float)textureRect.left + textureRect.width, (float)textureRect.top + textureRect.height }));
+				// Bottom-Right
+				mapVertexBuffer->shape.append({
+					{screenPos.x + scaledTileX, screenPos.y + scaledTileY},
+					sf::Color::White,
+					{static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top + rect.height)}
+					});
 
-			Engine::LayerManager::Add(&m_tileSprites[map[y][x]], {static_cast<float>(x), static_cast<float>(y), 0}, {32, 32}, 0);
+				// Bottom-Left
+				mapVertexBuffer->shape.append({
+					{screenPos.x, screenPos.y + scaledTileY},
+					sf::Color::White,
+					{static_cast<float>(rect.left), static_cast<float>(rect.top + rect.height)}
+					});
+			}
 		}
+
+		// ✅ Mettre à jour le cache
+		m_lastCameraPos = currentPos;
+		m_lastCameraZoom = currentZoom;
 	}
-	mapVertex->shape = vertexArray;
+
+	// ✅ Toujours dessiner (même si pas recalculé)
+	Engine::LayerManager::Reserve(1);
+	Engine::LayerManager::Update(m_camera->GetType());
+	Engine::LayerManager::Add(mapVertexBuffer, { 0.f,0.f,0.f }, { 32,32 }, -1000);
 
 	Engine::CameraInterface::Update(m_camera);
 	m_camera->Update(_dt);

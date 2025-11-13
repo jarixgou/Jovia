@@ -27,6 +27,10 @@ private:
 	std::vector<Engine::TextureSliced> m_textureSliced;
 
 	Engine::DrawableObject* mapVertex;
+	Engine::DrawableObject* mapVertexBuffer;
+
+	sf::Vector3f m_lastCameraPos = { -99999.f, -99999.f, -99999.f };
+	float m_lastCameraZoom = -1.f;
 public:
 	Game();
 	virtual ~Game();

@@ -1,4 +1,4 @@
-#include "Camera.hpp"
+ï»¿#include "Camera.hpp"
 
 #include <iostream>
 #include <ostream>
@@ -135,11 +135,11 @@ namespace Engine
 		}
 		else if (m_type == CameraType::ISOMETRIC)
 		{
-			// Transformation inverse isométrique pour trouver les bounds monde
+			// Transformation inverse isomÃ©trique pour trouver les bounds monde
 			float halfWidth = m_size.x * 0.5f;
 			float halfHeight = m_size.y * 0.5f;
 
-			// Les 4 coins de l'écran en coordonnées écran (relatif au centre)
+			// Les 4 coins de l'Ã©cran en coordonnÃ©es Ã©cran (relatif au centre)
 			sf::Vector2f screenCorners[4] = {
 				{ -halfWidth, -halfHeight },  // Haut-gauche
 				{  halfWidth, -halfHeight },  // Haut-droite
@@ -152,10 +152,10 @@ namespace Engine
 			float minY = std::numeric_limits<float>::max();
 			float maxY = std::numeric_limits<float>::lowest();
 
-			// Pour chaque coin de l'écran, calculer la position monde correspondante
+			// Pour chaque coin de l'Ã©cran, calculer la position monde correspondante
 			for (const auto& screenPos : screenCorners)
 			{
-				// Transformation inverse isométrique
+				// Transformation inverse isomÃ©trique
 				// Dans WorldToScreen :
 				// screenX = (worldX - worldY) * (_tileSize.x * zoom) * 0.5
 				// screenY = (worldX + worldY) * (_tileSize.y * zoom) * 0.25
@@ -164,7 +164,7 @@ namespace Engine
 				// worldX - worldY = screenX / (_tileSize.x * zoom * 0.5)
 				// worldX + worldY = screenY / (_tileSize.y * zoom * 0.25)
 				//
-				// Résolution :
+				// RÃ©solution :
 				// worldX = [(screenX / (_tileSize.x * zoom * 0.5)) + (screenY / (_tileSize.y * zoom * 0.25))] / 2
 				// worldY = [(screenY / (_tileSize.y * zoom * 0.25)) - (screenX / (_tileSize.x * zoom * 0.5))] / 2
 
@@ -180,7 +180,7 @@ namespace Engine
 				maxY = std::max(maxY, worldY);
 			}
 
-			// Ajouter la position de la caméra et une marge
+			// Ajouter la position de la camÃ©ra et une marge
 			float margin = 1.7f;
 			return {
 				m_pos.x + minX - margin,
@@ -289,15 +289,6 @@ namespace Engine
 			_window.draw(_object.sprite, _object.states);
 			break;
 		case DrawableType::SHAPE:
-
-			for (size_t i = 0; i < _object.shape.getVertexCount(); ++i)
-			{
-				sf::Vector2f& worldPos = _object.shape[i].position;
-				screenPos = WorldToScreen({ worldPos.x, worldPos.y, _pos.z }, _size);
-				screenPos = {screenPos.x * scale.x, screenPos.y * scale.y};
-				worldPos = screenPos;
-			}
-
 			_window.draw(_object.shape, _object.states);
 			break;
 		}
