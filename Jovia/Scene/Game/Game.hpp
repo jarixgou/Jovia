@@ -22,7 +22,7 @@ private:
 	int m_searchID = 1;
 
 	int map[500][500] = { 0 };
-	std::vector<sf::Sprite> m_tileSprites;
+	std::vector<Engine::DrawableObject*> m_tileSprites;
 
 	std::vector<Engine::TextureSliced> m_textureSliced;
 

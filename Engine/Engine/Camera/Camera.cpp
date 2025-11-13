@@ -290,13 +290,12 @@ namespace Engine
 			break;
 		case DrawableType::SHAPE:
 
-			for (size_t i = 0; i < _object.shape.getVertexCount(); ++i)
+			/*for (size_t i = 0; i < _object.shape.getVertexCount(); ++i)
 			{
 				sf::Vector2f& worldPos = _object.shape[i].position;
-				screenPos = WorldToScreen({ worldPos.x, worldPos.y, _pos.z }, _size);
-				screenPos = {screenPos.x * scale.x, screenPos.y * scale.y};
+				screenPos = { worldPos.x + _size.x * scale.x, worldPos.y + _size.y * scale.y};
 				worldPos = screenPos;
-			}
+			}*/
 
 			_window.draw(_object.shape, _object.states);
 			break;
@@ -321,15 +320,25 @@ namespace Engine
 				(relativePos.y * m_zoom) / relativePos.z
 			};
 
-			sf::Vector2f rotatedPos = { 0,0 };
-			float angleRad = m_angle * (3.14159265f / 180.f);
-			rotatedPos.x = orthoPos.x * cos(angleRad) - orthoPos.y * sin(angleRad);
-			rotatedPos.y = orthoPos.x * sin(angleRad) + orthoPos.y * cos(angleRad);
+			if (m_angle != 0.0f)
+			{
+				sf::Vector2f rotatedPos = { 0,0 };
+				const float angleRad = m_angle * 0.0174532925f;
+				rotatedPos.x = orthoPos.x * cos(angleRad) - orthoPos.y * sin(angleRad);
+				rotatedPos.y = orthoPos.x * sin(angleRad) + orthoPos.y * cos(angleRad);
 
-			screenPos = {
-				rotatedPos.x + cameraMiddlePoint.x,
-				rotatedPos.y + cameraMiddlePoint.y
-			};
+				screenPos = {
+					rotatedPos.x + cameraMiddlePoint.x,
+					rotatedPos.y + cameraMiddlePoint.y
+				};
+			}
+			else
+			{
+				screenPos = {
+					orthoPos.x + cameraMiddlePoint.x,
+					orthoPos.y + cameraMiddlePoint.y
+				};
+			}
 		}
 		else if (m_type == CameraType::ISOMETRIC)
 		{
@@ -337,15 +346,22 @@ namespace Engine
 			iso.x = (relativePos.x - relativePos.y) * ((_objectSize.x * m_zoom) * 0.5f);
 			iso.y = (relativePos.x + relativePos.y - relativePos.z) * ((_objectSize.y * m_zoom) * 0.25f);
 
-			sf::Vector2f rotatedPos = { 0,0 };
-			float angleRad = m_angle * (3.14159265f / 180.f);
-			rotatedPos.x = iso.x * cos(angleRad) - iso.y * sin(angleRad);
-			rotatedPos.y = iso.x * sin(angleRad) + iso.y * cos(angleRad);
+			if (m_angle != 0.f)
+			{
+				const float angleRad = m_angle * 0.0174532925f;
+				const float cosAngle = std::cos(angleRad);
+				const float sinAngle = std::sin(angleRad);
 
-			screenPos = {
-				rotatedPos.x + cameraMiddlePoint.x,
-				rotatedPos.y + cameraMiddlePoint.y
-			};
+				screenPos.x = iso.x * cosAngle - iso.y * sinAngle + cameraMiddlePoint.x;
+				screenPos.y = iso.x * sinAngle + iso.y * cosAngle + cameraMiddlePoint.y;
+			}
+			else
+			{
+				screenPos = {
+					iso.x + cameraMiddlePoint.x,
+					iso.y + cameraMiddlePoint.y
+				};
+			}
 		}
 
 		return screenPos;

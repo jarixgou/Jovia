@@ -34,18 +34,16 @@ void Game::Init()
 	m_camera = new Engine::Camera();
 	m_camera->SetType(Engine::CameraType::ISOMETRIC);
 	m_camera->SetPos({ 0.f,0.f,0.f });
-	m_camera->SetSize({ 1920.f,1080.f});
+	m_camera->SetSize({ 1920.f,1080.f });
 	m_camera->SetZoom(1.f);
 	m_camera->SetFree(false);
-
-	mapVertex = new Engine::DrawableObject();
-	mapVertex->type = Engine::DrawableType::SHAPE;
 
 	m_tileSprites.reserve(m_textureSliced.size());
 	for (int i = 0; i < m_textureSliced.size(); ++i)
 	{
 		sf::Sprite spr(*spritesheetTexture, m_textureSliced[i].rect);
-		m_tileSprites.emplace_back(spr);
+		Engine::DrawableObject* newObject = new Engine::DrawableObject(spr, sf::RenderStates());
+		m_tileSprites.emplace_back(newObject);
 	}
 
 	for (int y = 0; y < 500; ++y)
@@ -65,47 +63,27 @@ void Game::PollEvents(sf::RenderWindow& _window, sf::Event& _event)
 void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 {
 	Engine::LayerManager::Clear();
-	Engine::LayerManager::Update(m_camera->GetType());
 
-	sf::FloatRect visibleArea = m_camera->GetVisibleArea({ 32,32 });
+	const sf::FloatRect visibleArea = m_camera->GetVisibleArea({ 32,32 });
 
 	const float tileSize = 32.f;
-	int startX = std::max(0, static_cast<int>(visibleArea.left));
-	int endX = std::min(500, static_cast<int>((visibleArea.left + visibleArea.width)) + 1);
-	int startY = std::max(0, static_cast<int>(visibleArea.top));
-	int endY = std::min(500, static_cast<int>((visibleArea.top + visibleArea.height)) + 1);
+	const int startX = std::max(0, static_cast<int>(visibleArea.left));
+	const int endX = std::min(500, static_cast<int>((visibleArea.left + visibleArea.width)) + 1);
+	const int startY = std::max(0, static_cast<int>(visibleArea.top));
+	const int endY = std::min(500, static_cast<int>((visibleArea.top + visibleArea.height)) + 1);
 
-	int estimatedTiles = (endX - startX) * (endY - startY);
+	const int estimatedTiles = (endX - startX) * (endY - startY);
 	Engine::LayerManager::Reserve(estimatedTiles);
 
-	sf::VertexArray vertexArray(sf::Quads, estimatedTiles);
 	for (int y = startY; y < endY; ++y)
 	{
 		for (int x = startX; x < endX; ++x)
 		{
-			sf::IntRect textureRect = m_textureSliced[map[y][x]].rect;
-			sf::Vector2f screenPos = m_camera->WorldToScreen({ static_cast<float>(x), static_cast<float>(y), 0 }, { 32,32 });
-
-			vertexArray.append(sf::Vertex({ screenPos.x, screenPos.y },
-				sf::Color::White,
-				{ (float)textureRect.left, (float)textureRect.top }));
-
-			vertexArray.append(sf::Vertex({ screenPos.x + 32, screenPos.y },
-				sf::Color::White,
-				{ (float)textureRect.left + textureRect.width, (float)textureRect.top }));
-
-			vertexArray.append(sf::Vertex({ screenPos.x, screenPos.y + 32 },
-				sf::Color::White,
-				{ (float)textureRect.left, (float)textureRect.top + textureRect.height }));
-
-			vertexArray.append(sf::Vertex({ screenPos.x + 32, screenPos.y + 32},
-				sf::Color::White,
-				{ (float)textureRect.left + textureRect.width, (float)textureRect.top + textureRect.height }));
-
-			Engine::LayerManager::Add(&m_tileSprites[map[y][x]], {static_cast<float>(x), static_cast<float>(y), 0}, {32, 32}, 0);
+			Engine::LayerManager::Add(m_tileSprites[map[y][x]], { static_cast<float>(x), static_cast<float>(y), 0 }, { 32, 32 }, 0);
 		}
 	}
-	mapVertex->shape = vertexArray;
+
+	Engine::LayerManager::Update(m_camera->GetType());
 
 	Engine::CameraInterface::Update(m_camera);
 	m_camera->Update(_dt);
