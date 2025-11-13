@@ -10,6 +10,7 @@ namespace Engine
 {
 	class Camera;
 	class DrawableObject;
+	class ChunkManager;
 }
 
 class Game : public Engine::Scene
@@ -18,19 +19,12 @@ private:
 	Engine::Camera* m_camera;
 
 	sf::Sprite m_tileSheet;
-	float m_timer = 0.f;
-	int m_searchID = 1;
-
-	int map[500][500] = { 0 };
-	std::vector<Engine::DrawableObject*> m_tileSprites;
 
 	std::vector<Engine::TextureSliced> m_textureSliced;
 
-	Engine::DrawableObject* mapVertex;
-	Engine::DrawableObject* mapVertexBuffer;
+	sf::RenderStates m_renderStates;
 
-	sf::Vector3f m_lastCameraPos = { -99999.f, -99999.f, -99999.f };
-	float m_lastCameraZoom = -1.f;
+	Engine::ChunkManager* m_chunkManager;
 public:
 	Game();
 	virtual ~Game();

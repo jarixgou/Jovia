@@ -30,15 +30,17 @@ namespace Engine
 		~Chunk() = default;
 
 		const sf::Vector2i& GetChunkPos();
-		const sf::VertexArray& GetVertices();
+		const sf::VertexArray& GetGroundVertices();
+		const sf::VertexArray& GetObjectVertices();
 		int GetTile(const sf::Vector2i& _pos);
 		bool GetIsVisible();
+		bool GetIsDirty();
 
-		void SetTile(const sf::Vector2i& _pos, int tileId);
+		void SetTile(const sf::Vector2i& _pos, int _tileId, float _tileHeight);
 		void SetDirty(bool _dirty);
 		void SetVisible(bool _visible);
 
-		void Build(const std::vector<sf::IntRect>& _textureRect, const Camera* _cam);
+		void Build(const std::vector<sf::IntRect>& _textureRect, Camera* _cam);
 		void Clear();
 	};
 }

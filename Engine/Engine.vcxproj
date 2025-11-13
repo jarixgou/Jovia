@@ -23,6 +23,7 @@
     <ClCompile Include="Engine\Asset\AssetsManager.cpp" />
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Chunk\Chunk.cpp" />
+    <ClCompile Include="Engine\Chunk\ChunkManager.cpp" />
     <ClCompile Include="Engine\DrawableObject\DrawableObject.cpp" />
     <ClCompile Include="Engine\Interface\Assets\AssetsInterface.cpp" />
     <ClCompile Include="Engine\Interface\Camera\CameraInterface.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="Engine\Asset\AssetsManager.hpp" />
     <ClInclude Include="Engine\Camera\Camera.hpp" />
     <ClInclude Include="Engine\Chunk\Chunk.hpp" />
+    <ClInclude Include="Engine\Chunk\ChunkManager.hpp" />
     <ClInclude Include="Engine\DrawableObject\DrawableObject.hpp" />
     <ClInclude Include="Engine\Interface\Assets\AssetsInterface.hpp" />
     <ClInclude Include="Engine\Interface\Camera\CameraInterface.hpp" />
