@@ -58,8 +58,7 @@ void Game::Init()
 		for (int x = 0; x < 32 * 16; ++x)
 		{
 			const int id = rand() % m_textureSliced.size();
-			const float height = (rand() % 20 < 20) ? 0.0f : 1.0f;
-			m_chunkManager->SetTileAt({ x, y }, id, height);
+			m_chunkManager->SetTileAt({ x, y }, id, 0);
 		}
 	}
 }
@@ -87,6 +86,7 @@ void Game::Display(sf::RenderWindow& _window)
 	for (const auto& chunk : m_chunkManager->GetChunks())
 	{
 		_window.draw(chunk->GetGroundVertices(), m_renderStates);
+		_window.draw(chunk->GetObjectVertices(), m_renderStates);
 	}
 
 	/*_window.draw(tileSheet);*/
