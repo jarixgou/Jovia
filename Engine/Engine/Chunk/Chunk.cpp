@@ -67,7 +67,6 @@ namespace Engine
 		m_groundVertices.clear();
 		m_objectVertices.clear();
 
-		// ✅ CORRECTION : Obtenir le zoom de la caméra
 		const float zoom = _cam->GetZoom();
 
 		for (int y = 0; y < chunkSize; ++y)
