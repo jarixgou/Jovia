@@ -14,16 +14,6 @@
 
 #include <Engine/Chunk/Chunk.hpp>
 
-Game::Game()
-{
-
-}
-
-Game::~Game()
-{
-
-}
-
 void Game::Init()
 {
 	Engine::AssetsManager::Add<sf::Texture>("Assets/spritesheet.png");

@@ -26,8 +26,8 @@ private:
 
 	Engine::ChunkManager* m_chunkManager;
 public:
-	Game();
-	virtual ~Game();
+	Game() = default;
+	virtual ~Game() = default;
 
 	virtual void Init() override;
 	virtual void PollEvents(sf::RenderWindow& _window, sf::Event& _event) override;
