@@ -14,14 +14,15 @@ namespace Engine
 		if (m_free)
 		{
 			float speed = 20.f * _dt;
+			float oldZ = m_pos.z;
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
 			{
-				m_zoom += 1.f * _dt;
+				m_pos.z += 1.f * _dt;
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
 			{
-				m_zoom += -1.f * _dt;
+				m_pos.z += -1.f * _dt;
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z))
@@ -126,10 +127,12 @@ namespace Engine
 
 	sf::FloatRect Camera::GetVisibleArea(sf::Vector2f _tileSize)
 	{
+		const float scale = 1.0f / -m_pos.z;
+
 		if (m_type == CameraType::ORTHOGRAPHIC)
 		{
-			float w = m_size.x / (m_zoom * _tileSize.x);
-			float h = m_size.y / (m_zoom * _tileSize.y);
+			float w = m_size.x / (scale * _tileSize.x);
+			float h = m_size.y / (scale * _tileSize.y);
 
 			return { m_pos.x - w / 2.0f, m_pos.y - h / 2.0f, w, h };
 		}
@@ -168,8 +171,8 @@ namespace Engine
 				// worldX = [(screenX / (_tileSize.x * zoom * 0.5)) + (screenY / (_tileSize.y * zoom * 0.25))] / 2
 				// worldY = [(screenY / (_tileSize.y * zoom * 0.25)) - (screenX / (_tileSize.x * zoom * 0.5))] / 2
 
-				float a = screenPos.x / (_tileSize.x * m_zoom * 0.5f);  // worldX - worldY
-				float b = screenPos.y / (_tileSize.y * m_zoom * 0.25f); // worldX + worldY
+				float a = screenPos.x / (_tileSize.x * scale * 0.5f);  // worldX - worldY
+				float b = screenPos.y / (_tileSize.y * scale * 0.25f); // worldX + worldY
 
 				float worldX = (a + b) * 0.5f;
 				float worldY = (b - a) * 0.5f;
@@ -227,9 +230,9 @@ namespace Engine
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
-		sf::Vector2f scale = { (_size.x * m_zoom) / _size.x,(_size.y * m_zoom) / _size.y };
+		const float scale = 1.0f / (_pos.z == 0 ? 1.0f : _pos.z);
 
-		_object.setScale(scale.x, scale.y);
+		_object.setScale(scale, scale);
 		_object.setPosition(screenPos);
 		_object.setRotation(m_angle);
 		_window.draw(_object);
@@ -251,9 +254,9 @@ namespace Engine
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
-		sf::Vector2f scale = { (_size.x * m_zoom) / _size.x,(_size.y * m_zoom) / _size.y };
+		const float scale = 1.0f / (_pos.z == 0 ? 1.0f : _pos.z);
 
-		_object.setScale(scale.x, scale.y);
+		_object.setScale(scale, scale);
 		_object.setPosition(screenPos);
 		_object.setRotation(m_angle);
 		_window.draw(_object);
@@ -263,26 +266,26 @@ namespace Engine
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
-		sf::Vector2f scale = { (_size.x * m_zoom) / _size.x,(_size.y * m_zoom) / _size.y };
+		const float scale = 1.0f / (_pos.z == 0 ? 1.0f : _pos.z);
 
 		switch (_object.type)
 		{
 		case DrawableType::SPRITE:
-			_object.sprite.setScale(scale.x, scale.y);
+			_object.sprite.setScale(scale, scale);
 			_object.sprite.setPosition(screenPos);
 			_object.sprite.setRotation(m_angle);
 
 			_window.draw(_object.sprite, _object.states);
 			break;
 		case DrawableType::RECTANGLE:
-			_object.rectangle.setScale(scale.x, scale.y);
+			_object.rectangle.setScale(scale, scale);
 			_object.rectangle.setPosition(screenPos);
 			_object.rectangle.setRotation(m_angle);
 
 			_window.draw(_object.sprite, _object.states);
 			break;
 		case DrawableType::CIRCLE:
-			_object.circle.setScale(scale.x, scale.y);
+			_object.circle.setScale(scale, scale);
 			_object.circle.setPosition(screenPos);
 			_object.circle.setRotation(m_angle);
 
@@ -305,11 +308,13 @@ namespace Engine
 			_objectPos.z - m_pos.z
 		};
 
+		float scale = 1.0f / -m_pos.z;
+
 		if (m_type == CameraType::ORTHOGRAPHIC)
 		{
 			sf::Vector2f orthoPos = {
-				(relativePos.x * m_zoom) / relativePos.z,
-				(relativePos.y * m_zoom) / relativePos.z
+				(relativePos.x * scale) / relativePos.z,
+				(relativePos.y * scale) / relativePos.z
 			};
 
 			sf::Vector2f rotatedPos = { 0,0 };
@@ -318,15 +323,15 @@ namespace Engine
 			rotatedPos.y = orthoPos.x * sin(angleRad) + orthoPos.y * cos(angleRad);
 
 			screenPos = {
-				rotatedPos.x + cameraMiddlePoint.x,
-				rotatedPos.y + cameraMiddlePoint.y
+				rotatedPos.x + cameraMiddlePoint.x - scale,
+				rotatedPos.y + cameraMiddlePoint.y - scale
 			};
 		}
 		else if (m_type == CameraType::ISOMETRIC)
 		{
 			sf::Vector2f iso = { 0,0 };
-			iso.x = (relativePos.x - relativePos.y) * ((_objectSize.x * m_zoom) * 0.5f);
-			iso.y = (relativePos.x + relativePos.y - relativePos.z) * ((_objectSize.y * m_zoom) * 0.25f);
+			iso.x = (relativePos.x - relativePos.y) * ((_objectSize.x * scale) * 0.5f);
+			iso.y = (relativePos.x + relativePos.y - relativePos.z) * ((_objectSize.y * scale) * 0.25f);
 
 			sf::Vector2f rotatedPos = { 0,0 };
 			float angleRad = m_angle * (3.14159265f / 180.f);

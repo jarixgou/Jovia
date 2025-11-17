@@ -66,7 +66,7 @@ namespace Engine
 		const int endX = std::min(m_worldSize.x, static_cast<int>((visibleArea.left + visibleArea.width) / chunkSize) + 1);
 		const int endY = std::min(m_worldSize.y, static_cast<int>((visibleArea.top + visibleArea.height) / chunkSize) + 1);
 
-		m_visibleChunks.reserve((endX - startX) * (endY - startX));
+		m_visibleChunks.reserve((endX - startX) * (endY - startY));
 
 		for (auto& [pos, chunk] : m_chunks)
 		{

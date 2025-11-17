@@ -67,7 +67,7 @@ namespace Engine
 		m_groundVertices.clear();
 		m_objectVertices.clear();
 
-		const float zoom = _cam->GetZoom();
+		const sf::Vector3f camPos = _cam->GetPos();
 
 		for (int y = 0; y < chunkSize; ++y)
 		{
@@ -84,8 +84,9 @@ namespace Engine
 					{ static_cast<float>(rect.width), static_cast<float>(rect.height) }
 				);
 
-				const float scaledWidth = static_cast<float>(rect.width) * zoom;
-				const float scaledHeight = static_cast<float>(rect.height) * zoom;
+				const float scale = 1.0f / (tileData.height - camPos.z);
+				const float scaledWidth = static_cast<float>(rect.width) * scale;
+				const float scaledHeight = static_cast<float>(rect.height) * scale;
 
 				sf::VertexArray& targetVertices = (tileData.height < 0.5f) ? m_groundVertices : m_objectVertices;
 

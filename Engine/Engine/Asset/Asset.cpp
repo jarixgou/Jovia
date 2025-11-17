@@ -9,7 +9,9 @@ namespace Engine
 		try
 		{
 			m_texture = std::make_unique<sf::Texture>();
-			return m_texture->loadFromFile(m_path);
+			m_texture->loadFromFile(m_path);
+			m_texture->generateMipmap();
+			return true;
 		}
 		catch (std::bad_alloc&)
 		{
