@@ -44,7 +44,7 @@ namespace Engine
 
 			try
 			{
-				auto scene = std::make_shared<T>();
+				const auto scene = std::make_shared<T>();
 				auto [iter, inserted] = m_scenesList.emplace(std::string(_sceneName), scene);
 				if (inserted)
 				{

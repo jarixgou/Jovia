@@ -47,6 +47,7 @@
     <ClInclude Include="Engine\Interface\Debug\DebugInterface.hpp" />
     <ClInclude Include="Engine\Interpolator\Interpolator.hpp" />
     <ClInclude Include="Engine\Layer\LayerManager.hpp" />
+    <ClInclude Include="Engine\Light\Light.hpp" />
     <ClInclude Include="Engine\Logger\Logger.hpp" />
     <ClInclude Include="Engine\QuadTree\QuadTree.hpp" />
     <ClInclude Include="Engine\Scene\Scene.hpp" />

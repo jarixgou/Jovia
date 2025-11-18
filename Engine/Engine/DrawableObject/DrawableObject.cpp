@@ -1,27 +1,29 @@
 #include "DrawableObject.hpp"
 
+#include <utility>
+
 namespace Engine
 {
 	DrawableObject::DrawableObject(sf::Sprite _sprite, sf::RenderStates _states)
-		: type(DrawableType::SPRITE), sprite(_sprite), states(_states)
+		: type(DrawableType::SPRITE), states(_states), sprite(std::move(_sprite))
 	{
 
 	}
 
 	DrawableObject::DrawableObject(sf::RectangleShape _rectangle, sf::RenderStates _states)
-		: type(DrawableType::RECTANGLE), rectangle(_rectangle), states(_states)
+		: type(DrawableType::RECTANGLE), states(_states), rectangle(std::move(_rectangle))
 	{
 
 	}
 
 	DrawableObject::DrawableObject(sf::CircleShape _circle, sf::RenderStates _states)
-		: type(DrawableType::CIRCLE), circle(_circle), states(_states)
+		: type(DrawableType::CIRCLE), states(_states), circle(std::move(_circle))
 	{
 
 	}
 
 	DrawableObject::DrawableObject(sf::VertexArray _shape, sf::RenderStates _states)
-		: type(DrawableType::SHAPE), shape(_shape), states(_states)
+		: type(DrawableType::SHAPE), states(_states), shape(std::move(_shape))
 	{
 
 	}

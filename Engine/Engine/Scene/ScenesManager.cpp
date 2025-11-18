@@ -1,7 +1,7 @@
 #include "ScenesManager.hpp"
 
 std::shared_ptr<Engine::Scene> Engine::ScenesManager::m_currentScene = nullptr;
-std::string Engine::ScenesManager::m_currentSceneName = "";
+std::string Engine::ScenesManager::m_currentSceneName;
 std::unordered_map<std::string, std::shared_ptr<Engine::Scene>> Engine::ScenesManager::m_scenesList;
 
 void Engine::ScenesManager::PollEvents(sf::RenderWindow& _window, sf::Event& _event)

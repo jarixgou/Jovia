@@ -12,7 +12,7 @@ namespace Engine
 
 	struct TileData
 	{
-		int tileId;
+		uint8_t tileId;
 		float height;
 	};
 
@@ -29,18 +29,18 @@ namespace Engine
 		Chunk(const sf::Vector2i& _chunkPos);
 		~Chunk() = default;
 
-		const sf::Vector2i& GetChunkPos();
-		const sf::VertexArray& GetGroundVertices();
-		const sf::VertexArray& GetObjectVertices();
-		int GetTile(const sf::Vector2i& _pos);
-		bool GetIsVisible();
-		bool GetIsDirty();
+		const sf::Vector2i& GetChunkPos() const;
+		const sf::VertexArray& GetGroundVertices() const;
+		const sf::VertexArray& GetObjectVertices() const;
+		int GetTile(const sf::Vector2i& _pos) const;
+		bool GetIsVisible() const;
+		bool GetIsDirty() const;
 
-		void SetTile(const sf::Vector2i& _pos, int _tileId, float _tileHeight);
-		void SetDirty(bool _dirty);
-		void SetVisible(bool _visible);
+		void SetTile(const sf::Vector2i& _pos, const uint8_t& _tileId, const float& _tileHeight);
+		void SetDirty(const bool& _dirty);
+		void SetVisible(const bool& _visible);
 
-		void Build(const std::vector<sf::IntRect>& _textureRect, Camera* _cam);
+		void Build(const std::vector<sf::IntRect>& _textureRect, const Camera* _cam);
 		void Clear();
 	};
 }

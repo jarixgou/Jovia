@@ -34,7 +34,6 @@ namespace Engine
 
 		static std::string GetLevelPrefix(LogLevel _level);
 		static std::string GetLevelColor(LogLevel _level);
-
 	public:
 		static void Log(LogLevel _level, const char* _message);
 		static void SetMinimumLogLevel(LogLevel _level);

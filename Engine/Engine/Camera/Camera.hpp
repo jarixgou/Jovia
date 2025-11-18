@@ -23,7 +23,6 @@ namespace Engine
 	private:
 		sf::Vector3f m_pos = { 0,0,0 };
 		sf::Vector2f m_size = { 1920,1080 };
-		float m_zoom = 0;
 		float m_angle = 0.f;
 		bool m_free = false;
 
@@ -40,24 +39,22 @@ namespace Engine
 		void SetFollow(sf::Vector3f _target);
 		void SetPos(sf::Vector3f _pos);
 		void SetSize(sf::Vector2f _size);
-		void SetZoom(float _zoom);
 		void SetAngle(float _angle);
 		void SetType(CameraType _type);
 
-		sf::FloatRect GetVisibleArea(sf::Vector2f _tileSize);
-		sf::Vector3f GetPos();
-		sf::Vector2f GetSize();
-		bool GetFree();
-		float GetZoom();
-		float GetAngle();
-		CameraType GetType();
+		sf::FloatRect GetVisibleArea(sf::Vector2f _tileSize) const;
+		sf::Vector3f GetPos() const;
+		sf::Vector2f GetSize() const;
+		bool GetFree() const;
+		float GetAngle() const;
+		CameraType GetType() const;
 
-		void DrawObject(sf::Sprite& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window);
-		void DrawObject(sf::RectangleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window);
-		void DrawObject(sf::CircleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window);
-		void DrawObject(DrawableObject& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window);
+		void DrawObject(sf::Sprite& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
+		void DrawObject(sf::RectangleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
+		void DrawObject(sf::CircleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
+		void DrawObject(DrawableObject& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
 
-		sf::Vector2f WorldToScreen(const sf::Vector3f& _objectPos, const sf::Vector2f& _objectSize);
+		sf::Vector2f WorldToScreen(const sf::Vector3f& _objectPos, const sf::Vector2f& _objectSize) const;
 	private:
 	};
 }

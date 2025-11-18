@@ -11,7 +11,7 @@ namespace Engine
 {
 	struct TextureSliced
 	{
-		int id;
+		uint8_t id;
 		sf::IntRect rect;
 	};
 

@@ -43,7 +43,7 @@ namespace Engine
 		return chunkPtr;
 	}
 
-	Chunk* ChunkManager::GetChunk(const sf::Vector2i& _chunkPos)
+	Chunk* ChunkManager::GetChunk(const sf::Vector2i& _chunkPos) const
 	{
 		auto it = m_chunks.find(_chunkPos);
 		if (it != m_chunks.end())
@@ -53,12 +53,12 @@ namespace Engine
 		return nullptr;
 	}
 
-	void ChunkManager::UpdateVisibleChunks(Camera* _camera)
+	void ChunkManager::UpdateVisibleChunks(const Camera* _camera)
 	{
 		m_visibleChunks.clear();
 
-		sf::IntRect rect = m_textureRects.at(0);
-		sf::FloatRect visibleArea = _camera->GetVisibleArea({ static_cast<float>(rect.width), static_cast<float>(rect.height)});
+		const sf::IntRect rect = m_textureRects.at(0);
+		const sf::FloatRect visibleArea = _camera->GetVisibleArea({ static_cast<float>(rect.width), static_cast<float>(rect.height)});
 
 		// Frustum culling for chunks
 		const int startX = std::max(0, static_cast<int>(visibleArea.left / chunkSize));
@@ -88,7 +88,7 @@ namespace Engine
 		}
 	}
 
-	void ChunkManager::SetChunkDirty(const sf::Vector2i& _chunkPos)
+	void ChunkManager::SetChunkDirty(const sf::Vector2i& _chunkPos) const
 	{
 		Chunk* chunk = GetChunk(_chunkPos);
 		if (chunk)
@@ -97,7 +97,7 @@ namespace Engine
 		}
 	}
 
-	int ChunkManager::GetTileAt(const sf::Vector2i& _worldPos)
+	int ChunkManager::GetTileAt(const sf::Vector2i& _worldPos) const
 	{
 		sf::Vector2i chunkPos = WorldToChunkPos(_worldPos);
 		sf::Vector2i localPos = WorldToLocalPos(_worldPos);
@@ -107,9 +107,10 @@ namespace Engine
 		{
 			return chunk->GetTile(localPos);
 		}
+		return -1;
 	}
 
-	void ChunkManager::SetTileAt(const sf::Vector2i& _worldPos, int _tileId, float _tileHeight)
+	void ChunkManager::SetTileAt(const sf::Vector2i& _worldPos, const uint8_t& _tileId, const float& _tileHeight)
 	{
 		sf::Vector2i chunkPos = WorldToChunkPos(_worldPos);
 		sf::Vector2i localPos = WorldToLocalPos(_worldPos);
@@ -122,7 +123,7 @@ namespace Engine
 		}
 	}
 
-	void ChunkManager::RebuildDirtyChunks(Camera* _camera)
+	void ChunkManager::RebuildDirtyChunks(const Camera* _camera)
 	{
 		if (!_camera)
 		{

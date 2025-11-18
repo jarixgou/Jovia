@@ -14,7 +14,7 @@ namespace Engine
 	std::future<void> LayerManager::m_sortTask;
 	std::atomic<bool> LayerManager::m_useBuffer = false;
 
-	void LayerManager::Add(DrawableObject* _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order)
+	void LayerManager::Add(DrawableObject* _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, const uint8_t& _order)
 	{
 		m_layers.emplace_back(Layer{ _pos, _size, _order, _object });
 	}
@@ -128,7 +128,6 @@ namespace Engine
 
 	void LayerManager::Draw(Camera* _cam, sf::RenderWindow& _window)
 	{
-
 		const auto& layersToDraw = m_useBuffer ? m_layersBuffer : m_layers;
 
 		if (layersToDraw.empty())
@@ -140,22 +139,7 @@ namespace Engine
 		{
 			const Layer& layer = *it;
 
-			switch (layer.object->type)
-			{
-			case DrawableType::SPRITE:
-				_cam->DrawObject(layer.object->sprite, layer.pos, layer.size, _window);
-				break;
-			case DrawableType::RECTANGLE:
-				_cam->DrawObject(layer.object->rectangle, layer.pos, layer.size, _window);
-				break;
-			case DrawableType::CIRCLE:
-				_cam->DrawObject(layer.object->circle, layer.pos, layer.size, _window);
-				break;
-			case DrawableType::SHAPE:
-				_cam->DrawObject(*layer.object, layer.pos, layer.size, _window);
-				break;
-			default:;
-			}
+			_cam->DrawObject(*layer.object, layer.pos, layer.size, _window);
 		}
 	}
 }

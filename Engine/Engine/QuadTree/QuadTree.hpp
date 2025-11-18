@@ -23,15 +23,15 @@ namespace Engine
 		void Split();
 		int GetIndex(const QuadTreeObject<T>& _object);
 
-		int m_level;
-		int m_maxObjects;
-		int m_maxLevels;
+		uint8_t m_level;
+		uint8_t m_maxObjects;
+		uint8_t m_maxLevels;
 		sf::FloatRect m_bounds;
 
 		std::vector<QuadTreeObject<T>> m_objects;
 		std::unique_ptr<QuadTree<T>> m_nodes[4];
 	public:
-		QuadTree(sf::FloatRect _bounds, int _maxObjects = 10, int _maxLevel = 5, int _level = 0);
+		QuadTree(sf::FloatRect _bounds, uint8_t _maxObjects = 10, uint8_t _maxLevel = 5, uint8_t _level = 0);
 
 		void Clear();
 		void Insert(const QuadTreeObject<T>& _object);
@@ -41,8 +41,8 @@ namespace Engine
 	template <typename T>
 	void QuadTree<T>::Split()
 	{
-		sf::Vector2f sub = {m_bounds.width / 2.f, m_bounds.height / 2.f};
-		sf::Vector2f pos = { m_bounds.left, m_bounds.top };
+		const sf::Vector2f sub = {m_bounds.width / 2.f, m_bounds.height / 2.f};
+		const sf::Vector2f pos = { m_bounds.left, m_bounds.top };
 
 		// Top-Right
 		m_nodes[0] = std::make_unique<QuadTree<T>>(
@@ -70,11 +70,11 @@ namespace Engine
 	{
 		int index = -1;
 
-		float verticalMidpoint = m_bounds.left + (m_bounds.width / 2.f);
-		float horizontalMidpoint = m_bounds.top + (m_bounds.height / 2.f);
+		const float verticalMidpoint = m_bounds.left + (m_bounds.width / 2.f);
+		const float horizontalMidpoint = m_bounds.top + (m_bounds.height / 2.f);
 
-		bool topQuadrant = (_object.pos.y < horizontalMidpoint && _object.pos.y + _object.size.y < horizontalMidpoint);
-		bool bottomQuadrant = (_object.pos.y > horizontalMidpoint);
+		const bool topQuadrant = (_object.pos.y < horizontalMidpoint && _object.pos.y + _object.size.y < horizontalMidpoint);
+		const bool bottomQuadrant = (_object.pos.y > horizontalMidpoint);
 
 		if (_object.pos.x < verticalMidpoint && _object.pos.x + _object.size.x < verticalMidpoint)
 		{
@@ -102,7 +102,7 @@ namespace Engine
 	}
 
 	template <typename T>
-	QuadTree<T>::QuadTree(sf::FloatRect _bounds, int _maxObjects, int _maxLevel, int _level)
+	QuadTree<T>::QuadTree(sf::FloatRect _bounds, uint8_t _maxObjects, uint8_t _maxLevel, uint8_t _level)
 	{
 		m_bounds = _bounds;
 		m_maxObjects = _maxObjects;
@@ -114,7 +114,7 @@ namespace Engine
 	void QuadTree<T>::Clear()
 	{
 		m_objects.clear();
-		for (int i = 0; i < 4; ++i)
+		for (uint8_t i = 0; i < 4; ++i)
 		{
 			if (m_nodes[i])
 			{
@@ -156,7 +156,7 @@ namespace Engine
 				}
 				else
 				{
-					it += 1;
+					++it;
 				}
 			}
 		}
@@ -171,7 +171,7 @@ namespace Engine
 		{
 			for (int i = 0; i < 4; ++i)
 			{
-				auto nodeObject = m_nodes[i]->Retrieve(_area);
+				const auto nodeObject = m_nodes[i]->Retrieve(_area);
 				foundObjects.insert(foundObjects.end(), nodeObject.begin(), nodeObject.end());
 			}
 		}
@@ -179,7 +179,7 @@ namespace Engine
 		// Add object on the current node
 		for (auto & obj : m_objects)
 		{
-			sf::FloatRect objectBounds(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+			const sf::FloatRect objectBounds(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
 			if (objectBounds.intersects(_area))
 			{
 				foundObjects.push_back(obj.data);

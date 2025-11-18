@@ -20,7 +20,7 @@ namespace Engine
 	{
 		sf::Vector3f pos;
 		sf::Vector2f size;
-		int order;
+		uint8_t order;
 		DrawableObject* object;
 	};
 
@@ -32,7 +32,7 @@ namespace Engine
 		static std::future<void> m_sortTask;
 		static std::atomic<bool> m_useBuffer;
 	public:
-		static void Add(DrawableObject* _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, int _order);
+		static void Add(DrawableObject* _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, const uint8_t& _order);
 
 		static void Reserve(int _size);
 		static void Clear();

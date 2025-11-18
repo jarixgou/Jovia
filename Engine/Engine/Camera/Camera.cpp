@@ -14,7 +14,6 @@ namespace Engine
 		if (m_free)
 		{
 			float speed = 20.f * _dt;
-			float oldZ = m_pos.z;
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
 			{
@@ -75,11 +74,6 @@ namespace Engine
 			}
 		}
 
-		if (m_zoom < 0)
-		{
-			m_zoom = 0;
-		}
-
 		if (m_angle > 359.f)
 		{
 			m_angle = 0.f;
@@ -110,11 +104,6 @@ namespace Engine
 		m_size = _size;
 	}
 
-	void Camera::SetZoom(float _zoom)
-	{
-		m_zoom = _zoom;
-	}
-
 	void Camera::SetAngle(float _angle)
 	{
 		m_angle = _angle;
@@ -125,25 +114,25 @@ namespace Engine
 		m_type = _type;
 	}
 
-	sf::FloatRect Camera::GetVisibleArea(sf::Vector2f _tileSize)
+	sf::FloatRect Camera::GetVisibleArea(sf::Vector2f _tileSize) const
 	{
 		const float scale = 1.0f / -m_pos.z;
 
 		if (m_type == CameraType::ORTHOGRAPHIC)
 		{
-			float w = m_size.x / (scale * _tileSize.x);
-			float h = m_size.y / (scale * _tileSize.y);
+			const float w = m_size.x / (scale * _tileSize.x);
+			const float h = m_size.y / (scale * _tileSize.y);
 
 			return { m_pos.x - w / 2.0f, m_pos.y - h / 2.0f, w, h };
 		}
 		else if (m_type == CameraType::ISOMETRIC)
 		{
 			// Transformation inverse isométrique pour trouver les bounds monde
-			float halfWidth = m_size.x * 0.5f;
-			float halfHeight = m_size.y * 0.5f;
+			const float halfWidth = m_size.x * 0.5f;
+			const float halfHeight = m_size.y * 0.5f;
 
 			// Les 4 coins de l'écran en coordonnées écran (relatif au centre)
-			sf::Vector2f screenCorners[4] = {
+			const sf::Vector2f screenCorners[4] = {
 				{ -halfWidth, -halfHeight },  // Haut-gauche
 				{  halfWidth, -halfHeight },  // Haut-droite
 				{ -halfWidth,  halfHeight },  // Bas-gauche
@@ -171,11 +160,11 @@ namespace Engine
 				// worldX = [(screenX / (_tileSize.x * zoom * 0.5)) + (screenY / (_tileSize.y * zoom * 0.25))] / 2
 				// worldY = [(screenY / (_tileSize.y * zoom * 0.25)) - (screenX / (_tileSize.x * zoom * 0.5))] / 2
 
-				float a = screenPos.x / (_tileSize.x * scale * 0.5f);  // worldX - worldY
-				float b = screenPos.y / (_tileSize.y * scale * 0.25f); // worldX + worldY
+				const float a = screenPos.x / (_tileSize.x * scale * 0.5f);  // worldX - worldY
+				const float b = screenPos.y / (_tileSize.y * scale * 0.25f); // worldX + worldY
 
-				float worldX = (a + b) * 0.5f;
-				float worldY = (b - a) * 0.5f;
+				const float worldX = (a + b) * 0.5f;
+				const float worldY = (b - a) * 0.5f;
 
 				minX = std::min(minX, worldX);
 				maxX = std::max(maxX, worldX);
@@ -184,7 +173,7 @@ namespace Engine
 			}
 
 			// Ajouter la position de la caméra et une marge
-			float margin = 1.7f;
+			constexpr float margin = 1.7f;
 			return {
 				m_pos.x + minX - margin,
 				m_pos.y + minY - margin,
@@ -196,41 +185,36 @@ namespace Engine
 		return { 0.0f, 0.0f, 0.0f, 0.0f };
 	}
 
-	sf::Vector3f Camera::GetPos()
+	sf::Vector3f Camera::GetPos() const
 	{
 		return m_pos;
 	}
 
-	sf::Vector2f Camera::GetSize()
+	sf::Vector2f Camera::GetSize() const
 	{
 		return m_size;
 	}
 
-	bool Camera::GetFree()
+	bool Camera::GetFree() const
 	{
 		return m_free;
 	}
 
-	float Camera::GetZoom()
-	{
-		return m_zoom;
-	}
-
-	float Camera::GetAngle()
+	float Camera::GetAngle() const
 	{
 		return m_angle;
 	}
 
-	CameraType Camera::GetType()
+	CameraType Camera::GetType() const
 	{
 		return m_type;
 	}
 
-	void Camera::DrawObject(sf::Sprite& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
+	void Camera::DrawObject(sf::Sprite& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
-		const float scale = 1.0f / (_pos.z == 0 ? 1.0f : _pos.z);
+		const float scale = 1.0f / (_pos.z - m_pos.z);
 
 		_object.setScale(scale, scale);
 		_object.setPosition(screenPos);
@@ -238,23 +222,11 @@ namespace Engine
 		_window.draw(_object);
 	}
 
-	void Camera::DrawObject(sf::RectangleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
+	void Camera::DrawObject(sf::RectangleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
-		sf::Vector2f scale = { (_size.x * m_zoom) / _size.x,(_size.y * m_zoom) / _size.y };
-
-		_object.setScale(scale.x, scale.y);
-		_object.setPosition(screenPos);
-		_object.setRotation(m_angle);
-		_window.draw(_object);
-	}
-
-	void Camera::DrawObject(sf::CircleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
-	{
-		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
-
-		const float scale = 1.0f / (_pos.z == 0 ? 1.0f : _pos.z);
+		const float scale = 1.0f / (_pos.z - m_pos.z);
 
 		_object.setScale(scale, scale);
 		_object.setPosition(screenPos);
@@ -262,34 +234,30 @@ namespace Engine
 		_window.draw(_object);
 	}
 
-	void Camera::DrawObject(DrawableObject& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window)
+	void Camera::DrawObject(sf::CircleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
-		const float scale = 1.0f / (_pos.z == 0 ? 1.0f : _pos.z);
+		const float scale = 1.0f / (_pos.z - m_pos.z);
 
+		_object.setScale(scale, scale);
+		_object.setPosition(screenPos);
+		_object.setRotation(m_angle);
+		_window.draw(_object);
+	}
+
+	void Camera::DrawObject(DrawableObject& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const
+	{
 		switch (_object.type)
 		{
 		case DrawableType::SPRITE:
-			_object.sprite.setScale(scale, scale);
-			_object.sprite.setPosition(screenPos);
-			_object.sprite.setRotation(m_angle);
-
-			_window.draw(_object.sprite, _object.states);
+			DrawObject(_object.sprite, _pos, _size, _window);
 			break;
 		case DrawableType::RECTANGLE:
-			_object.rectangle.setScale(scale, scale);
-			_object.rectangle.setPosition(screenPos);
-			_object.rectangle.setRotation(m_angle);
-
-			_window.draw(_object.sprite, _object.states);
+			DrawObject(_object.rectangle, _pos, _size, _window);
 			break;
 		case DrawableType::CIRCLE:
-			_object.circle.setScale(scale, scale);
-			_object.circle.setPosition(screenPos);
-			_object.circle.setRotation(m_angle);
-
-			_window.draw(_object.sprite, _object.states);
+			DrawObject(_object.circle, _pos, _size, _window);
 			break;
 		case DrawableType::SHAPE:
 			_window.draw(_object.shape, _object.states);
@@ -297,30 +265,32 @@ namespace Engine
 		}
 	}
 
-	sf::Vector2f Camera::WorldToScreen(const sf::Vector3f& _objectPos, const sf::Vector2f& _objectSize)
+	sf::Vector2f Camera::WorldToScreen(const sf::Vector3f& _objectPos, const sf::Vector2f& _objectSize) const
 	{
 		sf::Vector2f screenPos = { 0,0 };
 
-		sf::Vector2f cameraMiddlePoint = { m_size.x * 0.5f, m_size.y * 0.5f };
-		sf::Vector3f relativePos = {
+		const sf::Vector2f cameraMiddlePoint = { m_size.x * 0.5f, m_size.y * 0.5f };
+		const sf::Vector3f relativePos = {
 			_objectPos.x - m_pos.x,
 			_objectPos.y - m_pos.y,
-			_objectPos.z - m_pos.z
+			_objectPos.z
 		};
 
-		float scale = 1.0f / -m_pos.z;
+		const float scale = 1.0f / (_objectPos.z - m_pos.z);
 
 		if (m_type == CameraType::ORTHOGRAPHIC)
 		{
-			sf::Vector2f orthoPos = {
+			const sf::Vector2f orthoPos = {
 				(relativePos.x * scale) / relativePos.z,
 				(relativePos.y * scale) / relativePos.z
 			};
 
 			sf::Vector2f rotatedPos = { 0,0 };
-			float angleRad = m_angle * (3.14159265f / 180.f);
-			rotatedPos.x = orthoPos.x * cos(angleRad) - orthoPos.y * sin(angleRad);
-			rotatedPos.y = orthoPos.x * sin(angleRad) + orthoPos.y * cos(angleRad);
+			const float angleRad = m_angle * (3.14159265f / 180.f);
+			const float cosValue = cosf(angleRad);
+			const float sinValue = sinf(angleRad);
+			rotatedPos.x = orthoPos.x * cosValue - orthoPos.y * sinValue;
+			rotatedPos.y = orthoPos.x * sinValue + orthoPos.y * cosValue;
 
 			screenPos = {
 				rotatedPos.x + cameraMiddlePoint.x - scale,
@@ -334,9 +304,11 @@ namespace Engine
 			iso.y = (relativePos.x + relativePos.y - relativePos.z) * ((_objectSize.y * scale) * 0.25f);
 
 			sf::Vector2f rotatedPos = { 0,0 };
-			float angleRad = m_angle * (3.14159265f / 180.f);
-			rotatedPos.x = iso.x * cos(angleRad) - iso.y * sin(angleRad);
-			rotatedPos.y = iso.x * sin(angleRad) + iso.y * cos(angleRad);
+			const float angleRad = m_angle * (3.14159265f / 180.f);
+			const float cosValue = cosf(angleRad);
+			const float sinValue = sinf(angleRad);
+			rotatedPos.x = iso.x * cosValue - iso.y * sinValue;
+			rotatedPos.y = iso.x * sinValue + iso.y * cosValue;
 
 			screenPos = {
 				rotatedPos.x + cameraMiddlePoint.x,

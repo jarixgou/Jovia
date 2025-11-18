@@ -33,14 +33,17 @@ void InitSystem(sf::RenderWindow& _window)
         LOG_WARNING("Query timer not supported");
     }
 
-    _window.setActive(false);
+    LOG_INFO("Render window was created successfully");
 
-    LOG_DEBUG("Render window was created successfully");
+    std::string message = "OpenGL : " + std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+    LOG_INFO(message.c_str());
+
+    _window.setActive(false);
 
 	ImGui::SFML::Init(_window);
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	LOG_DEBUG("ImGui was initialized");
+	LOG_INFO("ImGui was initialized");
 }
 
 void InitScene()

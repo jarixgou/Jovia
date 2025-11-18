@@ -27,9 +27,8 @@ void Game::Init()
 
 	m_camera = new Engine::Camera();
 	m_camera->SetType(Engine::CameraType::ISOMETRIC);
-	m_camera->SetPos({ 0.f,0.f,0.f });
+	m_camera->SetPos({ 0.f,0.f,-0.5f });
 	m_camera->SetSize({ 1920.f,1080.f });
-	m_camera->SetZoom(1.f);
 	m_camera->SetFree(false);
 
 	m_renderStates.texture = spritesheetTexture;

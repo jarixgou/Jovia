@@ -12,37 +12,37 @@ namespace Engine
 
 	}
 
-	const sf::Vector2i& Chunk::GetChunkPos()
+	const sf::Vector2i& Chunk::GetChunkPos() const
 	{
 		return m_chunkPos;
 	}
 
-	const sf::VertexArray& Chunk::GetGroundVertices()
+	const sf::VertexArray& Chunk::GetGroundVertices() const
 	{
 		return m_groundVertices;
 	}
 
-	const sf::VertexArray& Chunk::GetObjectVertices()
+	const sf::VertexArray& Chunk::GetObjectVertices() const
 	{
 		return m_objectVertices;
 	}
 
-	int Chunk::GetTile(const sf::Vector2i& _pos)
+	int Chunk::GetTile(const sf::Vector2i& _pos) const
 	{
 		return m_tiles[_pos.y * chunkSize + _pos.x].tileId;
 	}
 
-	bool Chunk::GetIsVisible()
+	bool Chunk::GetIsVisible() const
 	{
 		return m_isVisible;
 	}
 
-	bool Chunk::GetIsDirty()
+	bool Chunk::GetIsDirty() const
 	{
 		return m_isDirty;
 	}
 
-	void Chunk::SetTile(const sf::Vector2i& _pos, int _tileId, float _tileHeight)
+	void Chunk::SetTile(const sf::Vector2i& _pos, const uint8_t& _tileId, const float& _tileHeight)
 	{
 		if (_pos.x >= 0 && _pos.x < chunkSize &&
 			_pos.y >= 0 && _pos.y < chunkSize)
@@ -52,17 +52,17 @@ namespace Engine
 		}
 	}
 
-	void Chunk::SetDirty(bool _dirty)
+	void Chunk::SetDirty(const bool& _dirty)
 	{
 		m_isDirty = _dirty;
 	}
 
-	void Chunk::SetVisible(bool _visible)
+	void Chunk::SetVisible(const bool& _visible)
 	{
 		m_isVisible = _visible;
 	}
 
-	void Chunk::Build(const std::vector<sf::IntRect>& _textureRect, Camera* _cam)
+	void Chunk::Build(const std::vector<sf::IntRect>& _textureRect, const Camera* _cam)
 	{
 		m_groundVertices.clear();
 		m_objectVertices.clear();
