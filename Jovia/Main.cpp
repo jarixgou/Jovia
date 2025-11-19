@@ -18,6 +18,13 @@ void GameLoopThread(sf::RenderWindow& _window);
 
 int main()
 {
+	/*DEVMODE dm = { 0 };
+	dm.dmSize = sizeof(dm);
+	for (int iModeNum = 0; EnumDisplaySettings(NULL, iModeNum, &dm) != 0; iModeNum++)
+	{
+		std::cout << "Mode #" << iModeNum << " = " << dm.dmPelsWidth << "x" << dm.dmPelsHeight << std::endl;
+	}*/
+
 	srand(time(NULL));
 
 	std::unique_ptr<sf::RenderWindow> window = std::make_unique<sf::RenderWindow>();

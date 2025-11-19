@@ -11,6 +11,7 @@ namespace Engine
 	class Camera;
 	class DrawableObject;
 	class ChunkManager;
+	class Light;
 }
 
 class Game : public Engine::Scene
@@ -23,6 +24,13 @@ private:
 	std::vector<Engine::TextureSliced> m_textureSliced;
 
 	sf::RenderStates m_renderStates;
+
+	sf::CircleShape lightCircle;
+	Engine::Light* light;
+
+	sf::VertexArray g_shadowQuads;
+
+	sf::VertexArray colliderTest;
 
 	Engine::ChunkManager* m_chunkManager;
 public:

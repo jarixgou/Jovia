@@ -18,18 +18,24 @@ namespace Engine
 		float m_angularFalloff;
 		float m_volumetricIntensity;
 	public:
-		Light();
-		~Light();
+		Light() = default;
+		~Light() = default;
 
 		void SetRadius(const float& _radius);
-		void SetIntensity(const float& _intensity);
 		void SetPos(const sf::Vector3f& _pos);
 		void SetColor(const sf::Color& _color);
+		void SetIntensity(const float& _intensity);
+		void SetRadialFalloff(const float& _radialFalloff);
+		void SetAngularFalloff(const float& _angularFalloff);
+		void SetVolumetricIntensity(const float& _volumetricIntensity);
 
 		float GetRadius() const;
-		float GetIntensity() const;
 		const sf::Vector3f& GetPos() const;
 		const sf::Color& GetColor() const;
+		float GetIntensity() const;
+		float GetRadialFalloff() const;
+		float GetAngularFalloff() const;
+		float GetVolumetricIntensity() const;
 	};
 }
 
