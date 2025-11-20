@@ -26,6 +26,7 @@ private:
 	sf::RenderStates m_renderStates;
 
 	sf::CircleShape lightCircle;
+	sf::CircleShape lightCircle2;
 	Engine::Light* light;
 
 	sf::VertexArray g_shadowQuads;

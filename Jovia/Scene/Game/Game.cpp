@@ -43,6 +43,11 @@ void Game::Init()
 	lightCircle.setOrigin({ 500, 500 });
 	lightCircle.setTexture(Engine::AssetsManager::Get<sf::Texture>("Light"));
 
+	lightCircle2.setRadius(light->GetRadius());
+	lightCircle2.setOrigin({ 500, 500 });
+	lightCircle2.setTexture(Engine::AssetsManager::Get<sf::Texture>("Light"));
+	lightCircle2.setPosition(SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2);
+
 	colliderTest.setPrimitiveType(sf::Quads);
 	colliderTest.append(sf::Vertex({ SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2 }, sf::Color::Red));
 	colliderTest.append(sf::Vertex({ SCREEN_WIDTH / 2 + 100,SCREEN_HEIGHT / 2 }, sf::Color::Red));
@@ -316,6 +321,7 @@ void Game::Display(sf::RenderWindow& _window)
 
 	lightMapTexture.clear(sf::Color::Black);
 	lightMapTexture.draw(lightCircle, sf::BlendAdd);
+	lightMapTexture.draw(lightCircle2, sf::BlendAdd);
 	lightMapTexture.display();
 
 	shadowMapTexture.clear(sf::Color::White);
