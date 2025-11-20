@@ -30,7 +30,23 @@ private:
 
 	sf::VertexArray g_shadowQuads;
 
+	sf::RenderTexture shadowMapTexture;
+	sf::Sprite shadowMapSprite;
+
+	sf::RenderTexture lightMapTexture;
+	sf::Sprite lightMapSprite;
+
+	sf::RenderTexture compositeLightAndShadowTexture;
+	sf::Sprite compositeLightAndShadowSprite;
+
+	sf::RenderTexture sceneTexture;
+	sf::Sprite sceneSprite;
+
 	sf::VertexArray colliderTest;
+	sf::VertexArray colliderTest2;
+
+	sf::RenderStates lightShaderStates;
+	sf::Shader lightShader;
 
 	Engine::ChunkManager* m_chunkManager;
 public:

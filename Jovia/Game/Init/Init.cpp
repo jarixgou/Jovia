@@ -16,7 +16,8 @@ void Init(sf::RenderWindow& _window)
 
 void InitSystem(sf::RenderWindow& _window)
 {
-	_window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia");
+    sf::ContextSettings windowSettings(32, 0, 32);
+	_window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia",sf::Style::Default, windowSettings);
 
     _window.setActive(true);
 
