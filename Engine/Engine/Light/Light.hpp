@@ -2,7 +2,11 @@
 #define LIGHT__HPP
 #include <SFML/System/Vector3.hpp>
 #include <vector>
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
 
 namespace Engine
 {
@@ -17,10 +21,28 @@ namespace Engine
 		float m_radialFalloff;
 		float m_angularFalloff;
 		float m_volumetricIntensity;
+
+		sf::CircleShape* m_lightShape;
+
+		sf::VertexArray m_projectedShadow;
+
+		sf::RenderTexture m_shadowMap;
+		sf::Sprite m_shadowMapSprite;
+
+		sf::RenderTexture m_lightMap;
+		sf::Sprite m_lightMapSprite;
+
+		sf::RenderTexture m_compositeLightAndShadow;
+		sf::Sprite m_compositeLightAndShadowSprite;
 	public:
-		Light() = default;
+		Light(sf::CircleShape* _lightShape);
 		~Light() = default;
 
+		void Update();
+		void Display();
+
+		void BuildProjectedShadow(const sf::VertexArray& _object);
+	public: // Getters and Setters
 		void SetRadius(const float& _radius);
 		void SetPos(const sf::Vector3f& _pos);
 		void SetColor(const sf::Color& _color);
@@ -36,6 +58,10 @@ namespace Engine
 		float GetRadialFalloff() const;
 		float GetAngularFalloff() const;
 		float GetVolumetricIntensity() const;
+
+		sf::Sprite& GetCompositeLightAndShadow();
+		sf::Sprite& GetLightMap();
+		sf::Sprite& GetShadowMap();
 	};
 }
 

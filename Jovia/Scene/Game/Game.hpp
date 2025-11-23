@@ -26,22 +26,21 @@ private:
 	sf::RenderStates m_renderStates;
 
 	sf::CircleShape lightCircle;
-	sf::CircleShape lightCircle2;
-	Engine::Light* light;
+	std::vector<Engine::Light*> lightList;
 
 	sf::VertexArray g_shadowQuads;
-
-	sf::RenderTexture shadowMapTexture;
-	sf::Sprite shadowMapSprite;
 
 	sf::RenderTexture lightMapTexture;
 	sf::Sprite lightMapSprite;
 
-	sf::RenderTexture compositeLightAndShadowTexture;
+	sf::RenderTexture fuseComposite;
 	sf::Sprite compositeLightAndShadowSprite;
 
 	sf::RenderTexture sceneTexture;
 	sf::Sprite sceneSprite;
+
+	sf::RenderTexture m_compositeShadow;
+	sf::Sprite m_compositeShadowSprite;
 
 	sf::VertexArray colliderTest;
 	sf::VertexArray colliderTest2;
@@ -49,10 +48,12 @@ private:
 	sf::RenderStates lightShaderStates;
 	sf::Shader lightShader;
 
+	sf::CircleShape lightPosCircle;
+
 	Engine::ChunkManager* m_chunkManager;
 public:
 	Game() = default;
-	virtual ~Game() = default;
+	~Game() = default;
 
 	virtual void Init() override;
 	virtual void PollEvents(sf::RenderWindow& _window, sf::Event& _event) override;
