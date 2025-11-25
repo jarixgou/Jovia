@@ -166,7 +166,7 @@ void Game::Display(sf::RenderWindow& _window)
 	}*/
 
 
-	fuseComposite.clear(sf::Color::Transparent);
+	fuseComposite.clear(sf::Color::Black);
 
 	for (auto& light : lightList)
 	{

@@ -55,10 +55,10 @@ public:
 	Game() = default;
 	~Game() = default;
 
-	virtual void Init() override;
-	virtual void PollEvents(sf::RenderWindow& _window, sf::Event& _event) override;
-	virtual void Update(sf::RenderWindow& _renderWindow, float _dt) override;
-	virtual void Display(sf::RenderWindow& _window) override;
-	virtual void Cleanup() override;
+	void Init() override;
+	void PollEvents(sf::RenderWindow& _window, sf::Event& _event) override;
+	void Update(sf::RenderWindow& _renderWindow, float _dt) override;
+	void Display(sf::RenderWindow& _window) override;
+	void Cleanup() override;
 };
 #endif
