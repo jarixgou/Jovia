@@ -20,10 +20,10 @@
 
 void Game::Init()
 {
-	Engine::AssetsManager::Add<sf::Texture>("Assets/spritesheet.png");
+	Engine::AssetsManager::Add<sf::Texture>("Assets/Tile.png");
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Light.png");
 
-	const sf::Texture* spritesheetTexture = Engine::AssetsManager::Get<sf::Texture>("spritesheet");
+	const sf::Texture* spritesheetTexture = Engine::AssetsManager::Get<sf::Texture>("Tile");
 	m_tileSheet.setTexture(*spritesheetTexture);
 
 	m_textureSliced = Engine::SliceTexture(*spritesheetTexture, { 32,32 });
@@ -39,14 +39,14 @@ void Game::Init()
 	Engine::Light* light = new Engine::Light(&lightCircle);
 	light->SetPos({ 0,0,0, });
 	light->SetRadius(500);
-	light->SetColor(sf::Color::White);
+	light->SetColor(sf::Color::Magenta);
 
 	lightList.push_back(light);
 
 	Engine::Light* light2 = new Engine::Light(&lightCircle);
 	light2->SetPos({ SCREEN_WIDTH / 2 - 100,SCREEN_HEIGHT / 2,0, });
 	light2->SetRadius(500);
-	light2->SetColor(sf::Color::White);
+	light2->SetColor(sf::Color::Blue);
 
 	lightList.push_back(light2);
 
@@ -191,14 +191,6 @@ void Game::Display(sf::RenderWindow& _window)
 	sceneTexture.display();
 
 	_window.draw(sceneSprite, lightShaderStates);
-
-	for (auto& light : lightList)
-	{
-		lightPosCircle.setPosition({ light->GetPos().x, light->GetPos().y });
-		_window.draw(lightPosCircle);
-	}
-
-	/*_window.draw(tileSheet);*/
 }
 
 void Game::Cleanup()

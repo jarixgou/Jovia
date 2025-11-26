@@ -9,7 +9,6 @@
 namespace Engine
 {
 	class Camera;
-	class DrawableObject;
 	class ChunkManager;
 	class Light;
 }

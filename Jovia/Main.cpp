@@ -62,29 +62,71 @@ void GameLoopThread(sf::RenderWindow& _window)
 
 	sf::Clock deltaTime;
 	float gpuTime = 0.0f;
+
+	const int QUERY_BUFFER_SIZE = 8; // taille du buffer circulaire (à ajuster)
+	GLuint queries[QUERY_BUFFER_SIZE] = { 0u };
+	glGenQueries(QUERY_BUFFER_SIZE, queries);
+
+	int writeIndex = 0;   // où on place la prochaine query
+	int readIndex = 0;    // où on check la plus ancienne query non lue
+	int outstanding = 0;  // nombre de queries en attente de résultat
+
 	while (running)
 	{
 		sf::Time time = deltaTime.restart();
 		float dt = time.asSeconds();
 
 		Update(_window, time, dt);
-
 		Engine::DebugInterface::Update(_window, dt, gpuTime);
 
-		GLuint query;
-		glGenQueries(1, &query);
-		glBeginQuery(GL_TIME_ELAPSED, query);
+		// Si buffer plein, tenter de libérer des résultats disponibles sans bloquer
+		if (outstanding == QUERY_BUFFER_SIZE)
+		{
+			GLint available = 0;
+			glGetQueryObjectiv(queries[readIndex], GL_QUERY_RESULT_AVAILABLE, &available);
+			if (available)
+			{
+				GLuint64 elapsed = 0;
+				glGetQueryObjectui64v(queries[readIndex], GL_QUERY_RESULT, &elapsed);
+				gpuTime = static_cast<float>(elapsed) / 1000000.0f;
+				readIndex = (readIndex + 1) % QUERY_BUFFER_SIZE;
+				--outstanding;
+			}
+			else
+			{
+				// Pas de résultat prêt : on évite de bloquer, on rend sans mesurer cette frame
+				Display(_window);
+				continue;
+			}
+		}
+
+		// Lancer la mesure pour cette frame sur la position writeIndex
+		glBeginQuery(GL_TIME_ELAPSED, queries[writeIndex]);
 
 		Display(_window);
 
 		glEndQuery(GL_TIME_ELAPSED);
 
-		GLuint64 elapsed;
-		glGetQueryObjectui64v(query, GL_QUERY_RESULT, &elapsed);
-		gpuTime = elapsed / 1000000.0f;
+		// Marquer la query comme en attente puis avancer writeIndex
+		writeIndex = (writeIndex + 1) % QUERY_BUFFER_SIZE;
+		++outstanding;
 
-		glDeleteQueries(1, &query);
+		// Lire autant de résultats disponibles que possible (non bloquant)
+		while (outstanding > 0)
+		{
+			GLint available = 0;
+			glGetQueryObjectiv(queries[readIndex], GL_QUERY_RESULT_AVAILABLE, &available);
+			if (!available) break;
+			GLuint64 elapsed = 0;
+			glGetQueryObjectui64v(queries[readIndex], GL_QUERY_RESULT, &elapsed);
+			// elapsed en nanosecondes -> millisecondes
+			gpuTime = static_cast<float>(elapsed) / 1000000.0f;
+			readIndex = (readIndex + 1) % QUERY_BUFFER_SIZE;
+			--outstanding;
+		}
 	}
+
+	glDeleteQueries(QUERY_BUFFER_SIZE, queries);
 
 	_window.setActive(false);
 }

@@ -33,6 +33,7 @@
     <ClCompile Include="Engine\Light\Light.cpp" />
     <ClCompile Include="Engine\Light\LightManager.cpp" />
     <ClCompile Include="Engine\Logger\Logger.cpp" />
+    <ClCompile Include="Engine\Render\RenderAPI.cpp" />
     <ClCompile Include="Engine\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Scene\ScenesManager.cpp" />
     <ClCompile Include="Engine\TextureSlice\TextureSlice.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Engine\Light\LightManager.hpp" />
     <ClInclude Include="Engine\Logger\Logger.hpp" />
     <ClInclude Include="Engine\QuadTree\QuadTree.hpp" />
+    <ClInclude Include="Engine\Render\RenderAPI.hpp" />
     <ClInclude Include="Engine\Scene\Scene.hpp" />
     <ClInclude Include="Engine\Scene\ScenesManager.hpp" />
     <ClInclude Include="Engine\TextureSlice\TextureSlice.hpp" />
