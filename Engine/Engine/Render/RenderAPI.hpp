@@ -3,26 +3,28 @@
 
 #include <memory>
 #include <SFML/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Shader.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 namespace Engine
 {
-	enum class DrawableType : uint8_t;
-	struct DrawableObject;
-
 	class RenderAPI
 	{
 	private:
-		static sf::RenderStates lightRender;
-		static sf::Shader lightShader;
+		static bool m_used;
+		static sf::RenderStates m_renderPipline;
+		static sf::Shader m_lightShader;
 
-		static std::unique_ptr<sf::RenderTexture> sceneMap;
-
-	public: // Public variable
-		static std::unique_ptr<sf::RenderTexture> lightMap;
-		std::vector<DrawableObject*> sceneObject;
+		static std::unique_ptr<sf::Sprite> m_lightMapSprite;
+		static std::unique_ptr<sf::Sprite> m_sceneMapSprite;
+	public:
+		static std::unique_ptr<sf::RenderTexture> m_lightMap;
+		static std::unique_ptr<sf::RenderTexture> m_sceneMap;
 	public: // Public function
 		static void Init();
-		static void Display();
+		static void Clear();
+		static void Display(sf::RenderWindow& _window);
 	};
 
 }
