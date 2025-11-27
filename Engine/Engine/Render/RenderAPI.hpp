@@ -14,17 +14,18 @@ namespace Engine
 	private:
 		static bool m_used;
 		static sf::RenderStates m_renderPipline;
-		static sf::Shader m_lightShader;
+		static sf::Shader* m_lightShader;
 
 		static std::unique_ptr<sf::Sprite> m_lightMapSprite;
 		static std::unique_ptr<sf::Sprite> m_sceneMapSprite;
-	public:
+	public: // Public variable
 		static std::unique_ptr<sf::RenderTexture> m_lightMap;
 		static std::unique_ptr<sf::RenderTexture> m_sceneMap;
 	public: // Public function
 		static void Init();
 		static void Clear();
 		static void Display(sf::RenderWindow& _window);
+		static bool GetIsUsed();
 	};
 
 }

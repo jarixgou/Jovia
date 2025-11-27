@@ -54,13 +54,13 @@ bool Engine::ScenesManager::LoadScene(const char* _sceneName)
 		m_currentSceneName = name;
 
 		std::string message = "Scene " + std::string(_sceneName) + " loaded";
-		LOG_INFO(message.c_str());
+		LOG_INFO(message.c_str(), true);
 		return true;
 	}
 	else
 	{
 		std::string message = "Scene " + std::string(_sceneName) + " not found";
-		LOG_ERROR(message.c_str());
+		LOG_ERROR(message.c_str(), true);
 		return false;
 	}
 
@@ -74,12 +74,13 @@ bool Engine::ScenesManager::HasScene(const char* _sceneName)
 	if (it != m_scenesList.end())
 	{
 		std::string message = "Scene '" + std::string(_sceneName) + "' find";
-		LOG_INFO(message.c_str());
+		LOG_INFO(message.c_str(), true);
 		return true;
 	}
 	else
 	{
 		std::string message = "Scene '" + std::string(_sceneName) + "' not found";
+		LOG_WARNING(message.c_str(), true);
 		return false;
 	}
 

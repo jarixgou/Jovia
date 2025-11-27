@@ -34,6 +34,9 @@ namespace Engine
 
 		sf::RenderTexture m_compositeLightAndShadow;
 		sf::Sprite m_compositeLightAndShadowSprite;
+
+		sf::RenderStates m_lightMapStates;
+		sf::Shader* m_lightShader;
 	public:
 		Light(sf::CircleShape* _lightShape);
 		~Light() = default;

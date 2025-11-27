@@ -31,14 +31,14 @@ namespace Engine
 			if (!std::is_base_of_v<Scene, T>)
 			{
 				std::string message = std::string(typeid(T).name()) + "must inherit scene";
-				LOG_WARNING(message.c_str());
+				LOG_WARNING(message.c_str(), true);
 				return false;
 			}
 
 			if (m_scenesList.contains(_sceneName))
 			{
 				std::string message = "Scene " + std::string(_sceneName) + " already exists.";
-				LOG_WARNING(message.c_str());
+				LOG_WARNING(message.c_str(), true);
 				return false;
 			}
 
@@ -49,26 +49,26 @@ namespace Engine
 				if (inserted)
 				{
 					std::string message = "Scene " + std::string(_sceneName) + " created.";
-					LOG_INFO(message.c_str());
+					LOG_INFO(message.c_str(), true);
 					return true;
 				}
 				else
 				{
 					std::string message = "Scene " + std::string(_sceneName) + " already exists.";
-					LOG_WARNING(message.c_str());
+					LOG_WARNING(message.c_str(), true);
 					return false;
 				}
 			}
 			catch (const std::bad_alloc& e)
 			{
 				std::string message = std::string("Failed to allocate scene '") + _sceneName + "' reason: " + e.what();
-				LOG_CRITICAL(message.c_str());
+				LOG_CRITICAL(message.c_str(), true);
 				return false;
 			}
 			catch (const std::exception& e)
 			{
 				std::string message = "Failed to create scene '" + std::string(_sceneName) + "' reason: " + e.what();
-				LOG_CRITICAL(message.c_str());
+				LOG_CRITICAL(message.c_str(), true);
 				return false;
 			}
 

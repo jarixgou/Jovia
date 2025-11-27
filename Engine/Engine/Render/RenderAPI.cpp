@@ -7,7 +7,7 @@ namespace Engine
 {
 	bool RenderAPI::m_used = false;
 	sf::RenderStates RenderAPI::m_renderPipline;
-	sf::Shader RenderAPI::m_lightShader;
+	sf::Shader* RenderAPI::m_lightShader;
 	std::unique_ptr<sf::Sprite> RenderAPI::m_lightMapSprite = nullptr;
 	std::unique_ptr<sf::Sprite> RenderAPI::m_sceneMapSprite = nullptr;
 	std::unique_ptr<sf::RenderTexture> RenderAPI::m_lightMap = nullptr;
@@ -15,11 +15,21 @@ namespace Engine
 
 	void RenderAPI::Init()
 	{
+		if (m_used)
+		{
+			LOG_WARNING("RenderAPI is already used", true);
+			return;
+		}
+
 		try
 		{
+			AssetsManager::Add<sf::Shader>("Assets/Shaders/LightShader.frag");
+			AssetsManager::Add<sf::Shader>("Assets/Shaders/RenderPipeline.frag");
+			m_lightShader = const_cast<sf::Shader*>(AssetsManager::Get<sf::Shader>("RenderPipeline"));
+
 			m_used = true;
 			m_renderPipline.blendMode = sf::BlendAlpha;
-			/*m_renderPipline.shader = AssetsManager::Get<sf::Shader>("lightShader");*/
+			m_renderPipline.shader = m_lightShader;
 
 			m_lightMap = std::make_unique<sf::RenderTexture>();
 			m_sceneMap = std::make_unique<sf::RenderTexture>();
@@ -32,12 +42,12 @@ namespace Engine
 		catch (std::bad_alloc& e)
 		{
 			std::string message = "Failed to init RenderAPI reason: " + std::string(e.what());
-			LOG_CRITICAL(message.c_str());
+			LOG_CRITICAL(message.c_str(), true);
 		}
 		catch (std::exception& e)
 		{
 			std::string message = "Failed to init RenderAPI reason: " + std::string(e.what());
-			LOG_CRITICAL(message.c_str());
+			LOG_CRITICAL(message.c_str(), true);
 		}
 	}
 
@@ -45,12 +55,12 @@ namespace Engine
 	{
 		if (m_lightMap != nullptr && m_sceneMap != nullptr && m_used)
 		{
-			m_lightMap->clear();
-			m_sceneMap->clear();
+			m_lightMap->clear(sf::Color::Black);
+			m_sceneMap->clear(sf::Color::Black);
 		}
 		else
 		{
-			LOG_WARNING("To use this function you need to use RenderAPI::Init()");
+			LOG_WARNING("To use this function you need to use RenderAPI::Init()", true);
 		}
 	}
 
@@ -61,18 +71,21 @@ namespace Engine
 			m_lightMap->display();
 			m_sceneMap->display();
 		}
-		else
-		{
-			LOG_WARNING("To use this function you need to use RenderAPI::Init()");
-		}
 
 		if (m_lightMapSprite != nullptr && m_sceneMapSprite)
 		{
-			
+			m_lightShader->setUniform("lightMap", m_lightMap->getTexture());
+
+			_window.draw(*m_sceneMapSprite, m_renderPipline);
 		}
 		else
 		{
-			LOG_WARNING("To use this function you need to use RenderAPI::Init()");
+			LOG_WARNING("To use this function you need to use RenderAPI::Init()", true);
 		}
+	}
+
+	bool RenderAPI::GetIsUsed()
+	{
+		return m_used;
 	}
 }

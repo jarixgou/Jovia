@@ -6,6 +6,7 @@
 #include <SFML/Window/Keyboard.hpp>
 
 #include "../DrawableObject/DrawableObject.hpp"
+#include "../Render/RenderAPI.hpp"
 
 namespace Engine
 {
@@ -210,7 +211,7 @@ namespace Engine
 		return m_type;
 	}
 
-	void Camera::DrawObject(sf::Sprite& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const
+	void Camera::DrawObject(sf::Sprite& _object, const sf::RenderStates& _objectStates, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
@@ -219,10 +220,17 @@ namespace Engine
 		_object.setScale(scale, scale);
 		_object.setPosition(screenPos);
 		_object.setRotation(m_angle);
-		_window.draw(_object);
+		if (RenderAPI::GetIsUsed())
+		{
+			RenderAPI::m_sceneMap->draw(_object, _objectStates);
+		}
+		else
+		{
+			_window.draw(_object, _objectStates);
+		}
 	}
 
-	void Camera::DrawObject(sf::RectangleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const
+	void Camera::DrawObject(sf::RectangleShape& _object, const sf::RenderStates _objectStates, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
@@ -231,10 +239,17 @@ namespace Engine
 		_object.setScale(scale, scale);
 		_object.setPosition(screenPos);
 		_object.setRotation(m_angle);
-		_window.draw(_object);
+		if (RenderAPI::GetIsUsed())
+		{
+			RenderAPI::m_sceneMap->draw(_object, _objectStates);
+		}
+		else
+		{
+			_window.draw(_object, _objectStates);
+		}
 	}
 
-	void Camera::DrawObject(sf::CircleShape& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const
+	void Camera::DrawObject(sf::CircleShape& _object, const sf::RenderStates& _objectStates, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const
 	{
 		sf::Vector2f screenPos = WorldToScreen(_pos, _size);
 
@@ -243,7 +258,14 @@ namespace Engine
 		_object.setScale(scale, scale);
 		_object.setPosition(screenPos);
 		_object.setRotation(m_angle);
-		_window.draw(_object);
+		if (RenderAPI::GetIsUsed())
+		{
+			RenderAPI::m_sceneMap->draw(_object, _objectStates);
+		}
+		else
+		{
+			_window.draw(_object, _objectStates);
+		}
 	}
 
 	void Camera::DrawObject(DrawableObject& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const
@@ -251,16 +273,23 @@ namespace Engine
 		switch (_object.type)
 		{
 		case DrawableType::SPRITE:
-			DrawObject(_object.sprite, _pos, _size, _window);
+			DrawObject(_object.sprite, _object.states, _pos, _size, _window);
 			break;
 		case DrawableType::RECTANGLE:
-			DrawObject(_object.rectangle, _pos, _size, _window);
+			DrawObject(_object.rectangle, _object.states, _pos, _size, _window);
 			break;
 		case DrawableType::CIRCLE:
-			DrawObject(_object.circle, _pos, _size, _window);
+			DrawObject(_object.circle, _object.states, _pos, _size, _window);
 			break;
 		case DrawableType::SHAPE:
-			_window.draw(_object.shape, _object.states);
+			if (RenderAPI::GetIsUsed())
+			{
+				RenderAPI::m_sceneMap->draw(_object.shape, _object.states);
+			}
+			else
+			{
+				_window.draw(_object.shape, _object.states);
+			}
 			break;
 		}
 	}

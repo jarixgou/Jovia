@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "../Asset/AssetsManager.hpp"
+
 namespace Engine
 {
 	Light::Light(sf::CircleShape* _lightShape)
@@ -18,6 +20,9 @@ namespace Engine
 		m_compositeLightAndShadowSprite.setTexture(m_compositeLightAndShadow.getTexture());
 
 		m_lightShape = _lightShape;
+		m_lightShader = const_cast<sf::Shader*>(AssetsManager::Get<sf::Shader>("LightShader"));
+		m_lightMapStates.blendMode = sf::BlendAdd;
+		m_lightMapStates.shader = m_lightShader;
 	}
 
 	void Light::Update()
@@ -27,6 +32,16 @@ namespace Engine
 
 	void Light::Display()
 	{
+		m_lightShader->setUniform("intensity", m_intensity);
+		m_lightShader->setUniform("volumetricIntensity", m_volumetricIntensity);
+		m_lightShader->setUniform("radialFalloff", m_radialFalloff);
+		m_lightShader->setUniform("angularFalloff", m_angularFalloff);
+
+		m_lightShader->setUniform("baseColor", sf::Glsl::Vec3(
+			m_color.r / 255.f,
+			m_color.g / 255.f,
+			m_color.b / 255.f));
+
 		// Render shadow map
 		m_shadowMap.clear(sf::Color::White);
 
@@ -42,7 +57,7 @@ namespace Engine
 		m_lightShape->setPosition({ m_pos.x, m_pos.y });
 		m_lightShape->setFillColor(m_color);
 
-		m_lightMap.draw(*m_lightShape, sf::BlendAdd);
+		m_lightMap.draw(*m_lightShape, m_lightMapStates);
 
 		m_lightMap.display();
 
@@ -111,7 +126,7 @@ namespace Engine
 
 				m_projectedShadow.append({ a, sf::Color::Black });      
 				m_projectedShadow.append({ b, sf::Color::Black });
-				m_projectedShadow.append({ p2, sf::Color::Black });        
+				m_projectedShadow.append({ p2, sf::Color::Black });   
 				m_projectedShadow.append({ p1, sf::Color::Black });
 			}
 		}

@@ -26,25 +26,25 @@ void InitSystem(sf::RenderWindow& _window)
     {
         std::string message = "GLEW initialization failed: " +
             std::string(reinterpret_cast<const char*>(glewGetErrorString(err)));
-		LOG_CRITICAL(message.c_str());
+		LOG_CRITICAL(message.c_str(), true);
     }
 
     if (!GLEW_ARB_timer_query)
     {
-        LOG_WARNING("Query timer not supported");
+        LOG_WARNING("Query timer not supported", true);
     }
 
-    LOG_INFO("Render window was created successfully");
+    LOG_INFO("Render window was created successfully", true);
 
     std::string message = "OpenGL : " + std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
-    LOG_INFO(message.c_str());
+    LOG_INFO(message.c_str(), true);
 
     _window.setActive(false);
 
 	ImGui::SFML::Init(_window);
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	LOG_INFO("ImGui was initialized");
+	LOG_INFO("ImGui was initialized", true);
 }
 
 void InitScene()

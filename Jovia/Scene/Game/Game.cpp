@@ -18,17 +18,21 @@
 #include <Engine/Light/Light.hpp>
 #include <Engine/Light/LightManager.hpp>
 
+#include "Engine/Render/RenderAPI.hpp"
+
 void Game::Init()
 {
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Tile.png");
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Light.png");
+
+	Engine::RenderAPI::Init();
 
 	const sf::Texture* spritesheetTexture = Engine::AssetsManager::Get<sf::Texture>("Tile");
 	m_tileSheet.setTexture(*spritesheetTexture);
 
 	m_textureSliced = Engine::SliceTexture(*spritesheetTexture, { 32,32 });
 	std::string message = "Sliced texture into " + std::to_string(m_textureSliced.size()) + " sprites.";
-	LOG_DEBUG(message.c_str());
+	LOG_DEBUG(message.c_str(), false);
 
 	m_camera = new Engine::Camera();
 	m_camera->SetType(Engine::CameraType::ISOMETRIC);
@@ -39,14 +43,22 @@ void Game::Init()
 	Engine::Light* light = new Engine::Light(&lightCircle);
 	light->SetPos({ 0,0,0, });
 	light->SetRadius(500);
-	light->SetColor(sf::Color::Magenta);
+	light->SetColor(sf::Color::Cyan);
+	light->SetIntensity(1.5f);
+	light->SetAngularFalloff(1.f);
+	light->SetRadialFalloff(1.f);
+	light->SetVolumetricIntensity(1.f);
 
 	lightList.push_back(light);
 
 	Engine::Light* light2 = new Engine::Light(&lightCircle);
 	light2->SetPos({ SCREEN_WIDTH / 2 - 100,SCREEN_HEIGHT / 2,0, });
 	light2->SetRadius(500);
-	light2->SetColor(sf::Color::Blue);
+	light2->SetColor(sf::Color::White);
+	light2->SetIntensity(1.f);
+	light2->SetAngularFalloff(1.f);
+	light2->SetRadialFalloff(1.f);
+	light2->SetVolumetricIntensity(1.f);
 
 	lightList.push_back(light2);
 
@@ -80,25 +92,6 @@ void Game::Init()
 			 pos.x * sinAngle + (pos.y + 100) * cosAngle },
 		sf::Color::Blue));
 
-	g_shadowQuads.setPrimitiveType(sf::Quads);
-
-	m_compositeShadow.create(1920, 1080);
-	m_compositeShadowSprite.setTexture(m_compositeShadow.getTexture());
-
-	lightMapTexture.create(1920, 1080);
-	lightMapSprite.setTexture(lightMapTexture.getTexture());
-
-	fuseComposite.create(1920, 1080);
-	compositeLightAndShadowSprite.setTexture(fuseComposite.getTexture());
-
-	sceneTexture.create(1920, 1080);
-	sceneSprite.setTexture(sceneTexture.getTexture());
-
-	lightShader.loadFromFile("light.frag", sf::Shader::Type::Fragment);
-
-	lightShaderStates.shader = &lightShader;
-	lightShaderStates.blendMode = sf::BlendAlpha;
-
 	m_chunkManager = new Engine::ChunkManager();
 
 	m_renderStates.texture = spritesheetTexture;
@@ -117,10 +110,6 @@ void Game::Init()
 			m_chunkManager->SetTileAt({ x, y }, id, 0);
 		}
 	}
-
-	lightPosCircle.setRadius(40);
-	lightPosCircle.setOrigin(40, 40);
-	lightPosCircle.setFillColor(sf::Color::Yellow);
 }
 
 void Game::PollEvents(sf::RenderWindow& _window, sf::Event& _event)
@@ -152,45 +141,25 @@ void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 
 void Game::Display(sf::RenderWindow& _window)
 {
+	Engine::RenderAPI::Clear();
 	Engine::LayerManager::Draw(m_camera, _window);
-
-	/*for (const auto& chunk : m_chunkManager->GetChunks())
-	{
-		_window.draw(chunk->GetGroundVertices(), m_renderStates);
-		_window.draw(chunk->GetObjectVertices(), m_renderStates);
-	}*/
-
-	/*if (g_shadowQuads.getVertexCount() > 0)
-	{
-		_window.draw(g_shadowQuads);
-	}*/
-
-
-	fuseComposite.clear(sf::Color::Black);
 
 	for (auto& light : lightList)
 	{
 		light->Display();
-		fuseComposite.draw(light->GetCompositeLightAndShadow(), sf::BlendAdd);
+		Engine::RenderAPI::m_lightMap->draw(light->GetCompositeLightAndShadow(), sf::BlendAdd);
 	}
 
-	fuseComposite.display();
-
-	lightShader.setUniform("lightMap", fuseComposite.getTexture());
-
-	sceneTexture.clear(sf::Color::Black);
 	for (const auto& chunk : m_chunkManager->GetChunks())
 	{
-		sceneTexture.draw(chunk->GetGroundVertices(), m_renderStates);
-		sceneTexture.draw(chunk->GetObjectVertices(), m_renderStates);
+		Engine::RenderAPI::m_sceneMap->draw(chunk->GetGroundVertices(), m_renderStates);
+		Engine::RenderAPI::m_sceneMap->draw(chunk->GetObjectVertices(), m_renderStates);
 	}
 
-	sceneTexture.draw(colliderTest);
-	sceneTexture.draw(colliderTest2);
+	Engine::RenderAPI::m_sceneMap->draw(colliderTest);
+	Engine::RenderAPI::m_sceneMap->draw(colliderTest2);
 
-	sceneTexture.display();
-
-	_window.draw(sceneSprite, lightShaderStates);
+	Engine::RenderAPI::Display(_window);
 }
 
 void Game::Cleanup()

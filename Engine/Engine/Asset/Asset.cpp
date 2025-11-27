@@ -13,10 +13,10 @@ namespace Engine
 			m_texture->generateMipmap();
 			return true;
 		}
-		catch (std::bad_alloc&)
+		catch (std::bad_alloc& e)
 		{
-			std::string message = "Failed to allocate memory for " + GetResourceTypeName() + " : " + m_path;
-			LOG_CRITICAL(message.c_str());
+			std::string message = "Failed to allocate memory for " + m_name + " '" + GetResourceTypeName() + "' " + "reason: " + std::string(e.what());
+			LOG_CRITICAL(message.c_str(), true);
 			return false;
 		}
 	}
@@ -41,8 +41,8 @@ namespace Engine
 		m_load = false;
 		m_texture.reset();
 
-		std::string message = "Asset '" + m_name + "' unloaded.";
-		LOG_INFO(message.c_str());
+		std::string message = "Asset unloaded: " + m_name;
+		LOG_INFO(message.c_str(), true);
 	}
 
 	bool SoundAsset::LoadFromFile()
@@ -52,10 +52,10 @@ namespace Engine
 			m_sound = std::make_unique<sf::SoundBuffer>();
 			return m_sound->loadFromFile(m_path);
 		}
-		catch (std::bad_alloc&)
+		catch (std::bad_alloc& e)
 		{
-			std::string message = "Failed to allocate memory for " + GetResourceTypeName() + " : " + m_path;
-			LOG_CRITICAL(message.c_str());
+			std::string message = "Failed to allocate memory for " + m_name + " '" + GetResourceTypeName() + "' " + "reason: " + std::string(e.what());
+			LOG_CRITICAL(message.c_str(), true);
 			return false;
 		}
 	}
@@ -80,8 +80,8 @@ namespace Engine
 		m_load = false;
 		m_sound.reset();
 
-		std::string message = "Asset '" + m_name + "' unloaded.";
-		LOG_INFO(message.c_str());
+		std::string message = "Asset unloaded: " + m_name;
+		LOG_INFO(message.c_str(), true);
 	}
 
 	bool MusicAsset::LoadFromFile()
@@ -91,10 +91,10 @@ namespace Engine
 			m_music = std::make_unique<sf::Music>();
 			return m_music->openFromFile(m_path);
 		}
-		catch (std::bad_alloc&)
+		catch (std::bad_alloc& e)
 		{
-			std::string message = "Failed to allocate memory for " + GetResourceTypeName() + " : " + m_path;
-			LOG_CRITICAL(message.c_str());
+			std::string message = "Failed to allocate memory for " + m_name + " '" + GetResourceTypeName() + "' " + "reason: " + std::string(e.what());
+			LOG_CRITICAL(message.c_str(), true);
 			return false;
 		}
 	}
@@ -119,8 +119,8 @@ namespace Engine
 		m_load = false;
 		m_music.reset();
 
-		std::string message = "Asset '" + m_name + "' unloaded.";
-		LOG_INFO(message.c_str());
+		std::string message = "Asset unloaded: " + m_name;
+		LOG_INFO(message.c_str(), true);
 	}
 
 	bool FontAsset::LoadFromFile()
@@ -130,10 +130,10 @@ namespace Engine
 			m_font = std::make_unique<sf::Font>();
 			return m_font->loadFromFile(m_path);
 		}
-		catch (std::bad_alloc&)
+		catch (std::bad_alloc& e)
 		{
-			std::string message = "Failed to allocate memory for " + GetResourceTypeName() + " : " + m_path;
-			LOG_CRITICAL(message.c_str());
+			std::string message = "Failed to allocate memory for " + m_name + " '" + GetResourceTypeName() + "' " + "reason: " + std::string(e.what());
+			LOG_CRITICAL(message.c_str(), true);
 			return false;
 		}
 	}
@@ -158,7 +158,65 @@ namespace Engine
 		m_load = false;
 		m_font.reset();
 
-		std::string message = "Asset '" + m_name + "' unloaded.";
-		LOG_INFO(message.c_str());
+		std::string message = "Asset unloaded: " + m_name;
+		LOG_INFO(message.c_str(), true);
+	}
+
+	bool ShaderAsset::LoadFromFile()
+	{
+		try
+		{
+			m_shader = std::make_unique<sf::Shader>();
+
+			std::string extensionName = "";
+			size_t lastDot = m_path.find_last_of(".") + 1;
+			if (lastDot != std::string::npos)
+			{
+				extensionName = m_path.substr(lastDot);
+			}
+
+			if (extensionName == "frag")
+			{
+				return m_shader->loadFromFile(m_path, sf::Shader::Fragment);
+			}
+			else if (extensionName == "vert")
+			{
+				return m_shader->loadFromFile(m_path, sf::Shader::Vertex);
+			}
+			else if (extensionName == "geo")
+			{
+				return m_shader->loadFromFile(m_path, sf::Shader::Geometry);
+			}
+		}
+		catch (std::bad_alloc& e)
+		{
+			std::string message = "Failed to allocate memory for " + m_name + " '" + GetResourceTypeName() + "' " + "reason: " + std::string(e.what());
+			LOG_CRITICAL(message.c_str(), true);
+			return false;
+		}
+	}
+
+	const void* ShaderAsset::GetResource() const
+	{
+		return m_shader.get();
+	}
+
+	std::string ShaderAsset::GetResourceTypeName() const
+	{
+		return "Shader";
+	}
+
+	void ShaderAsset::Unload()
+	{
+		if (m_shader == nullptr)
+		{
+			return;
+		}
+
+		m_load = false;
+		m_shader.reset();
+
+		std::string message = "Asset unloaded: " + m_name;
+		LOG_INFO(message.c_str(), true);
 	}
 }

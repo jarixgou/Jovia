@@ -30,8 +30,8 @@ namespace Engine
 				(*it)->Unload();
 				m_assetsList.erase(it);
 
-				std::string message = "Asset '" + std::string(_name) + "' removed.";
-				LOG_INFO(message.c_str());
+				std::string message = "Asset removed: " + std::string(_name);
+				LOG_INFO(message.c_str(), true);
 				return;
 			}
 		}
@@ -46,7 +46,7 @@ namespace Engine
 				asset->Unload();
 			}
 		}
-		LOG_INFO("All loaded assets unloaded");
+		LOG_INFO("All loaded assets unloaded", true);
 	}
 
 	void AssetsManager::Clear()
@@ -57,6 +57,6 @@ namespace Engine
 		}
 		m_assetsList.clear();
 
-		LOG_INFO("All assets unloaded");
+		LOG_INFO("All assets unloaded", true);
 	}
 }

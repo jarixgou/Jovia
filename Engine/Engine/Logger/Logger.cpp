@@ -15,12 +15,12 @@ namespace Engine
 	{
 		switch (_level)
 		{
-		case LogLevel::DEBUG:			return "[DEBUG]";
-		case LogLevel::INFO:			return "[INFO]";
-		case LogLevel::WARNING:			return "[WARNING]";
-		case LogLevel::LOG_ERROR:		return "[ERROR]";
-		case LogLevel::CRITICAL:		return "[CRITICAL]";
-		default:						return "[UNKNOWN]";
+		case LogLevel::DEBUG:			return GetLevelColor(_level) + "[DEBUG]" + RESET;
+		case LogLevel::INFO:			return GetLevelColor(_level) + "[INFO]" + RESET;
+		case LogLevel::WARNING:			return GetLevelColor(_level) + "[WARNING]" + RESET;
+		case LogLevel::LOG_ERROR:		return GetLevelColor(_level) + "[ERROR]" + RESET;
+		case LogLevel::CRITICAL:		return GetLevelColor(_level) + "[CRITICAL]" + RESET;
+		default:						return GetLevelColor(_level) + "[UNKNOWN]" + RESET;
 		}
 	}
 
@@ -37,11 +37,21 @@ namespace Engine
 		}
 	}
 
-	void Logger::Log(LogLevel _level, const char* _message)
+	void Logger::Log(LogLevel _level, const char* _message, bool _fromEngine)
 	{
 		if (_level < m_minimumLevel)
 		{
 			return;
+		}
+
+		std::string prefixName = "";
+		if (_fromEngine)
+		{
+			prefixName = LIGHT_BLUE + std::string("[ENGINE]") + RESET;
+		}
+		else
+		{
+			prefixName = LIGHT_PURPLE + std::string("[SCRIPT]") + RESET;
 		}
 
 		auto now = std::chrono::system_clock::now();
@@ -49,11 +59,10 @@ namespace Engine
 		std::tm localTime;
 		localtime_s(&localTime, &currentTime);
 
-		std::string color = GetLevelColor(_level);
 		std::string prefix = GetLevelPrefix(_level);
 
 		std::ostringstream oss;
-		oss << color << "[" << std::put_time(&localTime, "%H:%M:%S") << "] "
+		oss << "[" << std::put_time(&localTime, "%H:%M:%S") << "] " << prefixName << " "
 			<< prefix << " - " << _message << RESET << "\n";
 		std::string outPut = oss.str();
 
@@ -87,7 +96,7 @@ namespace Engine
 
 		if (!logFile.is_open())
 		{
-			LOG_ERROR("can't open file");
+			LOG_ERROR("can't open file", true);
 			return;
 		}
 

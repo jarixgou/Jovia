@@ -27,27 +27,8 @@ private:
 	sf::CircleShape lightCircle;
 	std::vector<Engine::Light*> lightList;
 
-	sf::VertexArray g_shadowQuads;
-
-	sf::RenderTexture lightMapTexture;
-	sf::Sprite lightMapSprite;
-
-	sf::RenderTexture fuseComposite;
-	sf::Sprite compositeLightAndShadowSprite;
-
-	sf::RenderTexture sceneTexture;
-	sf::Sprite sceneSprite;
-
-	sf::RenderTexture m_compositeShadow;
-	sf::Sprite m_compositeShadowSprite;
-
 	sf::VertexArray colliderTest;
 	sf::VertexArray colliderTest2;
-
-	sf::RenderStates lightShaderStates;
-	sf::Shader lightShader;
-
-	sf::CircleShape lightPosCircle;
 
 	Engine::ChunkManager* m_chunkManager;
 public:

@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <string>
+#include <SFML/Graphics/Shader.hpp>
 
 #include "SFML/Audio/Music.hpp"
 #include "SFML/Audio/SoundBuffer.hpp"
@@ -74,6 +75,17 @@ namespace Engine
 		void Unload() override;
 	};
 
+	class ShaderAsset : public Asset
+	{
+	public:
+		std::unique_ptr<sf::Shader> m_shader;
+
+		bool LoadFromFile() override;
+		const void* GetResource() const override;
+		std::string GetResourceTypeName() const override;
+		void Unload() override;
+	};
+
 	template <>
 	struct AssetTypeMap<sf::Texture>
 	{
@@ -96,6 +108,12 @@ namespace Engine
 	struct AssetTypeMap<sf::Font>
 	{
 		using Type = FontAsset;
+	};
+
+	template <>
+	struct AssetTypeMap<sf::Shader>
+	{
+		using Type = ShaderAsset;
 	};
 }
 

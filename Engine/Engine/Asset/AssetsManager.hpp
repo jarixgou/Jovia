@@ -14,12 +14,12 @@ namespace Engine
 	private:
 		static std::vector<std::unique_ptr<Asset>> m_assetsList;
 	public:
-		template <class T>
+		template <typename T>
 		static bool Add(const char* _path)
 		{
 			if (_path == nullptr || std::string(_path).empty())
 			{
-				LOG_WARNING("Invalid asset path");
+				LOG_WARNING("Invalid asset path", true);
 				return false;
 			}
 
@@ -28,7 +28,7 @@ namespace Engine
 				if (asset->m_path == _path)
 				{
 					std::string message = "Asset with path: " + std::string(_path) + " already exists.";
-					LOG_WARNING(message.c_str());
+					LOG_WARNING(message.c_str(), true);
 					return false;
 				}
 			}
@@ -46,20 +46,20 @@ namespace Engine
 				else
 				{
 					std::string message = "Unknown asset type: " + assetType;
-					LOG_WARNING(message.c_str());
+					LOG_WARNING(message.c_str(), true);
 					return false;
 				}
 			}
 			catch (const std::bad_alloc& e)
 			{
 				std::string message = "Failed to allocate memory for " + assetType + " asset reason: " + e.what();
-				LOG_CRITICAL(message.c_str());
+				LOG_CRITICAL(message.c_str(), true);
 				return false;
 			}
 			catch (const std::exception& e)
 			{
 				std::string message = "Failed to add asset '" + std::string(_path) + "' reason: " + e.what();
-				LOG_CRITICAL(message.c_str());
+				LOG_CRITICAL(message.c_str(), true);
 				return false;
 			}
 
@@ -76,16 +76,16 @@ namespace Engine
 			load = false;
 			m_assetsList.push_back(std::move(asset));
 			std::string message = "Asset added: " + name;
-			LOG_INFO(message.c_str());
+			LOG_INFO(message.c_str(), true);
 			return true;
 		}
 
-		template <class T>
+		template <typename T>
 		static const T* Get(const char* _name)
 		{
 			if (_name == nullptr || std::string(_name).empty())
 			{
-				LOG_WARNING("Invalid asset name");
+				LOG_WARNING("Invalid asset name", true);
 				return nullptr;
 			}
 
@@ -101,7 +101,7 @@ namespace Engine
 					if (data == nullptr)
 					{
 						std::string message = "Asset with name: " + name + " is not of type: " + std::string(typeid(T).name());
-						LOG_WARNING(message.c_str());
+						LOG_WARNING(message.c_str(), true);
 						return nullptr;
 					}
 
@@ -111,24 +111,24 @@ namespace Engine
 						{
 							load = true;
 							std::string message = "Loaded asset: " + name;
-							LOG_INFO(message.c_str());
+							LOG_INFO(message.c_str(), true);
 						}
 						else
 						{
 							std::string message = "Failed to load " + asset->GetResourceTypeName() + " from file :" + path;
-							LOG_ERROR(message.c_str());
+							LOG_ERROR(message.c_str(), true);
 							return nullptr;
 						}
 					}
 
 					std::string message = "Asset found: " + name;
-					LOG_DEBUG(message.c_str());
+					LOG_DEBUG(message.c_str(), true);
 					return static_cast<const T*>(asset->GetResource());
 				}
 			}
 
 			std::string message = "Asset not found: " + std::string(_name);
-			LOG_ERROR(message.c_str());
+			LOG_ERROR(message.c_str(), true);
 			return nullptr;
 		}
 
