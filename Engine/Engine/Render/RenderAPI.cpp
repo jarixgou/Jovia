@@ -55,8 +55,8 @@ namespace Engine
 	{
 		if (m_lightMap != nullptr && m_sceneMap != nullptr && m_used)
 		{
-			m_lightMap->clear(sf::Color::Black);
-			m_sceneMap->clear(sf::Color::Black);
+			m_lightMap->clear(sf::Color::Transparent);
+			m_sceneMap->clear(sf::Color::Transparent);
 		}
 		else
 		{

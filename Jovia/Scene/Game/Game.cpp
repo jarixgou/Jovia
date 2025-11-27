@@ -147,17 +147,26 @@ void Game::Display(sf::RenderWindow& _window)
 	for (auto& light : lightList)
 	{
 		light->Display();
-		Engine::RenderAPI::m_lightMap->draw(light->GetCompositeLightAndShadow(), sf::BlendAdd);
+		if (Engine::RenderAPI::GetIsUsed())
+		{
+			Engine::RenderAPI::m_lightMap->draw(light->GetCompositeLightAndShadow(), sf::BlendAdd);
+		}
 	}
 
 	for (const auto& chunk : m_chunkManager->GetChunks())
 	{
-		Engine::RenderAPI::m_sceneMap->draw(chunk->GetGroundVertices(), m_renderStates);
-		Engine::RenderAPI::m_sceneMap->draw(chunk->GetObjectVertices(), m_renderStates);
+		if (Engine::RenderAPI::GetIsUsed())
+		{
+			Engine::RenderAPI::m_sceneMap->draw(chunk->GetGroundVertices(), m_renderStates);
+			Engine::RenderAPI::m_sceneMap->draw(chunk->GetObjectVertices(), m_renderStates);
+		}
 	}
 
-	Engine::RenderAPI::m_sceneMap->draw(colliderTest);
-	Engine::RenderAPI::m_sceneMap->draw(colliderTest2);
+	if (Engine::RenderAPI::GetIsUsed())
+	{
+		Engine::RenderAPI::m_sceneMap->draw(colliderTest);
+		Engine::RenderAPI::m_sceneMap->draw(colliderTest2);
+	}
 
 	Engine::RenderAPI::Display(_window);
 }
