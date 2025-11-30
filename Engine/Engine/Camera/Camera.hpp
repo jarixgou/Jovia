@@ -23,7 +23,7 @@ namespace Engine
 	private:
 		sf::Vector3f m_pos = { 0,0,0 };
 		sf::Vector2f m_size = { 1920,1080 };
-		float m_angle = 0.f;
+		sf::Vector3f m_angle = { 0,0,0 };
 		bool m_free = false;
 
 		sf::Vector3f m_target = { 0,0,0 };
@@ -39,20 +39,20 @@ namespace Engine
 		void SetFollow(sf::Vector3f _target);
 		void SetPos(sf::Vector3f _pos);
 		void SetSize(sf::Vector2f _size);
-		void SetAngle(float _angle);
+		void SetAngle(const sf::Vector3f& _angle);
 		void SetType(CameraType _type);
 
 		sf::FloatRect GetVisibleArea(sf::Vector2f _tileSize) const;
 		sf::Vector3f GetPos() const;
 		sf::Vector2f GetSize() const;
 		bool GetFree() const;
-		float GetAngle() const;
+		const sf::Vector3f& GetAngle() const;
 		CameraType GetType() const;
 
 		void DrawObject(sf::Sprite& _object, const sf::
-		                RenderStates& _objectStates, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
+			RenderStates& _objectStates, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
 		void DrawObject(sf::RectangleShape& _object, sf::
-		                RenderStates _objectStates, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
+			RenderStates _objectStates, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
 		void DrawObject(sf::CircleShape& _object, const sf::RenderStates& _objectStates, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
 		void DrawObject(DrawableObject& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
 

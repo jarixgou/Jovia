@@ -20,16 +20,19 @@ namespace Engine
 	{
 		DrawableType type;
 		sf::RenderStates states;
-		union
+
+		union Members
 		{
 			sf::Sprite sprite;
 			sf::RectangleShape rectangle;
 			sf::CircleShape circle;
 			sf::VertexArray shape;
-		};
 
-		DrawableObject() = default;
+			Members() {}
+			~Members() {}
+		} members;
 
+		DrawableObject();
 		DrawableObject(sf::Sprite _sprite, sf::RenderStates _states);
 		DrawableObject(sf::RectangleShape _rectangle, sf::RenderStates _states);
 		DrawableObject(sf::CircleShape _circle, sf::RenderStates _states);
@@ -37,6 +40,7 @@ namespace Engine
 
 		DrawableObject(const DrawableObject& _other) noexcept;
 		DrawableObject& operator=(const DrawableObject& _other) noexcept;
+		~DrawableObject();
 	};
 }
 

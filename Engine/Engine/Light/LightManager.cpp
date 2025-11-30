@@ -1,6 +1,8 @@
 #include "LightManager.hpp"
 
 #include "Light.hpp"
+#include "../Camera/Camera.hpp"
+#include "../Render/RenderAPI.hpp"
 
 namespace Engine
 {
@@ -11,9 +13,24 @@ namespace Engine
 		m_lightList.push_back(std::move(_light));
 	}
 
-	void LightManager::Update()
+	void LightManager::Update(Camera* _camera)
 	{
+		for (auto & light : m_lightList)
+		{
 
+		}
+	}
+
+	void LightManager::Display()
+	{
+		for (auto& light : m_lightList)
+		{
+			if (RenderAPI::GetIsUsed())
+			{
+				light->Display();
+				RenderAPI::m_lightMap->draw(light->GetCompositeLightAndShadow(), sf::BlendAdd);
+			}
+		}
 	}
 
 	void LightManager::Cleanup()

@@ -24,6 +24,15 @@ void Game::Init()
 {
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Tile.png");
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Light.png");
+	Engine::AssetsManager::Add<sf::Texture>("Assets/Monstre.png");
+
+	monstre.setTexture(*Engine::AssetsManager::Get<sf::Texture>("Monstre"));
+	monsterDrawableObject = new Engine::DrawableObject;
+	monsterDrawableObject->states = sf::RenderStates();
+	monsterDrawableObject->members.sprite = monstre;
+	monsterDrawableObject->type = Engine::DrawableType::SPRITE;
+	pos = {0,0,0};
+	size = { 32,32 };
 
 	Engine::RenderAPI::Init();
 
@@ -52,7 +61,7 @@ void Game::Init()
 	lightList.push_back(light);
 
 	Engine::Light* light2 = new Engine::Light(&lightCircle);
-	light2->SetPos({ SCREEN_WIDTH / 2 - 100,SCREEN_HEIGHT / 2,0, });
+	light2->SetPos({ SCREEN_WIDTH / 2 - 100,SCREEN_HEIGHT / 2, 0 });
 	light2->SetRadius(500);
 	light2->SetColor(sf::Color::White);
 	light2->SetIntensity(1.f);
@@ -135,6 +144,8 @@ void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 	m_chunkManager->UpdateVisibleChunks(m_camera);
 	m_chunkManager->RebuildDirtyChunks(m_camera);
 
+	Engine::LayerManager::Add(monsterDrawableObject, pos, size, 0);
+
 	Engine::CameraInterface::Update(m_camera);
 	m_camera->Update(_dt);
 }
@@ -142,13 +153,11 @@ void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 void Game::Display(sf::RenderWindow& _window)
 {
 	Engine::RenderAPI::Clear();
-	Engine::LayerManager::Draw(m_camera, _window);
-
 	for (auto& light : lightList)
 	{
-		light->Display();
 		if (Engine::RenderAPI::GetIsUsed())
 		{
+			light->Display();
 			Engine::RenderAPI::m_lightMap->draw(light->GetCompositeLightAndShadow(), sf::BlendAdd);
 		}
 	}
@@ -160,7 +169,13 @@ void Game::Display(sf::RenderWindow& _window)
 			Engine::RenderAPI::m_sceneMap->draw(chunk->GetGroundVertices(), m_renderStates);
 			Engine::RenderAPI::m_sceneMap->draw(chunk->GetObjectVertices(), m_renderStates);
 		}
+		else
+		{
+			_window.draw(chunk->GetGroundVertices(), m_renderStates);
+		}
 	}
+
+	Engine::LayerManager::Draw(m_camera, _window);
 
 	if (Engine::RenderAPI::GetIsUsed())
 	{

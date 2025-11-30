@@ -4,7 +4,7 @@
 
 void Display(sf::RenderWindow& _window)
 {
-	_window.clear();
+	_window.clear(sf::Color::Green);
 
 	Engine::ScenesManager::Display(_window);
 	ImGui::SFML::Render(_window);

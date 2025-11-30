@@ -1,6 +1,9 @@
 ﻿#include "Chunk.hpp"
 
+#include <iostream>
+
 #include "../Camera/Camera.hpp"
+#include "../Math/Math.hpp"
 
 namespace Engine
 
@@ -68,6 +71,7 @@ namespace Engine
 		m_objectVertices.clear();
 
 		const sf::Vector3f camPos = _cam->GetPos();
+		const sf::Vector3f camAngle = _cam->GetAngle();
 
 		for (int y = 0; y < chunkSize; ++y)
 		{
@@ -90,28 +94,37 @@ namespace Engine
 
 				sf::VertexArray& targetVertices = (tileData.height < 0.5f) ? m_groundVertices : m_objectVertices;
 
-				// Top - Left
-				targetVertices.append(sf::Vertex(
-					screenPos,
-					sf::Color::White,
+				Math::Mat3x3 r = Math::CreateRotationMatrix(camAngle.x, camAngle.y, camAngle.z);
+				sf::Vector3f dirWorld = Math::MultiplyMat3x3Vector(r, sf::Vector3f{ 1.f, 0.f, 0.f });
+
+				float angleRad = atan2f(dirWorld.y, dirWorld.x);
+				float c = cosf(angleRad);
+				float s = sinf(angleRad);
+
+				auto rot = [&](sf::Vector2f p) {
+					return sf::Vector2f{
+						p.x * c - p.y * s,
+						p.x * s + p.y * c
+					};
+					};
+
+				// Offsets avant rotation
+				sf::Vector2f p0 = { 0.f, 0.f };
+				sf::Vector2f p1 = { scaledWidth, 0.f };
+				sf::Vector2f p2 = { scaledWidth, scaledHeight };
+				sf::Vector2f p3 = { 0.f, scaledHeight };
+
+				// Ajout des 4 vertices
+				targetVertices.append(sf::Vertex(screenPos + rot(p0), sf::Color::White,
 					{ static_cast<float>(rect.left), static_cast<float>(rect.top) }));
 
-				// Top - Right
-				targetVertices.append(sf::Vertex(
-					{ screenPos.x + scaledWidth, screenPos.y },
-					sf::Color::White,
+				targetVertices.append(sf::Vertex(screenPos + rot(p1), sf::Color::White,
 					{ static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top) }));
 
-				// Bottom - Right
-				targetVertices.append(sf::Vertex(
-					{ screenPos.x + scaledWidth, screenPos.y + scaledHeight },
-					sf::Color::White,
+				targetVertices.append(sf::Vertex(screenPos + rot(p2), sf::Color::White,
 					{ static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top + rect.height) }));
 
-				// Bottom - Left
-				targetVertices.append(sf::Vertex(
-					{ screenPos.x, screenPos.y + scaledHeight },
-					sf::Color::White,
+				targetVertices.append(sf::Vertex(screenPos + rot(p3), sf::Color::White,
 					{ static_cast<float>(rect.left), static_cast<float>(rect.top + rect.height) }));
 			}
 		}
