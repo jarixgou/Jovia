@@ -5,7 +5,7 @@
 
 #include "../Camera/Camera.hpp"
 
-#include "../DrawableObject/DrawableObject.hpp"
+#include "../GameObject/GameObject.hpp"
 
 namespace Engine
 {
@@ -14,9 +14,9 @@ namespace Engine
 	std::future<void> LayerManager::m_sortTask;
 	std::atomic<bool> LayerManager::m_useBuffer = false;
 
-	void LayerManager::Add(DrawableObject* _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, const uint8_t& _order)
+	void LayerManager::Add(GameObject* _object, const uint8_t& _order)
 	{
-		m_layers.emplace_back(Layer{ _pos, _size, _order, _object });
+		m_layers.emplace_back(Layer{ _object, _order });
 	}
 
 	void LayerManager::Reserve(int _size)
@@ -62,10 +62,12 @@ namespace Engine
 			{
 				if (_camType == CameraType::ORTHOGRAPHIC)
 				{
-					auto orthographiqueCompare = [](const Layer& a, const Layer& b) noexcept -> bool
+					auto orthographiqueCompare = [](const Layer& _a, const Layer& _b) noexcept -> bool
 						{
-							return std::tie(a.order, b.pos.z, a.pos.y, a.pos.x) <
-								std::tie(b.order, a.pos.z, b.pos.y, b.pos.x);
+							sf::Vector3f aPos = _a.object->GetTransform().position;
+							sf::Vector3f bPos = _b.object->GetTransform().position;
+							return std::tie(_a.order, bPos.z, aPos.y, aPos.x) <
+								std::tie(_b.order, aPos.z, bPos.y, bPos.x);
 						};
 
 					if (layers.size() > 5000)
@@ -83,16 +85,19 @@ namespace Engine
 				}
 				else if (_camType == CameraType::ISOMETRIC)
 				{
-					auto isometricCompare = [](const Layer& a, const Layer& b) noexcept -> bool
+					auto isometricCompare = [](const Layer& _a, const Layer& _b) noexcept -> bool
 						{
-							if (a.order != b.order)
+							if (_a.order != _b.order)
 							{
-								return a.order < b.order;
+								return _a.order < _b.order;
 							}
 
+							const sf::Vector3f aPos = _a.object->GetTransform().position;
+							const sf::Vector3f bPos = _b.object->GetTransform().position;
+
 							constexpr float epsilon = 0.001f;
-							const float isoDepthA = a.pos.x + a.pos.y;
-							const float isoDepthB = b.pos.x + b.pos.y;
+							const float isoDepthA = aPos.x + aPos.y;
+							const float isoDepthB = bPos.x + bPos.y;
 							const float depthDiff = isoDepthA - isoDepthB;
 
 							if (depthDiff < -epsilon || depthDiff > epsilon)
@@ -100,13 +105,13 @@ namespace Engine
 								return isoDepthA < isoDepthB;
 							}
 
-							const float yDiff = a.pos.y - b.pos.y;
+							const float yDiff = aPos.y - bPos.y;
 							if (yDiff < -epsilon || yDiff > epsilon)
 							{
-								return a.pos.y < b.pos.y;
+								return aPos.y < bPos.y;
 							}
 
-							return a.pos.x < b.pos.x;
+							return aPos.x< bPos.x;
 						};
 
 					if (layers.size() > 5000)
@@ -139,7 +144,7 @@ namespace Engine
 		{
 			const Layer& layer = *it;
 
-			_cam->DrawObject(*layer.object, layer.pos, layer.size, _window);
+			layer.object->Display(_cam);
 		}
 	}
 }

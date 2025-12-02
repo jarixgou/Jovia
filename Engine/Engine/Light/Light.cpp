@@ -126,7 +126,7 @@ namespace Engine
 
 				m_projectedShadow.append({ a, sf::Color::Black });      
 				m_projectedShadow.append({ b, sf::Color::Black });
-				m_projectedShadow.append({ p2, sf::Color::Black });   
+				m_projectedShadow.append({ p2, sf::Color::Black });
 				m_projectedShadow.append({ p1, sf::Color::Black });
 			}
 		}

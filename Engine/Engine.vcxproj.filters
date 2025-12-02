@@ -51,7 +51,7 @@
     <ClCompile Include="Engine\Layer\LayerManager.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\DrawableObject\DrawableObject.cpp">
+    <ClCompile Include="Engine\GameObject\GameObject.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Chunk\Chunk.cpp">
@@ -70,6 +70,9 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Math\Math.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Transform\Transform.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,7 +116,7 @@
     <ClInclude Include="Engine\Layer\LayerManager.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\DrawableObject\DrawableObject.hpp">
+    <ClInclude Include="Engine\GameObject\GameObject.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Chunk\Chunk.hpp">
@@ -132,6 +135,12 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Math\Math.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Transform\Transform.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Object\Object.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

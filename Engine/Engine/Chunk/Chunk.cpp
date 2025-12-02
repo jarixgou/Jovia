@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "../Transform/Transform.hpp"
+
 #include "../Camera/Camera.hpp"
 #include "../Math/Math.hpp"
 
@@ -83,10 +85,12 @@ namespace Engine
 				float worldX = static_cast<float>(m_chunkPos.x * chunkSize + x);
 				float worldY = static_cast<float>(m_chunkPos.y * chunkSize + y);
 
-				sf::Vector2f screenPos = _cam->WorldToScreen(
-					{ worldX, worldY, tileData.height },
-					{ static_cast<float>(rect.width), static_cast<float>(rect.height) }
-				);
+				Transform tempTransform;
+				tempTransform.position = {worldX, worldY, tileData.height};
+				tempTransform.size = {static_cast<float>(rect.width), static_cast<float>(rect.height), 0.f};
+				tempTransform.scale = {1.f ,1.f};
+				tempTransform.angle = 0.f;
+				sf::Vector2f screenPos = _cam->WorldToScreen(tempTransform);
 
 				const float scale = 1.0f / (tileData.height - camPos.z);
 				const float scaledWidth = static_cast<float>(rect.width) * scale;

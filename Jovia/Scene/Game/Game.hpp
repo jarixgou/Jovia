@@ -11,7 +11,7 @@ namespace Engine
 	class Camera;
 	class ChunkManager;
 	class Light;
-	struct DrawableObject;
+	class GameObject;
 }
 
 class Game : public Engine::Scene
@@ -28,13 +28,10 @@ private:
 	sf::CircleShape lightCircle;
 	std::vector<Engine::Light*> lightList;
 
+	Engine::GameObject* monstre;
+
 	sf::VertexArray colliderTest;
 	sf::VertexArray colliderTest2;
-
-	Engine::DrawableObject* monsterDrawableObject;
-	sf::Vector3f pos;
-	sf::Vector2f size;
-	sf::Sprite monstre;
 
 	Engine::ChunkManager* m_chunkManager;
 public:

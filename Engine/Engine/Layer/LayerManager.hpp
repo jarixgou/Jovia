@@ -14,14 +14,12 @@ namespace Engine
 	class Camera;
 	enum class CameraType : uint8_t;
 
-	class DrawableObject;
+	class GameObject;
 
 	struct Layer
 	{
-		sf::Vector3f pos;
-		sf::Vector2f size;
+		GameObject* object;
 		uint8_t order;
-		DrawableObject* object;
 	};
 
 	class LayerManager
@@ -32,7 +30,7 @@ namespace Engine
 		static std::future<void> m_sortTask;
 		static std::atomic<bool> m_useBuffer;
 	public:
-		static void Add(DrawableObject* _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, const uint8_t& _order);
+		static void Add(GameObject* _object, const uint8_t& _order);
 
 		static void Reserve(int _size);
 		static void Clear();

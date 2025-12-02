@@ -24,7 +24,7 @@
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Chunk\Chunk.cpp" />
     <ClCompile Include="Engine\Chunk\ChunkManager.cpp" />
-    <ClCompile Include="Engine\DrawableObject\DrawableObject.cpp" />
+    <ClCompile Include="Engine\GameObject\GameObject.cpp" />
     <ClCompile Include="Engine\Interface\Assets\AssetsInterface.cpp" />
     <ClCompile Include="Engine\Interface\Camera\CameraInterface.cpp" />
     <ClCompile Include="Engine\Interface\Debug\DebugInterface.cpp" />
@@ -38,6 +38,7 @@
     <ClCompile Include="Engine\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Scene\ScenesManager.cpp" />
     <ClCompile Include="Engine\TextureSlice\TextureSlice.cpp" />
+    <ClCompile Include="Engine\Transform\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Asset\Asset.hpp" />
@@ -45,7 +46,8 @@
     <ClInclude Include="Engine\Camera\Camera.hpp" />
     <ClInclude Include="Engine\Chunk\Chunk.hpp" />
     <ClInclude Include="Engine\Chunk\ChunkManager.hpp" />
-    <ClInclude Include="Engine\DrawableObject\DrawableObject.hpp" />
+    <ClInclude Include="Engine\Object\Object.hpp" />
+    <ClInclude Include="Engine\GameObject\GameObject.hpp" />
     <ClInclude Include="Engine\Interface\Assets\AssetsInterface.hpp" />
     <ClInclude Include="Engine\Interface\Camera\CameraInterface.hpp" />
     <ClInclude Include="Engine\Interface\Debug\DebugInterface.hpp" />
@@ -60,6 +62,7 @@
     <ClInclude Include="Engine\Scene\Scene.hpp" />
     <ClInclude Include="Engine\Scene\ScenesManager.hpp" />
     <ClInclude Include="Engine\TextureSlice\TextureSlice.hpp" />
+    <ClInclude Include="Engine\Transform\Transform.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

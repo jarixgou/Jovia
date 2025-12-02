@@ -2,7 +2,8 @@
 
 #include <corecrt_math_defines.h>
 #include <execution>
-#include <Engine/DrawableObject/DrawableObject.hpp>
+
+#include <Engine/GameObject/GameObject.hpp>
 #include <Engine/Chunk/ChunkManager.hpp>
 
 #include <Engine/Asset/AssetsManager.hpp>
@@ -25,14 +26,6 @@ void Game::Init()
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Tile.png");
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Light.png");
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Monstre.png");
-
-	monstre.setTexture(*Engine::AssetsManager::Get<sf::Texture>("Monstre"));
-	monsterDrawableObject = new Engine::DrawableObject;
-	monsterDrawableObject->states = sf::RenderStates();
-	monsterDrawableObject->members.sprite = monstre;
-	monsterDrawableObject->type = Engine::DrawableType::SPRITE;
-	pos = {0,0,0};
-	size = { 32,32 };
 
 	Engine::RenderAPI::Init();
 
@@ -72,7 +65,6 @@ void Game::Init()
 	lightList.push_back(light2);
 
 	lightCircle.setTexture(Engine::AssetsManager::Get<sf::Texture>("Light"));
-
 
 	colliderTest.setPrimitiveType(sf::Quads);
 	colliderTest.append(sf::Vertex({ SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2 }, sf::Color::Red));
@@ -143,8 +135,6 @@ void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 
 	m_chunkManager->UpdateVisibleChunks(m_camera);
 	m_chunkManager->RebuildDirtyChunks(m_camera);
-
-	Engine::LayerManager::Add(monsterDrawableObject, pos, size, 0);
 
 	Engine::CameraInterface::Update(m_camera);
 	m_camera->Update(_dt);

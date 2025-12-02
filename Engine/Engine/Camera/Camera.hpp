@@ -10,7 +10,8 @@
 
 namespace Engine
 {
-	class DrawableObject;
+	class GameObject;
+	struct Transform;
 
 	enum class CameraType : uint8_t
 	{
@@ -49,15 +50,11 @@ namespace Engine
 		const sf::Vector3f& GetAngle() const;
 		CameraType GetType() const;
 
-		void DrawObject(sf::Sprite& _object, const sf::
-			RenderStates& _objectStates, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
-		void DrawObject(sf::RectangleShape& _object, sf::
-			RenderStates _objectStates, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
-		void DrawObject(sf::CircleShape& _object, const sf::RenderStates& _objectStates, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
-		void DrawObject(DrawableObject& _object, const sf::Vector3f& _pos, const sf::Vector2f& _size, sf::RenderWindow& _window) const;
+		void DrawObject(GameObject* _gameObject, sf::RenderTarget& _renderTarget) const;
 
-		sf::Vector2f WorldToScreen(const sf::Vector3f& _objectPos, const sf::Vector2f& _objectSize) const;
-	private:
+		sf::Vector2f WorldToScreen(const Transform& _transform) const;
+	private: // Private function
+		void TransformObject(sf::Drawable* _object, const Transform& _transform) const;
 	};
 }
 
