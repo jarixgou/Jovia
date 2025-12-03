@@ -9,13 +9,9 @@ namespace Engine
 	{
 		// TODO: adapt the camera to use GameObject
 		// TODO: create a static class who contains the render
-		if (RenderAPI::GetIsUsed() && m_tag != "Light")
+		if (RenderAPI::GetIsUsed())
 		{
-			//_camera->DrawObject(this, RenderAPI::m_sceneMap);
-		}
-		else if (RenderAPI::GetIsUsed() && m_tag == "Light")
-		{
-			//_camera->DrawObject(this, RenderAPI::m_lightMap)
+			_camera->DrawObject(this, *RenderAPI::m_sceneMap);
 		}
 		else
 		{

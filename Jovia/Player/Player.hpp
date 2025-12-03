@@ -6,7 +6,7 @@
 class Player : public Engine::GameObject
 {
 private:
-
+	
 public:
 	void Init() override;
 	void Update(const float& _dt) override;

@@ -19,6 +19,7 @@
 #include <Engine/Light/Light.hpp>
 #include <Engine/Light/LightManager.hpp>
 
+#include "../../Player/Player.hpp"
 #include "Engine/Render/RenderAPI.hpp"
 
 void Game::Init()
@@ -26,6 +27,9 @@ void Game::Init()
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Tile.png");
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Light.png");
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Monstre.png");
+
+	monstre = new Player();
+	monstre->Init();
 
 	Engine::RenderAPI::Init();
 
@@ -172,6 +176,8 @@ void Game::Display(sf::RenderWindow& _window)
 		Engine::RenderAPI::m_sceneMap->draw(colliderTest);
 		Engine::RenderAPI::m_sceneMap->draw(colliderTest2);
 	}
+
+	monstre->Display(m_camera);
 
 	Engine::RenderAPI::Display(_window);
 }

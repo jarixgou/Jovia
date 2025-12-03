@@ -16,7 +16,7 @@ namespace Engine
 
 	class GameObject
 	{
-	private:
+	public:
 		Transform m_transform;
 		Object* m_object = nullptr;
 		std::string m_tag;

@@ -27,7 +27,7 @@ private:
 
 	sf::CircleShape lightCircle;
 	std::vector<Engine::Light*> lightList;
-
+	
 	Engine::GameObject* monstre;
 
 	sf::VertexArray colliderTest;

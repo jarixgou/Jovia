@@ -248,6 +248,7 @@ namespace Engine
 		if (object != nullptr && object->shape != nullptr)
 		{
 			TransformObject(object->shape, _gameObject->GetTransform());
+
 			_renderTarget.draw(*object->shape, object->renderStates);
 		}
 	}
@@ -304,7 +305,7 @@ namespace Engine
 		sf::Vector2f pos = WorldToScreen(_transform);
 
 		const float scale = 1.f / (_transform.position.z - m_pos.z);
-		const sf::Vector2f finalScale = {_transform.scale.x + scale, _transform.scale.y + scale };
+		const sf::Vector2f finalScale = {_transform.scale.x * scale, _transform.scale.y * scale };
 
 		Math::Mat3x3 r = Math::CreateRotationMatrix(m_angle.x, m_angle.y, m_angle.z);
 		sf::Vector3f dirWorld = Math::MultiplyMat3x3Vector(r, sf::Vector3f{ 1.f, 0.f, 0.f });
