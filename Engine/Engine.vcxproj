@@ -28,6 +28,8 @@
     <ClCompile Include="Engine\Interface\Assets\AssetsInterface.cpp" />
     <ClCompile Include="Engine\Interface\Camera\CameraInterface.cpp" />
     <ClCompile Include="Engine\Interface\Debug\DebugInterface.cpp" />
+    <ClCompile Include="Engine\Interface\Log\LogInterface.cpp" />
+    <ClCompile Include="Engine\Interface\System\SystemInterface.cpp" />
     <ClCompile Include="Engine\Interpolator\Interpolator.cpp" />
     <ClCompile Include="Engine\Layer\LayerManager.cpp" />
     <ClCompile Include="Engine\Light\Light.cpp" />
@@ -37,6 +39,7 @@
     <ClCompile Include="Engine\Render\RenderAPI.cpp" />
     <ClCompile Include="Engine\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Scene\ScenesManager.cpp" />
+    <ClCompile Include="Engine\System\System.cpp" />
     <ClCompile Include="Engine\TextureSlice\TextureSlice.cpp" />
     <ClCompile Include="Engine\Transform\Transform.cpp" />
   </ItemGroup>
@@ -46,6 +49,8 @@
     <ClInclude Include="Engine\Camera\Camera.hpp" />
     <ClInclude Include="Engine\Chunk\Chunk.hpp" />
     <ClInclude Include="Engine\Chunk\ChunkManager.hpp" />
+    <ClInclude Include="Engine\Interface\Log\LogInterface.hpp" />
+    <ClInclude Include="Engine\Interface\System\SystemInterface.hpp" />
     <ClInclude Include="Engine\Object\Object.hpp" />
     <ClInclude Include="Engine\GameObject\GameObject.hpp" />
     <ClInclude Include="Engine\Interface\Assets\AssetsInterface.hpp" />
@@ -61,6 +66,7 @@
     <ClInclude Include="Engine\Render\RenderAPI.hpp" />
     <ClInclude Include="Engine\Scene\Scene.hpp" />
     <ClInclude Include="Engine\Scene\ScenesManager.hpp" />
+    <ClInclude Include="Engine\System\System.hpp" />
     <ClInclude Include="Engine\TextureSlice\TextureSlice.hpp" />
     <ClInclude Include="Engine\Transform\Transform.hpp" />
   </ItemGroup>

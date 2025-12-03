@@ -2,18 +2,19 @@
 
 #include <Engine/Scene/ScenesManager.hpp>
 
+#include <Engine/System/System.hpp>
 
-void PollEvents(sf::RenderWindow& _window)
+void PollEvents()
 {
 	sf::Event event;
-	while (_window.pollEvent(event))
+	while (System::window->pollEvent(event))
 	{
-		ImGui::SFML::ProcessEvent(_window, event);
+		ImGui::SFML::ProcessEvent(*System::window, event);
 		if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
 		{
-			_window.close();
+			System::window->close();
 		}
 
-		Engine::ScenesManager::PollEvents(_window, event);
+		Engine::ScenesManager::PollEvents(event);
 	}
 }

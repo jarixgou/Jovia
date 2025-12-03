@@ -9,6 +9,8 @@
 #include <ImGui/imgui.h>
 #include <psapi.h>
 
+#include "../../System/System.hpp"
+
 float Engine::DebugInterface::m_dt = 0.0f;
 float Engine::DebugInterface::m_gpuTime = 0.0f;
 static float timer = 0.0f;
@@ -38,7 +40,7 @@ static std::string GetCPUName()
 	return std::string(cpuName);
 }
 
-void Engine::DebugInterface::Update(sf::RenderWindow& _window, float _dt, float _gpuTime)
+void Engine::DebugInterface::Update(float _dt, float _gpuTime)
 {
 	timer += _dt;
 
@@ -132,15 +134,19 @@ void Engine::DebugInterface::Update(sf::RenderWindow& _window, float _dt, float 
 		ImGui::Separator();
 		if (ImGui::SliderInt("Target FPS", &targetFps, 30, 240))
 		{
-			_window.setFramerateLimit(targetFps);
+			System::window->setFramerateLimit(targetFps);
 		}
 		float targetFrameTime = 1000.0f / targetFps;
 		float frameTimeBudget = targetFrameTime - (m_dt * 1000.0f);
 
 		if (frameTimeBudget >= 0)
+		{
 			ImGui::TextColored(ImVec4(0, 1, 0, 1), "Frame Budget: +%.2f ms", frameTimeBudget);
+		}
 		else
+		{
 			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Frame Budget: %.2f ms (OVER)", frameTimeBudget);
+		}
 	}
 
 	// Advanced Section

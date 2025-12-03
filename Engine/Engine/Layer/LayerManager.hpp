@@ -35,7 +35,7 @@ namespace Engine
 		static void Reserve(int _size);
 		static void Clear();
 		static void Update(CameraType _camType);
-		static void Draw(Camera* _cam, sf::RenderWindow& _window);
+		static void Draw(Camera* _cam);
 	};
 }
 

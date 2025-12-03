@@ -18,16 +18,16 @@ void Menu::Init()
 	const sf::Texture* cellTexture = Engine::AssetsManager::Get<sf::Texture>("Cell");
 }
 
-void Menu::PollEvents(sf::RenderWindow& _window, sf::Event& _event)
+void Menu::PollEvents(sf::Event& _event)
 {
 }
 
-void Menu::Update(sf::RenderWindow& _renderWindow, float _dt)
+void Menu::Update(float _dt)
 {
 
 }
 
-void Menu::Display(sf::RenderWindow& _window)
+void Menu::Display()
 {
 
 }

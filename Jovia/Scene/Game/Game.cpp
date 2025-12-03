@@ -20,7 +20,9 @@
 #include <Engine/Light/LightManager.hpp>
 
 #include "../../Player/Player.hpp"
-#include "Engine/Render/RenderAPI.hpp"
+#include <Engine/Render/RenderAPI.hpp>
+
+#include "Engine/System/System.hpp"
 
 void Game::Init()
 {
@@ -117,16 +119,16 @@ void Game::Init()
 	}
 }
 
-void Game::PollEvents(sf::RenderWindow& _window, sf::Event& _event)
+void Game::PollEvents(sf::Event& _event)
 {
 
 }
 
-void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
+void Game::Update(float _dt)
 {
 	Engine::LayerManager::Clear();
 
-	sf::Vector2i mousePos = sf::Mouse::getPosition(_renderWindow);
+	sf::Vector2i mousePos = sf::Mouse::getPosition(*System::window);
 	Engine::Light* light = lightList[0];
 	light->SetPos({ static_cast<float>(mousePos.x), static_cast<float>(mousePos.y),0 });
 
@@ -144,7 +146,7 @@ void Game::Update(sf::RenderWindow& _renderWindow, float _dt)
 	m_camera->Update(_dt);
 }
 
-void Game::Display(sf::RenderWindow& _window)
+void Game::Display()
 {
 	Engine::RenderAPI::Clear();
 	for (auto& light : lightList)
@@ -165,11 +167,11 @@ void Game::Display(sf::RenderWindow& _window)
 		}
 		else
 		{
-			_window.draw(chunk->GetGroundVertices(), m_renderStates);
+			System::window->draw(chunk->GetGroundVertices(), m_renderStates);
 		}
 	}
 
-	Engine::LayerManager::Draw(m_camera, _window);
+	Engine::LayerManager::Draw(m_camera);
 
 	if (Engine::RenderAPI::GetIsUsed())
 	{
@@ -179,7 +181,7 @@ void Game::Display(sf::RenderWindow& _window)
 
 	monstre->Display(m_camera);
 
-	Engine::RenderAPI::Display(_window);
+	Engine::RenderAPI::Display();
 }
 
 void Game::Cleanup()

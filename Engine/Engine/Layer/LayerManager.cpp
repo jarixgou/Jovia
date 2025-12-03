@@ -131,7 +131,7 @@ namespace Engine
 			});
 	}
 
-	void LayerManager::Draw(Camera* _cam, sf::RenderWindow& _window)
+	void LayerManager::Draw(Camera* _cam)
 	{
 		const auto& layersToDraw = m_useBuffer ? m_layersBuffer : m_layers;
 

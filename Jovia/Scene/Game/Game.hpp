@@ -39,9 +39,9 @@ public:
 	~Game() = default;
 
 	void Init() override;
-	void PollEvents(sf::RenderWindow& _window, sf::Event& _event) override;
-	void Update(sf::RenderWindow& _renderWindow, float _dt) override;
-	void Display(sf::RenderWindow& _window) override;
+	void PollEvents(sf::Event& _event) override;
+	void Update(float _dt) override;
+	void Display() override;
 	void Cleanup() override;
 };
 #endif

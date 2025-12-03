@@ -3,6 +3,6 @@
 
 #include "../../Common.h"
 
-void Init(sf::RenderWindow& _window);
+void Init();
 
 #endif

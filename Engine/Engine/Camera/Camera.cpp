@@ -288,7 +288,7 @@ namespace Engine
 			Math::Mat3x3 r = Math::CreateRotationMatrix(m_angle.x, m_angle.y, m_angle.z);
 		
 			Math::Mat3x3 isoMatrix = Math::CreateIsoMatrix(objectScaled);
-			Math::Mat3x3 finalMatrix = Math::MultiplyMat3x3(r, isoMatrix);
+			Math::Mat3x3 finalMatrix = Math::MultiplyMat(r, isoMatrix);
 			sf::Vector3f pos = Math::MultiplyMat3x3Vector(finalMatrix, relativePos);
 
 			screenPos = {

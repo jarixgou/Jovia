@@ -11,9 +11,9 @@ namespace Engine
 		virtual ~Scene();
 
 		virtual void Init();
-		virtual void PollEvents(sf::RenderWindow& _window, sf::Event& _event);
-		virtual void Update(sf::RenderWindow& _renderWindow, float _dt);
-		virtual void Display(sf::RenderWindow& _window);
+		virtual void PollEvents(sf::Event& _event);
+		virtual void Update(float _dt);
+		virtual void Display();
 		virtual void Cleanup();
 	};
 }

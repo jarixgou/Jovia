@@ -24,7 +24,8 @@ namespace Engine
 	public: // Public function
 		static void Init();
 		static void Clear();
-		static void Display(sf::RenderWindow& _window);
+		static void Display();
+		static void Cleanup();
 		static bool GetIsUsed();
 	};
 

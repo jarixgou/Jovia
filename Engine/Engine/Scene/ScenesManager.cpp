@@ -4,27 +4,27 @@ std::shared_ptr<Engine::Scene> Engine::ScenesManager::m_currentScene = nullptr;
 std::string Engine::ScenesManager::m_currentSceneName;
 std::unordered_map<std::string, std::shared_ptr<Engine::Scene>> Engine::ScenesManager::m_scenesList;
 
-void Engine::ScenesManager::PollEvents(sf::RenderWindow& _window, sf::Event& _event)
+void Engine::ScenesManager::PollEvents(sf::Event& _event)
 {
 	if (m_currentScene != nullptr)
 	{
-		m_currentScene->PollEvents(_window, _event);
+		m_currentScene->PollEvents(_event);
 	}
 }
 
-void Engine::ScenesManager::Update(sf::RenderWindow& _window, float _dt)
+void Engine::ScenesManager::Update(float _dt)
 {
 	if (m_currentScene != nullptr)
 	{
-		m_currentScene->Update(_window, _dt);
+		m_currentScene->Update(_dt);
 	}
 }
 
-void Engine::ScenesManager::Display(sf::RenderWindow& _window)
+void Engine::ScenesManager::Display()
 {
 	if (m_currentScene != nullptr)
 	{
-		m_currentScene->Display(_window);
+		m_currentScene->Display();
 	}
 }
 

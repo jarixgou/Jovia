@@ -4,22 +4,24 @@
 
 #include "../../Scene/Menu/Menu.hpp"
 #include "../../Scene/Game/Game.hpp"
+#include "Engine/System/System.hpp"
 
-void InitSystem(sf::RenderWindow& _window);
+void InitSystem();
 void InitScene();
 
-void Init(sf::RenderWindow& _window)
+void Init()
 {
-	InitSystem(_window);
+	InitSystem();
 	InitScene();
 }
 
-void InitSystem(sf::RenderWindow& _window)
+void InitSystem()
 {
     sf::ContextSettings windowSettings(32, 0, 32);
-	_window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia",sf::Style::Default, windowSettings);
+    System::window = std::make_unique<sf::RenderWindow>();
+    System::window->create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia",sf::Style::Default, windowSettings);
 
-    _window.setActive(true);
+    System::window->setActive(true);
 
     GLenum err = glewInit();
     if (err != GLEW_OK)
@@ -39,9 +41,9 @@ void InitSystem(sf::RenderWindow& _window)
     std::string message = "OpenGL : " + std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
     LOG_INFO(message.c_str(), true);
 
-    _window.setActive(false);
+    System::window->setActive(false);
 
-	ImGui::SFML::Init(_window);
+	ImGui::SFML::Init(*System::window);
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	LOG_INFO("ImGui was initialized", true);

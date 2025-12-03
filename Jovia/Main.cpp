@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "Engine/Interface/Debug/DebugInterface.hpp"
+#include "Engine/System/System.hpp"
 #include "Game/Cleanup/Cleanup.hpp"
 #include "Game/Display/Display.hpp"
 #include "Game/Init/Init.hpp"
@@ -14,7 +15,7 @@ WindowState windowState;
 std::atomic<bool> running{ true };
 std::atomic<bool> initialized{ false };
 
-void GameLoopThread(sf::RenderWindow& _window);
+void GameLoopThread();
 
 int main()
 {
@@ -27,19 +28,17 @@ int main()
 
 	srand(time(NULL));
 
-	std::unique_ptr<sf::RenderWindow> window = std::make_unique<sf::RenderWindow>();
-
-	Init(*window);
+	Init();
 
 	initialized = true;
 
-	window->setActive(false);
+	System::window->setActive(false);
 
-	std::thread renderThread(GameLoopThread, std::ref(*window));
+	std::thread renderThread(GameLoopThread);
 
-	while (window->isOpen())
+	while (System::window->isOpen())
 	{
-		PollEvents(*window);
+		PollEvents();
 	}
 
 	running = false;
@@ -51,14 +50,14 @@ int main()
 	Cleanup();
 }
 
-void GameLoopThread(sf::RenderWindow& _window)
+void GameLoopThread()
 {
 	while (!initialized)
 	{
 		sf::sleep(sf::milliseconds(10));
 	}
 
-	_window.setActive(true);
+	System::window->setActive(true);
 
 	sf::Clock deltaTime;
 	float gpuTime = 0.0f;
@@ -76,8 +75,8 @@ void GameLoopThread(sf::RenderWindow& _window)
 		sf::Time time = deltaTime.restart();
 		float dt = time.asSeconds();
 
-		Update(_window, time, dt);
-		Engine::DebugInterface::Update(_window, dt, gpuTime);
+		Update(time, dt);
+		Engine::DebugInterface::Update(dt, gpuTime);
 
 		// Si buffer plein, tenter de libérer des résultats disponibles sans bloquer
 		if (outstanding == QUERY_BUFFER_SIZE)
@@ -95,7 +94,7 @@ void GameLoopThread(sf::RenderWindow& _window)
 			else
 			{
 				// Pas de résultat prêt : on évite de bloquer, on rend sans mesurer cette frame
-				Display(_window);
+				Display();
 				continue;
 			}
 		}
@@ -103,7 +102,7 @@ void GameLoopThread(sf::RenderWindow& _window)
 		// Lancer la mesure pour cette frame sur la position writeIndex
 		glBeginQuery(GL_TIME_ELAPSED, queries[writeIndex]);
 
-		Display(_window);
+		Display();
 
 		glEndQuery(GL_TIME_ELAPSED);
 
@@ -128,5 +127,5 @@ void GameLoopThread(sf::RenderWindow& _window)
 
 	glDeleteQueries(QUERY_BUFFER_SIZE, queries);
 
-	_window.setActive(false);
+	System::window->setActive(false);
 }

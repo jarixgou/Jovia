@@ -3,6 +3,6 @@
 
 #include "../../Common.h"
 
-void Display(sf::RenderWindow& _window);
+void Display();
 
 #endif

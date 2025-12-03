@@ -15,12 +15,12 @@ namespace Engine
 	{
 		switch (_level)
 		{
-		case LogLevel::DEBUG:			return GetLevelColor(_level) + "[DEBUG]" + RESET;
-		case LogLevel::INFO:			return GetLevelColor(_level) + "[INFO]" + RESET;
-		case LogLevel::WARNING:			return GetLevelColor(_level) + "[WARNING]" + RESET;
-		case LogLevel::LOG_ERROR:		return GetLevelColor(_level) + "[ERROR]" + RESET;
-		case LogLevel::CRITICAL:		return GetLevelColor(_level) + "[CRITICAL]" + RESET;
-		default:						return GetLevelColor(_level) + "[UNKNOWN]" + RESET;
+		case LogLevel::DEBUG:			return std::string("[DEBUG]");
+		case LogLevel::INFO:			return std::string("[INFO]");
+		case LogLevel::WARNING:			return std::string("[WARNING]");
+		case LogLevel::LOG_ERROR:		return std::string("[ERROR]");
+		case LogLevel::CRITICAL:		return std::string("[CRITICAL]");
+		default:						return std::string("[UNKNOWN]");
 		}
 	}
 
@@ -45,13 +45,16 @@ namespace Engine
 		}
 
 		std::string prefixName = "";
+		std::string prefixNameLogFile = "";
 		if (_fromEngine)
 		{
 			prefixName = LIGHT_BLUE + std::string("[ENGINE]") + RESET;
+			prefixNameLogFile = "[ENGINE]";
 		}
 		else
 		{
 			prefixName = LIGHT_PURPLE + std::string("[SCRIPT]") + RESET;
+			prefixNameLogFile = "[SCRIPT]";
 		}
 
 		auto now = std::chrono::system_clock::now();
@@ -63,13 +66,13 @@ namespace Engine
 
 		std::ostringstream oss;
 		oss << "[" << std::put_time(&localTime, "%H:%M:%S") << "] " << prefixName << " "
-			<< prefix << " - " << _message << RESET << "\n";
+			<< GetLevelColor(_level) << prefix << RESET << " - " << _message << RESET << "\n";
 		std::string outPut = oss.str();
 
 		std::cout << outPut;
 
 		std::ostringstream logFile;
-		logFile << "[" << std::put_time(&localTime, "%H:%M:%S") << "] " << prefix << " - " << _message << "\n";
+		logFile << "[" << std::put_time(&localTime, "%H:%M:%S") << "] " << prefixNameLogFile << " " << prefix << " - " << _message << "\n";
 		outPut = logFile.str();
 		m_logHistory.push_back(outPut);
 

@@ -2,11 +2,14 @@
 
 #include <Engine/Scene/ScenesManager.hpp>
 
-void Display(sf::RenderWindow& _window)
-{
-	_window.clear(sf::Color::Green);
+#include "Engine/System/System.hpp"
 
-	Engine::ScenesManager::Display(_window);
-	ImGui::SFML::Render(_window);
-	_window.display();
+void Display()
+{
+	System::window->clear(sf::Color::Black);
+
+	Engine::ScenesManager::Display();
+	ImGui::SFML::Render(*System::window);
+
+	System::window->display();
 }

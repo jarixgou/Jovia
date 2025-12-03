@@ -3,6 +3,6 @@
 
 #include "../../Common.h"
 
-void PollEvents(sf::RenderWindow& _window);
+void PollEvents();
 
 #endif

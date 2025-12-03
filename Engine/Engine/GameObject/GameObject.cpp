@@ -2,20 +2,19 @@
 
 #include "../Camera/Camera.hpp"
 #include "../Render/RenderAPI.hpp"
+#include "../System/System.hpp"
 
 namespace Engine
 {
 	void GameObject::Display(const Camera* _camera)
 	{
-		// TODO: adapt the camera to use GameObject
-		// TODO: create a static class who contains the render
 		if (RenderAPI::GetIsUsed())
 		{
 			_camera->DrawObject(this, *RenderAPI::m_sceneMap);
 		}
 		else
 		{
-			//_camera->DrawObject(this, System::window);
+			_camera->DrawObject(this, *System::window);
 		}
 	}
 

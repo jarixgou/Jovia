@@ -2,6 +2,7 @@
 
 #include "../Asset/AssetsManager.hpp"
 #include "../Logger/Logger.hpp"
+#include "../System/System.hpp"
 
 namespace Engine
 {
@@ -28,6 +29,8 @@ namespace Engine
 			m_lightShader = const_cast<sf::Shader*>(AssetsManager::Get<sf::Shader>("RenderPipeline"));
 
 			m_used = true;
+			System::drawLight = m_used;
+
 			m_renderPipline.blendMode = sf::BlendAlpha;
 			m_renderPipline.shader = m_lightShader;
 
@@ -53,35 +56,51 @@ namespace Engine
 
 	void RenderAPI::Clear()
 	{
-		if (m_lightMap != nullptr && m_sceneMap != nullptr && m_used)
+		if (System::drawLight)
 		{
-			m_lightMap->clear(sf::Color::Transparent);
-			m_sceneMap->clear(sf::Color::Transparent);
-		}
-		else
-		{
-			LOG_WARNING("To use this function you need to use RenderAPI::Init()", true);
+			if (m_lightMap != nullptr && m_sceneMap != nullptr && m_used)
+			{
+				m_lightMap->clear(sf::Color::Transparent);
+				m_sceneMap->clear(sf::Color::Transparent);
+			}
 		}
 	}
 
-	void RenderAPI::Display(sf::RenderWindow& _window)
+	void RenderAPI::Display()
 	{
-		if (m_lightMap != nullptr && m_sceneMap != nullptr && m_used)
+		if (System::drawLight)
 		{
-			m_lightMap->display();
-			m_sceneMap->display();
-		}
+			if (m_lightMap != nullptr && m_sceneMap != nullptr && m_used)
+			{
+				m_lightMap->display();
+				m_sceneMap->display();
+			}
 
-		if (m_lightMapSprite != nullptr && m_sceneMapSprite)
-		{
-			m_lightShader->setUniform("lightMap", m_lightMap->getTexture());
+			if (m_lightMapSprite != nullptr && m_sceneMapSprite)
+			{
+				m_lightShader->setUniform("lightMap", m_lightMap->getTexture());
 
-			_window.draw(*m_sceneMapSprite, m_renderPipline);
+				System::window->draw(*m_sceneMapSprite, m_renderPipline);
+			}
 		}
-		else
-		{
-			LOG_WARNING("To use this function you need to use RenderAPI::Init()", true);
-		}
+	}
+
+	void RenderAPI::Cleanup()
+	{
+		m_used = false;
+
+		m_lightShader = nullptr;
+		delete m_lightShader;
+
+		m_lightMap = nullptr;
+		m_lightMap.reset();
+		m_lightMapSprite = nullptr;
+		m_lightMapSprite.reset();
+
+		m_sceneMap = nullptr;
+		m_sceneMap.reset();
+		m_sceneMapSprite = nullptr;
+		m_sceneMapSprite.reset();
 	}
 
 	bool RenderAPI::GetIsUsed()

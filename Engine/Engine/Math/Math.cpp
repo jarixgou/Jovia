@@ -7,7 +7,7 @@ namespace Engine
 {
 	namespace Math
 	{
-		Mat3x3 MultiplyMat3x3(const Mat3x3& _a, const Mat3x3& _b)
+		Mat3x3 MultiplyMat(const Mat3x3& _a, const Mat3x3& _b)
 		{
 			Mat3x3 result = { 0 };
 			for (int i = 0; i < 3; ++i)
@@ -65,18 +65,48 @@ namespace Engine
 				{0, 0, 1}
 			} };
 
-			return MultiplyMat3x3(rY, MultiplyMat3x3(rX, rZ));
+			return MultiplyMat(rY, MultiplyMat(rX, rZ));
 		}
 
 		Mat3x3 CreateIsoMatrix(const sf::Vector2f& _objectSize)
 		{
 			const float w = _objectSize.x;
 			const float h = _objectSize.y;
-			Mat3x3 result = {
-				{
+			Mat3x3 result = { {
 					{0.5f * w, -0.5f * w, 0},
 					{0.25f * h, 0.25f * h, -0.25f * h},
 					{1, 1, 1}
+				} };
+
+			return result;
+		}
+
+		Mat2x2 MultiplyMat(const Mat2x2& _a, const Mat2x2& _b)
+		{
+			Mat2x2 result = { 0 };
+			for (int i = 0; i < 2; ++i)
+			{
+				for (int j = 0; j < 2; ++j)
+				{
+					for (int k = 0; k < 2; ++k)
+					{
+						result[i][j] += _a[i][k] * _b[k][j];
+					}
+				}
+			}
+			return result;
+		}
+
+		Mat2x2 CreateRotationMatrix(const float& _angle)
+		{
+			const float rad = DegToRad(_angle);
+
+			const float c = cosf(rad);
+			const float s = sinf(rad);
+
+			Mat2x2 result = { {
+				{c, -s},
+				{s, c}
 				} };
 
 			return result;

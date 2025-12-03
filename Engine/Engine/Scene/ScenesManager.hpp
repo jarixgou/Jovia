@@ -20,9 +20,9 @@ namespace Engine
 		ScenesManager() = default;
 		~ScenesManager() = default;
 
-		static void PollEvents(sf::RenderWindow& _window, sf::Event& _event);
-		static void Update(sf::RenderWindow& _window, float _dt);
-		static void Display(sf::RenderWindow& _window);
+		static void PollEvents(sf::Event& _event);
+		static void Update(float _dt);
+		static void Display();
 		static void Cleanup();
 
 		template<class T>
