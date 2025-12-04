@@ -28,7 +28,7 @@ namespace Engine
 				}
 			}
 
-			ImGui::Text("Vertice numbers : %d", System::verticeNb);
+			ImGui::Text("Vertices numbers : %d", System::verticeNb);
 			ImGui::Text("Draw call :       %d", System::drawCall);
 
 			ImGui::End();

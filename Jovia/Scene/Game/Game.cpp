@@ -154,6 +154,7 @@ void Game::Display()
 		if (Engine::RenderAPI::GetIsUsed())
 		{
 			light->Display();
+			System::drawCall += 1;
 			Engine::RenderAPI::m_lightMap->draw(light->GetCompositeLightAndShadow(), sf::BlendAdd);
 		}
 	}
@@ -162,12 +163,15 @@ void Game::Display()
 	{
 		if (Engine::RenderAPI::GetIsUsed())
 		{
+			System::drawCall += 2;
 			Engine::RenderAPI::m_sceneMap->draw(chunk->GetGroundVertices(), m_renderStates);
 			Engine::RenderAPI::m_sceneMap->draw(chunk->GetObjectVertices(), m_renderStates);
 		}
 		else
 		{
+			System::drawCall += 2;
 			System::window->draw(chunk->GetGroundVertices(), m_renderStates);
+			System::window->draw(chunk->GetObjectVertices(), m_renderStates);
 		}
 	}
 
@@ -175,6 +179,7 @@ void Game::Display()
 
 	if (Engine::RenderAPI::GetIsUsed())
 	{
+		System::drawCall += 2;
 		Engine::RenderAPI::m_sceneMap->draw(colliderTest);
 		Engine::RenderAPI::m_sceneMap->draw(colliderTest2);
 	}

@@ -17,9 +17,8 @@ void Init()
 
 void InitSystem()
 {
-    sf::ContextSettings windowSettings(32, 0, 32);
     System::window = std::make_unique<sf::RenderWindow>();
-    System::window->create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia",sf::Style::Default, windowSettings);
+    System::window->create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia",sf::Style::Default);
 
     System::window->setActive(true);
 

@@ -8,6 +8,7 @@ namespace Engine
 {
 	void GameObject::Display(const Camera* _camera)
 	{
+		System::drawCall += 1;
 		if (RenderAPI::GetIsUsed())
 		{
 			_camera->DrawObject(this, *RenderAPI::m_sceneMap);

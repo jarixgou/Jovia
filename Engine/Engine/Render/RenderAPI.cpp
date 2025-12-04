@@ -71,10 +71,11 @@ namespace Engine
 			m_sceneMap->display();
 		}
 
-		if (m_lightMapSprite != nullptr && m_sceneMapSprite)
+		if (m_lightMapSprite != nullptr && m_sceneMapSprite != nullptr)
 		{
 			m_lightShader->setUniform("lightMap", m_lightMap->getTexture());
 
+			System::drawCall += 1;
 			System::window->draw(*m_sceneMapSprite, m_renderPipline);
 		}
 	}
