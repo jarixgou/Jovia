@@ -56,32 +56,26 @@ namespace Engine
 
 	void RenderAPI::Clear()
 	{
-		if (System::drawLight)
+		if (m_lightMap != nullptr && m_sceneMap != nullptr && m_used)
 		{
-			if (m_lightMap != nullptr && m_sceneMap != nullptr && m_used)
-			{
-				m_lightMap->clear(sf::Color::Transparent);
-				m_sceneMap->clear(sf::Color::Transparent);
-			}
+			m_lightMap->clear(sf::Color::Transparent);
+			m_sceneMap->clear(sf::Color::Transparent);
 		}
 	}
 
 	void RenderAPI::Display()
 	{
-		if (System::drawLight)
+		if (m_lightMap != nullptr && m_sceneMap != nullptr && m_used)
 		{
-			if (m_lightMap != nullptr && m_sceneMap != nullptr && m_used)
-			{
-				m_lightMap->display();
-				m_sceneMap->display();
-			}
+			m_lightMap->display();
+			m_sceneMap->display();
+		}
 
-			if (m_lightMapSprite != nullptr && m_sceneMapSprite)
-			{
-				m_lightShader->setUniform("lightMap", m_lightMap->getTexture());
+		if (m_lightMapSprite != nullptr && m_sceneMapSprite)
+		{
+			m_lightShader->setUniform("lightMap", m_lightMap->getTexture());
 
-				System::window->draw(*m_sceneMapSprite, m_renderPipline);
-			}
+			System::window->draw(*m_sceneMapSprite, m_renderPipline);
 		}
 	}
 

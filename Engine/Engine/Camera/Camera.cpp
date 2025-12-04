@@ -195,7 +195,7 @@ namespace Engine
 
 				// Appliquer l'inverse de la rotation pour récupérer les coordonnées monde
 				sf::Vector3f rotated = { rotX, rotY, 0.0f };
-				sf::Vector3f world = Math::MultiplyMat3x3Vector(rInv, rotated);
+				sf::Vector3f world = Math::MultiplyMatVector(rInv, rotated);
 
 				minX = std::min(minX, world.x);
 				maxX = std::max(maxX, world.x);
@@ -271,7 +271,7 @@ namespace Engine
 		if (m_type == CameraType::ORTHOGRAPHIC)
 		{
 			Math::Mat3x3 r = Math::CreateRotationMatrix(m_angle.x, m_angle.y, m_angle.z);
-			sf::Vector3f rotatedPos = Math::MultiplyMat3x3Vector(r, relativePos);
+			sf::Vector3f rotatedPos = Math::MultiplyMatVector(r, relativePos);
 
 			const sf::Vector2f orthoPos = {
 				(rotatedPos.x * objectScaled.x),
@@ -289,7 +289,7 @@ namespace Engine
 		
 			Math::Mat3x3 isoMatrix = Math::CreateIsoMatrix(objectScaled);
 			Math::Mat3x3 finalMatrix = Math::MultiplyMat(r, isoMatrix);
-			sf::Vector3f pos = Math::MultiplyMat3x3Vector(finalMatrix, relativePos);
+			sf::Vector3f pos = Math::MultiplyMatVector(finalMatrix, relativePos);
 
 			screenPos = {
 				pos.x + cameraMiddlePoint.x,
@@ -308,7 +308,7 @@ namespace Engine
 		const sf::Vector2f finalScale = {_transform.scale.x * scale, _transform.scale.y * scale };
 
 		Math::Mat3x3 r = Math::CreateRotationMatrix(m_angle.x, m_angle.y, m_angle.z);
-		sf::Vector3f dirWorld = Math::MultiplyMat3x3Vector(r, sf::Vector3f{ 1.f, 0.f, 0.f });
+		sf::Vector3f dirWorld = Math::MultiplyMatVector(r, sf::Vector3f{ 1.f, 0.f, 0.f });
 
 		const float rotation = Math::RadToDeg(atan2f(dirWorld.y, dirWorld.x));
 

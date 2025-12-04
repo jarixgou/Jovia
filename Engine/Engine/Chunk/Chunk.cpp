@@ -6,6 +6,7 @@
 
 #include "../Camera/Camera.hpp"
 #include "../Math/Math.hpp"
+#include "../System/System.hpp"
 
 namespace Engine
 
@@ -99,37 +100,29 @@ namespace Engine
 				sf::VertexArray& targetVertices = (tileData.height < 0.5f) ? m_groundVertices : m_objectVertices;
 
 				Math::Mat3x3 r = Math::CreateRotationMatrix(camAngle.x, camAngle.y, camAngle.z);
-				sf::Vector3f dirWorld = Math::MultiplyMat3x3Vector(r, sf::Vector3f{ 1.f, 0.f, 0.f });
+				sf::Vector3f dirWorld = Math::MultiplyMatVector(r, sf::Vector3f{ 1.f, 0.f, 0.f });
 
-				float angleRad = atan2f(dirWorld.y, dirWorld.x);
-				float c = cosf(angleRad);
-				float s = sinf(angleRad);
+				const float angle = Math::RadToDeg(atan2f(dirWorld.y, dirWorld.x));
+				Math::Mat2x2 rMatrix = Math::CreateRotationMatrix(angle);
 
-				auto rot = [&](sf::Vector2f p) {
-					return sf::Vector2f{
-						p.x * c - p.y * s,
-						p.x * s + p.y * c
-					};
-					};
-
-				// Offsets avant rotation
-				sf::Vector2f p0 = { 0.f, 0.f };
-				sf::Vector2f p1 = { scaledWidth, 0.f };
+				sf::Vector2f p1 = {scaledWidth, 0.f};
 				sf::Vector2f p2 = { scaledWidth, scaledHeight };
 				sf::Vector2f p3 = { 0.f, scaledHeight };
 
 				// Ajout des 4 vertices
-				targetVertices.append(sf::Vertex(screenPos + rot(p0), sf::Color::White,
+				targetVertices.append(sf::Vertex(screenPos, sf::Color::White,
 					{ static_cast<float>(rect.left), static_cast<float>(rect.top) }));
 
-				targetVertices.append(sf::Vertex(screenPos + rot(p1), sf::Color::White,
+				targetVertices.append(sf::Vertex(screenPos + Math::MultiplyMatVector(rMatrix, p1), sf::Color::White,
 					{ static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top) }));
 
-				targetVertices.append(sf::Vertex(screenPos + rot(p2), sf::Color::White,
+				targetVertices.append(sf::Vertex(screenPos + Math::MultiplyMatVector(rMatrix, p2), sf::Color::White,
 					{ static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top + rect.height) }));
 
-				targetVertices.append(sf::Vertex(screenPos + rot(p3), sf::Color::White,
+				targetVertices.append(sf::Vertex(screenPos + Math::MultiplyMatVector(rMatrix, p3), sf::Color::White,
 					{ static_cast<float>(rect.left), static_cast<float>(rect.top + rect.height) }));
+
+				System::verticeNb += 4;
 			}
 		}
 		m_isDirty = false;

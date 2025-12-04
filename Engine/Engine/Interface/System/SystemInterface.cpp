@@ -16,7 +16,17 @@ namespace Engine
 
 			ImGui::Text("RenderAPI");
 			ImGui::SameLine();
-			ImGui::Checkbox("##RenderAPI", &System::drawLight);
+			if (ImGui::Checkbox("##RenderAPI", &System::drawLight))
+			{
+				if (System::drawLight)
+				{
+					RenderAPI::Init();
+				}
+				else
+				{
+					RenderAPI::Cleanup();
+				}
+			}
 
 			ImGui::Text("Vertice numbers : %d", System::verticeNb);
 			ImGui::Text("Draw call :       %d", System::drawCall);

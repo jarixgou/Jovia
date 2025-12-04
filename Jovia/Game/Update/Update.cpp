@@ -12,6 +12,9 @@
 
 void Update(sf::Time _time, float _dt)
 {
+	System::verticeNb = 0;
+	System::drawCall = 0;
+
 	ImGui::SFML::Update(*System::window, _time);
 
 	Engine::ScenesManager::Update(_dt);

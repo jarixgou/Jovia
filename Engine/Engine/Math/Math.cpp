@@ -23,7 +23,7 @@ namespace Engine
 			return result;
 		}
 
-		sf::Vector3f MultiplyMat3x3Vector(const Mat3x3& _a, const sf::Vector3f& _b)
+		sf::Vector3f MultiplyMatVector(const Mat3x3& _a, const sf::Vector3f& _b)
 		{
 			sf::Vector3f result;
 			result.x = _a[0][0] * _b.x + _a[0][1] * _b.y + _a[0][2] * _b.z;
@@ -94,6 +94,14 @@ namespace Engine
 					}
 				}
 			}
+			return result;
+		}
+
+		sf::Vector2f MultiplyMatVector(const Mat2x2& _a, const sf::Vector2f& _b)
+		{
+			sf::Vector2f result;
+			result.x = _a[0][0] * _b.x + _a[0][1] * _b.y;
+			result.y = _a[1][0] * _b.x + _a[1][1] * _b.y;
 			return result;
 		}
 
