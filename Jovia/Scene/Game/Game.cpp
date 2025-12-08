@@ -22,7 +22,7 @@
 #include "../../Player/Player.hpp"
 #include <Engine/Render/RenderAPI.hpp>
 
-#include "Engine/System/System.hpp"
+#include <Engine/System/System.hpp>
 
 void Game::Init()
 {
@@ -192,4 +192,12 @@ void Game::Display()
 void Game::Cleanup()
 {
 	Engine::AssetsManager::Clear();
+	Engine::RenderAPI::Cleanup();
+
+	for (auto & light : lightList)
+	{
+		light = nullptr;
+		delete light;
+	}
+	lightList.clear();
 }

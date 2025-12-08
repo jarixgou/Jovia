@@ -78,6 +78,8 @@ namespace Engine
 		static bool LoadScene(const char* _sceneName);
 
 		static bool HasScene(const char* _sceneName);
+
+		static const std::unordered_map<std::string, std::shared_ptr<Scene>>& GetSceneList();
 	};
 }
 

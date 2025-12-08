@@ -86,3 +86,8 @@ bool Engine::ScenesManager::HasScene(const char* _sceneName)
 
 	return false;
 }
+
+const std::unordered_map<std::string, std::shared_ptr<Engine::Scene>>& Engine::ScenesManager::GetSceneList()
+{
+	return m_scenesList;
+}
