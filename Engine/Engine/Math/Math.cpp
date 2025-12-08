@@ -2,6 +2,7 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <immintrin.h> // AVX/SSE
 
 namespace Engine
 {
@@ -10,6 +11,22 @@ namespace Engine
 		Mat3x3 MultiplyMat(const Mat3x3& _a, const Mat3x3& _b)
 		{
 			Mat3x3 result = { 0 };
+
+#ifdef __AVX__
+			// Optimisation AVX pour multiplication de matrices 3x3
+			for (int i = 0; i < 3; ++i)
+			{
+				__m128 row = _mm_setzero_ps();
+				for (int k = 0; k < 3; ++k)
+				{
+					__m128 a_val = _mm_set1_ps(_a[i][k]);
+					__m128 b_row = _mm_set_ps(0.0f, _b[k][2], _b[k][1], _b[k][0]);
+					row = _mm_add_ps(row, _mm_mul_ps(a_val, b_row));
+				}
+				_mm_store_ps(&result[i][0], row);
+			}
+#else
+			// Fallback version classique
 			for (int i = 0; i < 3; ++i)
 			{
 				for (int j = 0; j < 3; ++j)
@@ -20,15 +37,46 @@ namespace Engine
 					}
 				}
 			}
+#endif
+
 			return result;
 		}
 
 		sf::Vector3f MultiplyMatVector(const Mat3x3& _a, const sf::Vector3f& _b)
 		{
 			sf::Vector3f result;
+
+#ifdef __SSE__
+			// Chargement du vecteur dans un registre SSE
+			__m128 vec = _mm_set_ps(0.0f, _b.z, _b.y, _b.x);
+
+			// Multiplication matrice-vecteur optimisée
+			__m128 row0 = _mm_set_ps(0.0f, _a[0][2], _a[0][1], _a[0][0]);
+			__m128 row1 = _mm_set_ps(0.0f, _a[1][2], _a[1][1], _a[1][0]);
+			__m128 row2 = _mm_set_ps(0.0f, _a[2][2], _a[2][1], _a[2][0]);
+
+			__m128 mul0 = _mm_mul_ps(row0, vec);
+			__m128 mul1 = _mm_mul_ps(row1, vec);
+			__m128 mul2 = _mm_mul_ps(row2, vec);
+
+			// Somme horizontale
+			__m128 sum0 = _mm_hadd_ps(mul0, mul1);
+			__m128 sum1 = _mm_hadd_ps(mul2, _mm_setzero_ps());
+			__m128 sum = _mm_hadd_ps(sum0, sum1);
+
+			alignas(16) float output[4];
+			_mm_store_ps(output, sum);
+
+			result.x = output[0];
+			result.y = output[1];
+			result.z = output[2];
+#else
+			// Fallback version classique
 			result.x = _a[0][0] * _b.x + _a[0][1] * _b.y + _a[0][2] * _b.z;
 			result.y = _a[1][0] * _b.x + _a[1][1] * _b.y + _a[1][2] * _b.z;
 			result.z = _a[2][0] * _b.x + _a[2][1] * _b.y + _a[2][2] * _b.z;
+#endif
+
 			return result;
 		}
 
@@ -38,6 +86,21 @@ namespace Engine
 			const float radY = DegToRad(_angleY);
 			const float radZ = DegToRad(_angleZ);
 
+			// Calcul simultané des sin/cos avec SIMD
+#ifdef __AVX__
+			__m128 angles = _mm_set_ps(0.0f, radZ, radY, radX);
+
+			// Approximation rapide ou utilisation de fonctions vectorisées
+			alignas(16) float rad[4];
+			_mm_store_ps(rad, angles);
+
+			const float cX = cosf(rad[0]);
+			const float sX = sinf(rad[0]);
+			const float cY = cosf(rad[1]);
+			const float sY = sinf(rad[1]);
+			const float cZ = cosf(rad[2]);
+			const float sZ = sinf(rad[2]);
+#else
 			const float cX = cosf(radX);
 			const float sX = sinf(radX);
 
@@ -46,6 +109,7 @@ namespace Engine
 
 			const float cZ = cosf(radZ);
 			const float sZ = sinf(radZ);
+#endif
 
 			Mat3x3 rX = { {
 				{1, 0, 0},

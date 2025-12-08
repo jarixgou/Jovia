@@ -14,29 +14,33 @@ namespace Engine
 			ImGui::BeginChild("Assets");
 			const auto& assetList = AssetsManager::GetList();
 
-			if (ImGui::TreeNode("Loaded"))
-			{
-				for (const auto& asset : assetList)
-				{
-					if (asset->m_load)
-					{
-						ImGui::BulletText(asset->m_path.c_str());
-					}
-				}
-				ImGui::TreePop();
-			}
+            // Pré-calcul des compteurs (optionnel, pour affichage)
+            int loadedCount = 0, unloadedCount = 0;
+            for (const auto& asset : assetList)
+            {
+                if (asset->m_load) ++loadedCount;
+                else ++unloadedCount;
+            }
 
-			if (ImGui::TreeNode("Not loaded"))
-			{
-				for (const auto& asset : assetList)
-				{
-					if (!asset->m_load)
-					{
-						ImGui::BulletText(asset->m_path.c_str());
-					}
-				}
-				ImGui::TreePop();
-			}
+            if (ImGui::TreeNode("Loaded", "Loaded (%d)", loadedCount))
+            {
+                for (const auto& asset : assetList)
+                {
+                    if (asset->m_load)
+                        ImGui::BulletText("%s", asset->m_path.c_str());
+                }
+                ImGui::TreePop();
+            }
+
+            if (ImGui::TreeNode("Not loaded", "Not loaded (%d)", unloadedCount))
+            {
+                for (const auto& asset : assetList)
+                {
+                    if (!asset->m_load)
+                        ImGui::BulletText("%s", asset->m_path.c_str());
+                }
+                ImGui::TreePop();
+            }
 			ImGui::EndChild();
 
 			ImGui::SameLine();

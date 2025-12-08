@@ -229,6 +229,7 @@
     <None Include="Dependencies\DLL\x64\Release\sfml-network-2.dll" />
     <None Include="Dependencies\DLL\x64\Release\sfml-system-2.dll" />
     <None Include="Dependencies\DLL\x64\Release\sfml-window-2.dll" />
+    <None Include="test.cu" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
