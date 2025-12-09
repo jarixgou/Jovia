@@ -191,13 +191,12 @@ void Game::Display()
 
 void Game::Cleanup()
 {
-	Engine::AssetsManager::Clear();
-	Engine::RenderAPI::Cleanup();
-
 	for (auto & light : lightList)
 	{
 		light = nullptr;
 		delete light;
 	}
 	lightList.clear();
+
+	Scene::Cleanup();
 }

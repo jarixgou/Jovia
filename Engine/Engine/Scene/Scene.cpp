@@ -1,5 +1,9 @@
 #include "Scene.hpp"
 
+#include "../Asset/AssetsManager.hpp"
+#include "../Render/RenderAPI.hpp"
+#include "../Layer/LayerManager.hpp"
+
 Engine::Scene::Scene()
 {
 
@@ -32,5 +36,7 @@ void Engine::Scene::Display()
 
 void Engine::Scene::Cleanup()
 {
-
+	Engine::LayerManager::Clear();
+	Engine::AssetsManager::Clear();
+	Engine::RenderAPI::Cleanup();
 }

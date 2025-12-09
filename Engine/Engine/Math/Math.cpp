@@ -19,9 +19,9 @@ namespace Engine
 				__m128 row = _mm_setzero_ps();
 				for (int k = 0; k < 3; ++k)
 				{
-					__m128 a_val = _mm_set1_ps(_a[i][k]);
-					__m128 b_row = _mm_set_ps(0.0f, _b[k][2], _b[k][1], _b[k][0]);
-					row = _mm_add_ps(row, _mm_mul_ps(a_val, b_row));
+					__m128 aValue = _mm_set1_ps(_a[i][k]);
+					__m128 bRow = _mm_set_ps(0.0f, _b[k][2], _b[k][1], _b[k][0]);
+					row = _mm_add_ps(row, _mm_mul_ps(aValue, bRow));
 				}
 				_mm_store_ps(&result[i][0], row);
 			}
@@ -71,7 +71,7 @@ namespace Engine
 			result.y = output[1];
 			result.z = output[2];
 #else
-			// Fallback version classique
+			// Classic version
 			result.x = _a[0][0] * _b.x + _a[0][1] * _b.y + _a[0][2] * _b.z;
 			result.y = _a[1][0] * _b.x + _a[1][1] * _b.y + _a[1][2] * _b.z;
 			result.z = _a[2][0] * _b.x + _a[2][1] * _b.y + _a[2][2] * _b.z;
@@ -86,21 +86,6 @@ namespace Engine
 			const float radY = DegToRad(_angleY);
 			const float radZ = DegToRad(_angleZ);
 
-			// Calcul simultané des sin/cos avec SIMD
-#ifdef __AVX__
-			__m128 angles = _mm_set_ps(0.0f, radZ, radY, radX);
-
-			// Approximation rapide ou utilisation de fonctions vectorisées
-			alignas(16) float rad[4];
-			_mm_store_ps(rad, angles);
-
-			const float cX = cosf(rad[0]);
-			const float sX = sinf(rad[0]);
-			const float cY = cosf(rad[1]);
-			const float sY = sinf(rad[1]);
-			const float cZ = cosf(rad[2]);
-			const float sZ = sinf(rad[2]);
-#else
 			const float cX = cosf(radX);
 			const float sX = sinf(radX);
 
@@ -109,7 +94,6 @@ namespace Engine
 
 			const float cZ = cosf(radZ);
 			const float sZ = sinf(radZ);
-#endif
 
 			Mat3x3 rX = { {
 				{1, 0, 0},
@@ -148,6 +132,20 @@ namespace Engine
 		Mat2x2 MultiplyMat(const Mat2x2& _a, const Mat2x2& _b)
 		{
 			Mat2x2 result = { 0 };
+
+#ifdef __AVX__
+			for (int i = 0; i < 2; ++i)
+			{
+				__m128 row = _mm_setzero_ps();
+				for (int k = 0; k < 2; ++k)
+				{
+					__m128 aValue = _mm_set1_ps(_a[i][k]);
+					__m128 bValue = _mm_set_ps(0.f, 0.f, _b[k][1], _b[k][0]);
+					row = _mm_add_ps(row, _mm_mul_ps(aValue, bValue));
+				}
+				_mm_store_ps(&result[i][0], row);
+			}
+#else
 			for (int i = 0; i < 2; ++i)
 			{
 				for (int j = 0; j < 2; ++j)
@@ -158,14 +156,37 @@ namespace Engine
 					}
 				}
 			}
+#endif
+
 			return result;
 		}
 
 		sf::Vector2f MultiplyMatVector(const Mat2x2& _a, const sf::Vector2f& _b)
 		{
 			sf::Vector2f result;
+
+#ifdef __SSE__
+			__m128 vec = _mm_set_ps(0.f, 0.f, _b.y, _b.x);
+
+			__m128 row0 = _mm_set_ps(0.f, 0.f, _a[0][1], _a[0][0]);
+			__m128 row1 = _mm_set_ps(0.f, 0.f, _a[1][1], _a[1][0]);
+
+			// Multiply matrix-vector
+			__m128 mul0 = _mm_mul_ps(row0, vec);
+			__m128 mul1 = _mm_mul_ps(row1, vec);
+
+			// Horizontal sum
+			__m128 sum = _mm_hadd_ps(mul0, mul1);
+
+			alignas(16) float output[4];
+			_mm_store_ps(output, sum);
+			result.x = output[0];
+			result.y = output[2];
+#else
 			result.x = _a[0][0] * _b.x + _a[0][1] * _b.y;
 			result.y = _a[1][0] * _b.x + _a[1][1] * _b.y;
+#endif
+
 			return result;
 		}
 
