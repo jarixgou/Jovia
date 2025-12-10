@@ -232,6 +232,5 @@
     <None Include="Dependencies\DLL\x64\Release\sfml-window-2.dll">
       <Filter>Resource Files\DLL\Release</Filter>
     </None>
-    <None Include="test.cu" />
   </ItemGroup>
 </Project>

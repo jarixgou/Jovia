@@ -10,4 +10,6 @@ struct System
 	static int drawCall;
 };
 
+std::string ChangeFileFormat(std::string _filePath);
+
 #endif

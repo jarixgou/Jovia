@@ -1,6 +1,7 @@
 ﻿#include "Asset.hpp"
 
 #include "../Logger/Logger.hpp"
+#include "../System/System.hpp"
 
 namespace Engine
 {
@@ -9,7 +10,10 @@ namespace Engine
 		try
 		{
 			m_texture = std::make_unique<sf::Texture>();
-			m_texture->loadFromFile(m_path);
+
+			std::string file = ChangeFileFormat(m_path);
+
+			m_texture->loadFromMemory(file.data(), file.size());
 			m_texture->generateMipmap();
 			return true;
 		}
@@ -50,7 +54,10 @@ namespace Engine
 		try
 		{
 			m_sound = std::make_unique<sf::SoundBuffer>();
-			return m_sound->loadFromFile(m_path);
+
+			std::string file = ChangeFileFormat(m_path);
+
+			return m_sound->loadFromMemory(file.data(), file.size());
 		}
 		catch (std::bad_alloc& e)
 		{
@@ -89,7 +96,10 @@ namespace Engine
 		try
 		{
 			m_music = std::make_unique<sf::Music>();
-			return m_music->openFromFile(m_path);
+
+			std::string file = ChangeFileFormat(m_path);
+
+			return m_music->openFromMemory(file.data(), file.size());
 		}
 		catch (std::bad_alloc& e)
 		{
@@ -128,7 +138,10 @@ namespace Engine
 		try
 		{
 			m_font = std::make_unique<sf::Font>();
-			return m_font->loadFromFile(m_path);
+
+			std::string file = ChangeFileFormat(m_path);
+
+			return m_font->loadFromMemory(file.data(), file.size());
 		}
 		catch (std::bad_alloc& e)
 		{
@@ -183,7 +196,7 @@ namespace Engine
 			{
 				return m_shader->loadFromFile(m_path, sf::Shader::Vertex);
 			}
-			else if (extensionName == "geo")
+			else if (extensionName == "geom")
 			{
 				return m_shader->loadFromFile(m_path, sf::Shader::Geometry);
 			}

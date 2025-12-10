@@ -26,9 +26,9 @@
 
 void Game::Init()
 {
-	Engine::AssetsManager::Add<sf::Texture>("Assets/Tile.png");
-	Engine::AssetsManager::Add<sf::Texture>("Assets/Light.png");
-	Engine::AssetsManager::Add<sf::Texture>("Assets/Monstre.png");
+	Engine::AssetsManager::Add<sf::Texture>("Assets/Tile.asset");
+	Engine::AssetsManager::Add<sf::Texture>("Assets/Light.asset");
+	Engine::AssetsManager::Add<sf::Texture>("Assets/Monstre.asset");
 
 	monstre = new Player();
 	monstre->Init();
