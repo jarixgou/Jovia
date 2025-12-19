@@ -9,11 +9,30 @@
 
 namespace Engine
 {
+	/**
+	 * @class AssetsManager
+	 * @brief Centralized manager for loading and accessing game assets
+	 * 
+	 * Provides static methods to add, retrieve, and manage assets throughout
+	 * the application lifetime. Supports lazy loading and automatic type mapping.
+	 * All assets are stored in a central list and accessed by name.
+	 */
 	class AssetsManager
 	{
 	private:
-		static std::vector<std::unique_ptr<Asset>> m_assetsList;
+		static std::vector<std::unique_ptr<Asset>> m_assetsList; ///< Collection of all registered assets
 	public:
+		/**
+		 * @brief Adds a new asset to the manager
+		 * 
+		 * Registers an asset with the given path. The asset is not loaded immediately
+		 * but will be loaded on first access (lazy loading). Automatically extracts
+		 * the asset name from the file path.
+		 * 
+		 * @tparam T SFML resource type (sf::Texture, sf::Font, etc.)
+		 * @param _path File path to the asset (encrypted or plain)
+		 * @return True if asset was successfully added, false if path is invalid or asset already exists
+		 */
 		template <typename T>
 		static bool Add(const char* _path)
 		{
@@ -80,6 +99,16 @@ namespace Engine
 			return true;
 		}
 
+		/**
+		 * @brief Retrieves an asset by name
+		 * 
+		 * Searches for an asset by its name and returns a pointer to the loaded resource.
+		 * If the asset hasn't been loaded yet, it will be loaded on first access (lazy loading).
+		 * 
+		 * @tparam T SFML resource type expected (sf::Texture, sf::Font, etc.)
+		 * @param _name Name of the asset (filename without extension)
+		 * @return Const pointer to the resource, or nullptr if not found or type mismatch
+		 */
 		template <typename T>
 		static const T* Get(const char* _name)
 		{
@@ -132,12 +161,44 @@ namespace Engine
 			return nullptr;
 		}
 
+		/**
+		 * @brief Gets the complete list of registered assets
+		 * 
+		 * @return Const reference to the vector of all assets
+		 */
 		static const std::vector<std::unique_ptr<Asset>>& GetList();
 
+		/**
+		 * @brief Unloads an asset from memory
+		 * 
+		 * Frees the memory used by the asset but keeps it registered.
+		 * The asset can be reloaded on next access.
+		 * 
+		 * @param _name Name of the asset to unload
+		 */
 		static void UnLoad(const char* _name);
+
+		/**
+		 * @brief Removes an asset completely
+		 * 
+		 * Unloads and removes the asset from the manager.
+		 * 
+		 * @param _name Name of the asset to remove
+		 */
 		static void Remove(const char* _name);
 
+		/**
+		 * @brief Unloads all currently loaded assets
+		 * 
+		 * Frees memory for all loaded assets but keeps them registered.
+		 */
 		static void ClearLoaded();
+
+		/**
+		 * @brief Removes all assets from the manager
+		 * 
+		 * Unloads and removes all registered assets.
+		 */
 		static void Clear();
 	};
 }

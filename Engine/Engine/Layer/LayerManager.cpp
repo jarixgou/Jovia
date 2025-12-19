@@ -60,7 +60,7 @@ namespace Engine
 
 		m_sortTask = std::async(std::launch::async, [_camType, &layers = m_layersBuffer]()
 			{
-				if (_camType == CameraType::ORTHOGRAPHIC)
+				if (_camType == CameraType::ORTHOGONAL)
 				{
 					auto orthographiqueCompare = [](const Layer& _a, const Layer& _b) noexcept -> bool
 						{

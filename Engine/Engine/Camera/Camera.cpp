@@ -31,7 +31,7 @@ namespace Engine
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z))
 			{
-				if (m_type == CameraType::ORTHOGRAPHIC)
+				if (m_type == CameraType::ORTHOGONAL)
 				{
 					m_pos.y += -speed;
 				}
@@ -43,7 +43,7 @@ namespace Engine
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 			{
-				if (m_type == CameraType::ORTHOGRAPHIC)
+				if (m_type == CameraType::ORTHOGONAL)
 				{
 					m_pos.y += speed;
 				}
@@ -55,7 +55,7 @@ namespace Engine
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q))
 			{
-				if (m_type == CameraType::ORTHOGRAPHIC)
+				if (m_type == CameraType::ORTHOGONAL)
 				{
 					m_pos.x += -speed;
 				}
@@ -67,7 +67,7 @@ namespace Engine
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 			{
-				if (m_type == CameraType::ORTHOGRAPHIC)
+				if (m_type == CameraType::ORTHOGONAL)
 				{
 					m_pos.x += speed;
 				}
@@ -141,7 +141,7 @@ namespace Engine
 	{
 		const float scale = 1.0f / -m_pos.z;
 
-		if (m_type == CameraType::ORTHOGRAPHIC)
+		if (m_type == CameraType::ORTHOGONAL)
 		{
 			const float w = m_size.x / (scale * _tileSize.x);
 			const float h = m_size.y / (scale * _tileSize.y);
@@ -268,7 +268,7 @@ namespace Engine
 		const sf::Vector2f finalScale = {_transform.scale.x * scale, _transform.scale.y * scale };
 		sf::Vector2f objectScaled = sf::Vector2f(_transform.size.x * finalScale.x, _transform.size.y * finalScale.y);
 
-		if (m_type == CameraType::ORTHOGRAPHIC)
+		if (m_type == CameraType::ORTHOGONAL)
 		{
 			Math::Mat3x3 r = Math::CreateRotationMatrix(m_angle.x, m_angle.y, m_angle.z);
 			sf::Vector3f rotatedPos = Math::MultiplyMatVector(r, relativePos);

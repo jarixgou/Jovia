@@ -18,7 +18,7 @@ void Engine::CameraInterface::Update(Camera* _cam)
 	std::string allTypeName[2] = {"Orthogonal", "Isometric"};
 
 	int currentIdx = 0;
-	if (camType == CameraType::ORTHOGRAPHIC)
+	if (camType == CameraType::ORTHOGONAL)
 	{
 		currentIdx = 0;
 	}
@@ -40,7 +40,7 @@ void Engine::CameraInterface::Update(Camera* _cam)
 				currentIdx = i;
 				if (allTypeName[i] == "Orthogonal")
 				{
-					_cam->SetType(CameraType::ORTHOGRAPHIC);
+					_cam->SetType(CameraType::ORTHOGONAL);
 				}
 				else if (allTypeName[i] == "Isometric")
 				{

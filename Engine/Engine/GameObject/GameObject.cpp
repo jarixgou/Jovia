@@ -6,6 +6,17 @@
 
 namespace Engine
 {
+	GameObject::GameObject()
+	{
+		m_object = nullptr;
+		m_tag = "Untagged";
+	}
+
+	GameObject::~GameObject()
+	{
+		delete m_object;
+	}
+
 	void GameObject::Display(const Camera* _camera)
 	{
 		System::drawCall += 1;
