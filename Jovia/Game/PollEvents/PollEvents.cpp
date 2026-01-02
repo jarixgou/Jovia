@@ -7,12 +7,12 @@
 void PollEvents()
 {
 	sf::Event event;
-	while (System::window->pollEvent(event))
+	while (Engine::System::window->pollEvent(event))
 	{
-		ImGui::SFML::ProcessEvent(*System::window, event);
+		ImGui::SFML::ProcessEvent(*Engine::System::window, event);
 		if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
 		{
-			System::window->close();
+			Engine::System::window->close();
 		}
 
 		Engine::ScenesManager::PollEvents(event);

@@ -12,8 +12,6 @@
 
 namespace Engine
 {
-	class Camera;
-
 	/**
 	 * @class GameObject
 	 * @brief Base class for all game entities in the engine
@@ -33,6 +31,7 @@ namespace Engine
 		 * @brief Default constructor
 		 */
 		GameObject();
+		GameObject(const Transform& _transform);
 
 		/**
 		 * @brief Default destructor
@@ -40,22 +39,13 @@ namespace Engine
 		~GameObject();
 
 		/**
-		 * @brief Initializes the game object
-		 *
-		 * Pure virtual function that must be implemented by derived classes.
-		 * Called once when the object is created to set up initial state.
-		 */
-		void virtual Init() = 0;
-
-		/**
 		 * @brief Updates the game object each frame
 		 *
 		 * Pure virtual function that must be implemented by derived classes.
 		 * Called every frame to update object logic and state.
 		 *
-		 * @param _dt Delta time in seconds since last frame
 		 */
-		void virtual Update(const float& _dt) = 0;
+		void virtual Update() = 0;
 
 		/**
 		 * @brief Displays the game object
@@ -63,9 +53,8 @@ namespace Engine
 		 * Renders the object using the provided camera's transformation.
 		 * Default implementation provided, can be overridden.
 		 *
-		 * @param _camera Pointer to the camera used for rendering transformations
 		 */
-		void virtual Display(const Camera* _camera);
+		void virtual Display();
 
 	public: // Getters/Setters
 		/**
@@ -73,14 +62,14 @@ namespace Engine
 		 *
 		 * @return Const reference to the object's transform data
 		 */
-		const Transform& GetTransform();
+		const Transform& GetTransform() const;
 
 		/**
 		 * @brief Gets the visual representation
 		 *
 		 * @return Pointer to the Object containing the drawable shape
 		 */
-		Object* GetShape();
+		Object* GetShape() const;
 
 		/**
 		 * @brief Gets the object's tag
@@ -88,6 +77,10 @@ namespace Engine
 		 * @return Const reference to the tag string
 		 */
 		const std::string& GetTag();
+
+		void SetTransform(const Transform& _transform);
+		void SetObject(Object** _object);
+		void SetTag(const std::string& _tag);
 	};
 }
 

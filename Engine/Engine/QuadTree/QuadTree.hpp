@@ -177,7 +177,7 @@ namespace Engine
 		}
 
 		// Add object on the current node
-		for (auto & obj : m_objects)
+		for (auto& obj : m_objects)
 		{
 			const sf::FloatRect objectBounds(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
 			if (objectBounds.intersects(_area))

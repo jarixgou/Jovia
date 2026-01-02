@@ -9,102 +9,135 @@
 #include "../Transform/Transform.hpp"
 
 #include "../Logger/Logger.hpp"
-#include "../Math/Math.hpp"
 #include "../Render/RenderAPI.hpp"
+#include "../System/System.hpp"
+#include "../Light/Light.hpp"
 
 namespace Engine
 {
-	void Camera::Update(float _dt)
+	Camera::Camera(const Transform& _transform, CameraType _type, float _renderDistance) : 
+		GameObject(_transform), m_free(false), m_target({ 0,0,0 }), m_type(_type), m_renderDistance(_renderDistance)
 	{
+		m_lastTransform = new Transform();
+		*m_lastTransform = _transform;
+
+		m_rotationMatrix = Math::CreateRotationMatrix(_transform.rotation);
+
+		SetTag("Camera");
+	}
+
+	Camera::~Camera()
+	{
+		delete m_lastTransform;
+	}
+
+	void Camera::Update()
+	{
+		Transform currentTransform = GetTransform();
+		sf::Vector3f& currentPos = currentTransform.position;
+		sf::Vector3f& currentRot = currentTransform.rotation;
+
 		if (m_free)
 		{
-			float speed = 20.f * _dt;
+			float speed = 20.f * System::time.GetDeltaTime();
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
 			{
-				m_pos.z += 1.f * _dt;
+				currentPos.z += 1.f * System::time.GetDeltaTime();
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
 			{
-				m_pos.z += -1.f * _dt;
+				currentPos.z += -1.f * System::time.GetDeltaTime();
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z))
 			{
 				if (m_type == CameraType::ORTHOGONAL)
 				{
-					m_pos.y += -speed;
+					currentPos.y += -speed;
 				}
 				else if (m_type == CameraType::ISOMETRIC)
 				{
-					m_pos.x -= speed;
-					m_pos.y -= speed;
+					currentPos.x -= speed;
+					currentPos.y -= speed;
 				}
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 			{
 				if (m_type == CameraType::ORTHOGONAL)
 				{
-					m_pos.y += speed;
+					currentPos.y += speed;
 				}
 				if (m_type == CameraType::ISOMETRIC)
 				{
-					m_pos.x += speed;
-					m_pos.y += speed;
+					currentPos.x += speed;
+					currentPos.y += speed;
 				}
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q))
 			{
 				if (m_type == CameraType::ORTHOGONAL)
 				{
-					m_pos.x += -speed;
+					currentPos.x += -speed;
 				}
 				if (m_type == CameraType::ISOMETRIC)
 				{
-					m_pos.x -= speed;
-					m_pos.y += speed;
+					currentPos.x -= speed;
+					currentPos.y += speed;
 				}
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 			{
 				if (m_type == CameraType::ORTHOGONAL)
 				{
-					m_pos.x += speed;
+					currentPos.x += speed;
 				}
 				if (m_type == CameraType::ISOMETRIC)
 				{
-					m_pos.x += speed;
-					m_pos.y -= speed;
+					currentPos.x += speed;
+					currentPos.y -= speed;
 				}
 			}
 		}
 
-		if (m_angle.x > 359.f)
+		if (currentRot.x > 359.f)
 		{
-			m_angle.x = 0.f;
+			currentRot.x = 0.f;
 		}
-		else if (m_angle.x < 0.f)
+		else if (currentRot.x < 0.f)
 		{
-			m_angle.x = 359.f;
-		}
-
-		if (m_angle.y > 359.f)
-		{
-			m_angle.y = 0.f;
-		}
-		else if (m_angle.y < 0.f)
-		{
-			m_angle.y = 359.f;
+			currentRot.x = 359.f;
 		}
 
-		if (m_angle.z > 359.f)
+		if (currentRot.y > 359.f)
 		{
-			m_angle.z = 0.f;
+			currentRot.y = 0.f;
 		}
-		else if (m_angle.z < 0.f)
+		else if (currentRot.y < 0.f)
 		{
-			m_angle.z = 359.f;
+			currentRot.y = 359.f;
 		}
+
+		if (currentRot.z > 359.f)
+		{
+			currentRot.z = 0.f;
+		}
+		else if (currentRot.z < 0.f)
+		{
+			currentRot.z = 359.f;
+		}
+
+		if (currentTransform != *m_lastTransform)
+		{
+			if (currentTransform.rotation != m_lastTransform->rotation)
+			{
+				m_rotationMatrix = Math::CreateRotationMatrix(currentTransform.rotation);
+			}
+
+			*m_lastTransform = currentTransform;
+		}
+
+		SetTransform(currentTransform);
 	}
 
 	void Camera::SetFree(bool _free)
@@ -117,21 +150,6 @@ namespace Engine
 		m_target = _target;
 	}
 
-	void Camera::SetPos(sf::Vector3f _pos)
-	{
-		m_pos = _pos;
-	}
-
-	void Camera::SetSize(sf::Vector2f _size)
-	{
-		m_size = _size;
-	}
-
-	void Camera::SetAngle(const sf::Vector3f& _angle)
-	{
-		m_angle = _angle;
-	}
-
 	void Camera::SetType(CameraType _type)
 	{
 		m_type = _type;
@@ -139,20 +157,24 @@ namespace Engine
 
 	sf::FloatRect Camera::GetVisibleArea(sf::Vector2f _tileSize) const
 	{
-		const float scale = 1.0f / -m_pos.z;
+		Transform currentTransform = GetTransform();
+		sf::Vector3f& currentPos = currentTransform.position;
+		sf::Vector3f& currentSize = currentTransform.size;
+
+		const float scale = 1.0f / -currentPos.z;
 
 		if (m_type == CameraType::ORTHOGONAL)
 		{
-			const float w = m_size.x / (scale * _tileSize.x);
-			const float h = m_size.y / (scale * _tileSize.y);
+			const float w = currentSize.x / (scale * _tileSize.x);
+			const float h = currentSize.y / (scale * _tileSize.y);
 
-			return { m_pos.x - w / 2.0f, m_pos.y - h / 2.0f, w, h };
+			return { currentPos.x - w / 2.0f, currentPos.y - h / 2.0f, w, h };
 		}
 		else if (m_type == CameraType::ISOMETRIC)
 		{
 			// Transformation inverse isométrique pour trouver les bounds monde
-			const float halfWidth = m_size.x * 0.5f;
-			const float halfHeight = m_size.y * 0.5f;
+			const float halfWidth = currentSize.x * 0.5f;
+			const float halfHeight = currentSize.y * 0.5f;
 
 			// Les 4 coins de l'écran en coordonnées écran (relatif au centre)
 			const sf::Vector2f screenCorners[4] = {
@@ -168,15 +190,7 @@ namespace Engine
 			float maxY = std::numeric_limits<float>::lowest();
 
 			// Récupérer la matrice de rotation et calculer son inverse (transposée pour une rotation orthonormée)
-			Math::Mat3x3 r = Math::CreateRotationMatrix(m_angle.x, m_angle.y, m_angle.z);
-			Math::Mat3x3 rInv;
-			for (int i = 0; i < 3; ++i)
-			{
-				for (int j = 0; j < 3; ++j)
-				{
-					rInv[i][j] = r[j][i];
-				}
-			}
+			Math::Mat3x3 rInv = Math::InvertMatrix(m_rotationMatrix);
 
 			// Pour chaque coin de l'écran, calculer la position monde correspondante
 			for (const auto& screenPos : screenCorners)
@@ -195,7 +209,7 @@ namespace Engine
 
 				// Appliquer l'inverse de la rotation pour récupérer les coordonnées monde
 				sf::Vector3f rotated = { rotX, rotY, 0.0f };
-				sf::Vector3f world = Math::MultiplyMatVector(rInv, rotated);
+				sf::Vector3f world = Math::MultiplyMatrixVector(rInv, rotated);
 
 				minX = std::min(minX, world.x);
 				maxX = std::max(maxX, world.x);
@@ -206,8 +220,8 @@ namespace Engine
 			// Ajouter la position de la caméra et une marge
 			constexpr float margin = 1.7f;
 			return {
-				m_pos.x + minX - margin,
-				m_pos.y + minY - margin,
+				currentPos.x + minX - margin,
+				currentPos.y + minY - margin,
 				(maxX - minX) + margin * 2.0f,
 				(maxY - minY) + margin * 2.0f
 			};
@@ -216,24 +230,9 @@ namespace Engine
 		return { 0.0f, 0.0f, 0.0f, 0.0f };
 	}
 
-	sf::Vector3f Camera::GetPos() const
-	{
-		return m_pos;
-	}
-
-	sf::Vector2f Camera::GetSize() const
-	{
-		return m_size;
-	}
-
 	bool Camera::GetFree() const
 	{
 		return m_free;
-	}
-
-	const sf::Vector3f& Camera::GetAngle() const
-	{
-		return m_angle;
 	}
 
 	CameraType Camera::GetType() const
@@ -243,35 +242,55 @@ namespace Engine
 
 	void Camera::DrawObject(GameObject* _gameObject, sf::RenderTarget& _renderTarget) const
 	{
-		Object* object = _gameObject->GetShape();
+		float zValue = _gameObject->GetTransform().position.z - GetTransform().position.z;
 
-		if (object != nullptr && object->shape != nullptr)
+		if (zValue >= 2.220446e-16 && zValue <= m_renderDistance)
 		{
-			TransformObject(object->shape, _gameObject->GetTransform());
+			Object* object = _gameObject->GetShape();
 
-			_renderTarget.draw(*object->shape, object->renderStates);
+			if (object != nullptr && object->shape != nullptr)
+			{
+				TransformObject(object->shape, _gameObject->GetTransform());
+
+				_renderTarget.draw(*object->shape, object->renderStates);
+			}
 		}
 	}
 
-	sf::Vector2f Camera::WorldToScreen(const Transform& _transform) const
+	void Camera::DrawLight(GameObject* _gameObject, sf::RenderTarget& _renderTarget) const
 	{
+		Light* light = dynamic_cast<Light*>(_gameObject);
+		if (light == nullptr)
+		{
+			LOG_WARNING("Change the tag of the object it's not actually a light", true);
+			return;
+		}
+
+
+	}
+
+	std::pair<sf::Vector2f, sf::Vector2f> Camera::WorldToScreen(const Transform& _transform) const
+	{
+		Transform currentTransform = GetTransform();
+		sf::Vector3f& currentPos = currentTransform.position;
+		sf::Vector3f& currentSize = currentTransform.size;
+
 		sf::Vector2f screenPos = { 0,0 };
 
-		const sf::Vector2f cameraMiddlePoint = { m_size.x * 0.5f, m_size.y * 0.5f };
+		const sf::Vector2f cameraMiddlePoint = { currentSize.x * 0.5f, currentSize.y * 0.5f };
 		const sf::Vector3f relativePos = {
-			_transform.position.x - m_pos.x,
-			_transform.position.y - m_pos.y,
-			_transform.position.z - m_pos.z
+			_transform.position.x - currentPos.x,
+			_transform.position.y - currentPos.y,
+			_transform.position.z - currentPos.z
 		};
 
-		const float scale = (1.0f / (_transform.position.z - m_pos.z));
-		const sf::Vector2f finalScale = {_transform.scale.x * scale, _transform.scale.y * scale };
+		const float scale = (1.0f / (_transform.position.z - currentPos.z));
+		const sf::Vector2f finalScale = { _transform.scale.x * scale, _transform.scale.y * scale };
 		sf::Vector2f objectScaled = sf::Vector2f(_transform.size.x * finalScale.x, _transform.size.y * finalScale.y);
 
 		if (m_type == CameraType::ORTHOGONAL)
 		{
-			Math::Mat3x3 r = Math::CreateRotationMatrix(m_angle.x, m_angle.y, m_angle.z);
-			sf::Vector3f rotatedPos = Math::MultiplyMatVector(r, relativePos);
+			sf::Vector3f rotatedPos = Math::MultiplyMatrixVector(m_rotationMatrix, relativePos);
 
 			const sf::Vector2f orthoPos = {
 				(rotatedPos.x * objectScaled.x),
@@ -279,17 +298,15 @@ namespace Engine
 			};
 
 			screenPos = {
-				orthoPos.x + cameraMiddlePoint.x - finalScale.x,
-				orthoPos.y + cameraMiddlePoint.y - finalScale.y
+				orthoPos.x + cameraMiddlePoint.x,
+				orthoPos.y + cameraMiddlePoint.y
 			};
 		}
 		else if (m_type == CameraType::ISOMETRIC)
 		{
-			Math::Mat3x3 r = Math::CreateRotationMatrix(m_angle.x, m_angle.y, m_angle.z);
-		
 			Math::Mat3x3 isoMatrix = Math::CreateIsoMatrix(objectScaled);
-			Math::Mat3x3 finalMatrix = Math::MultiplyMat(r, isoMatrix);
-			sf::Vector3f pos = Math::MultiplyMatVector(finalMatrix, relativePos);
+			Math::Mat3x3 finalMatrix = Math::MultiplyMatrix(m_rotationMatrix, isoMatrix);
+			sf::Vector3f pos = Math::MultiplyMatrixVector(finalMatrix, relativePos);
 
 			screenPos = {
 				pos.x + cameraMiddlePoint.x,
@@ -297,39 +314,55 @@ namespace Engine
 			};
 		}
 
-		return screenPos;
+		return { screenPos, finalScale };
 	}
 
 	void Camera::TransformObject(sf::Drawable* _object, const Transform& _transform) const
 	{
-		sf::Vector2f pos = WorldToScreen(_transform);
+		auto [pos, scale] = WorldToScreen(_transform);
 
-		const float scale = 1.f / (_transform.position.z - m_pos.z);
-		const sf::Vector2f finalScale = {_transform.scale.x * scale, _transform.scale.y * scale };
+		sf::Vector3f dirWorld = Math::MultiplyMatrixVector(m_rotationMatrix, sf::Vector3f{ 1.f, 0.f, 0.f });
 
-		Math::Mat3x3 r = Math::CreateRotationMatrix(m_angle.x, m_angle.y, m_angle.z);
-		sf::Vector3f dirWorld = Math::MultiplyMatVector(r, sf::Vector3f{ 1.f, 0.f, 0.f });
+		const float angle = Math::RadToDeg(std::atan2(dirWorld.y, dirWorld.x)) + _transform.rotation.z;
 
-		const float rotation = Math::RadToDeg(atan2f(dirWorld.y, dirWorld.x));
+		float rotXRad = Math::DegToRad(_transform.rotation.x);
+		float rotYRad = Math::DegToRad(_transform.rotation.y);
+
+		float scaleFactorX = std::abs(std::cos(rotYRad)); 
+		float scaleFactorY = std::abs(std::cos(rotXRad));
+
+		scale = { scale.x * scaleFactorX, scale.y * scaleFactorY };
 
 		auto sprite = dynamic_cast<sf::Sprite*>(_object);
 		auto shape = dynamic_cast<sf::Shape*>(_object);
 		auto vertexArray = dynamic_cast<sf::VertexArray*>(_object);
+
 		if (sprite != nullptr)
 		{
-			sprite->setScale(finalScale);
+			sprite->setScale(scale);
 			sprite->setPosition(pos);
-			sprite->setRotation(rotation);
+			sprite->setRotation(angle);
 		}
 		else if (shape != nullptr)
 		{
-			shape->setScale(finalScale);
+			shape->setScale(scale);
 			shape->setPosition(pos);
-			shape->setRotation(rotation);
+			shape->setRotation(angle);
 		}
 		else if (vertexArray != nullptr)
 		{
-			// TODO: need to support vertex array for transform
+			const Math::Mat2x2 rotationMatrix = Math::CreateRotationMatrix(angle);
+			for (size_t i = 0; i < vertexArray->getVertexCount(); i += 4)
+			{
+				sf::Vertex& vertex = (*vertexArray)[i];
+
+				sf::Vector2f rotated = Math::MultiplyMatrixVector(rotationMatrix, vertex.position);
+
+				rotated.x *= scale.x;
+				rotated.y *= scale.y;
+
+				vertex.position = pos + rotated;
+			}
 		}
 	}
 }

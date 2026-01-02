@@ -1,5 +1,6 @@
 #ifndef LIGHT__HPP
 #define LIGHT__HPP
+
 #include <SFML/System/Vector3.hpp>
 #include <vector>
 #include <SFML/Graphics/CircleShape.hpp>
@@ -21,30 +22,30 @@ namespace Engine
 	class Light
 	{
 	private:
-		float m_radius;                  ///< Light radius in pixels
-		sf::Vector3f m_pos;              ///< Light position in 3D space
-		sf::Color m_color;               ///< Light color (RGB)
+		float m_radius;									///< Light radius in pixels
+		sf::Vector3f m_pos;								///< Light position in 3D space
+		sf::Color m_color;								///< Light color (RGB)
 
-		float m_intensity;               ///< Light intensity multiplier
-		float m_radialFalloff;           ///< Radial attenuation factor
-		float m_angularFalloff;          ///< Angular attenuation factor
-		float m_volumetricIntensity;     ///< Volumetric effect strength
+		float m_intensity;								///< Light intensity multiplier
+		float m_radialFalloff;							///< Radial attenuation factor
+		float m_angularFalloff;							///< Angular attenuation factor
+		float m_volumetricIntensity;					///< Volumetric effect strength
 
-		sf::CircleShape* m_lightShape;   ///< Visual representation of light source
+		sf::CircleShape* m_lightShape;					///< Visual representation of light source
 
-		sf::VertexArray m_projectedShadow; ///< Vertex array for shadow geometry
+		sf::VertexArray m_projectedShadow;				///< Vertex array for shadow geometry
 
-		sf::RenderTexture m_shadowMap;          ///< Shadow map render target
-		sf::Sprite m_shadowMapSprite;           ///< Shadow map sprite for rendering
+		sf::RenderTexture m_shadowMap;					///< Shadow map render target
+		sf::Sprite m_shadowMapSprite;					///< Shadow map sprite for rendering
 
-		sf::RenderTexture m_lightMap;           ///< Light map render target
-		sf::Sprite m_lightMapSprite;            ///< Light map sprite for rendering
+		sf::RenderTexture m_lightMap;					///< Light map render target
+		sf::Sprite m_lightMapSprite;					///< Light map sprite for rendering
 
-		sf::RenderTexture m_compositeLightAndShadow; ///< Combined light+shadow render target
-		sf::Sprite m_compositeLightAndShadowSprite;  ///< Composite sprite for final output
+		sf::RenderTexture m_compositeLightAndShadow;	///< Combined light+shadow render target
+		sf::Sprite m_compositeLightAndShadowSprite;		///< Composite sprite for final output
 
-		sf::RenderStates m_lightMapStates; ///< Render states for light rendering
-		sf::Shader* m_lightShader;         ///< Shader for light effects
+		sf::RenderStates m_lightMapStates;				///< Render states for light rendering
+		sf::Shader* m_lightShader;						///< Shader for light effects
 	public:
 		/**
 		 * @brief Constructs a light with a visual shape

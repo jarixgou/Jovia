@@ -4,39 +4,60 @@
 #include "../Render/RenderAPI.hpp"
 #include "../Layer/LayerManager.hpp"
 
-Engine::Scene::Scene()
+#include "../Interface/Camera/CameraInterface.hpp"
+#include "../Interface/Assets/AssetsInterface.hpp"
+#include "../Interface/Log/LogInterface.hpp"
+#include "../Interface/System/SystemInterface.hpp"
+#include "../Interface/SceneExplorer/SceneExplorerInterface.hpp"
+
+#include "../System/System.hpp"
+#include "../Camera/Camera.hpp"
+
+namespace Engine
 {
+	Scene::Scene()
+	{
 
-}
+	}
 
-Engine::Scene::~Scene()
-{
+	Scene::~Scene()
+	{
 
-}
+	}
 
-void Engine::Scene::Init()
-{
+	void Scene::Init()
+	{
 
-}
+	}
 
-void Engine::Scene::PollEvents(sf::Event& _event)
-{
+	void Scene::PollEvents(sf::Event& _event)
+	{
 
-}
+	}
 
-void Engine::Scene::Update(float _dt)
-{
+	void Scene::Update()
+	{
+		AssetsInterface::Update();
+		SystemInterface::Update();
+		LogInterface::Update();
+		SceneExplorerInterface::Update();
+		CameraInterface::Update();
 
-}
+		if (System::currentCamera != nullptr)
+		{
+			(*System::currentCamera)->Update();
+		}
+	}
 
-void Engine::Scene::Display()
-{
+	void Scene::Display()
+	{
 
-}
+	}
 
-void Engine::Scene::Cleanup()
-{
-	Engine::LayerManager::Clear();
-	Engine::AssetsManager::Clear();
-	Engine::RenderAPI::Cleanup();
+	void Engine::Scene::Cleanup()
+	{
+		LayerManager::Clear();
+		AssetsManager::Clear();
+		RenderAPI::Cleanup();
+	}
 }

@@ -1,2 +1,6 @@
 ﻿  EncryptFile.cpp
-LINK : fatal error LNK1104: impossible d'ouvrir le fichier 'D:\SVN\Eleves\mtena\Projet\Jovia\x64\Release\EncryptFile.exe'
+  Génération de code en cours
+  Previous IPDB not found, fall back to full compilation.
+  All 198 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Fin de la génération du code
+  EncryptFile.vcxproj -> D:\Jovia\x64\Release\EncryptFile.exe

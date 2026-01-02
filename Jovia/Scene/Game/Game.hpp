@@ -40,7 +40,7 @@ public:
 
 	void Init() override;
 	void PollEvents(sf::Event& _event) override;
-	void Update(float _dt) override;
+	void Update() override;
 	void Display() override;
 	void Cleanup() override;
 };

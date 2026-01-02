@@ -15,7 +15,7 @@ public:
 
 	virtual void Init() override;
 	virtual void PollEvents(sf::Event& _event) override;
-	virtual void Update(float _dt) override;
+	virtual void Update() override;
 	virtual void Display() override;
 	virtual void Cleanup() override;
 };

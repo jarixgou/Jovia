@@ -2,7 +2,10 @@
 
 #include <cmath>
 
+#include "LightManager.hpp"
 #include "../Asset/AssetsManager.hpp"
+#include "../Math/Math.hpp"
+#include "../System/System.hpp"
 
 namespace Engine
 {
@@ -10,19 +13,22 @@ namespace Engine
 	{
 		m_projectedShadow.setPrimitiveType(sf::Quads);
 
-		m_shadowMap.create(1920, 1080);
+		auto windowSize = System::window.get()->getSize();
+		m_shadowMap.create(windowSize.x, windowSize.y);
 		m_shadowMapSprite.setTexture(m_shadowMap.getTexture());
 
-		m_lightMap.create(1920, 1080);
+		m_lightMap.create(windowSize.x, windowSize.y);
 		m_lightMapSprite.setTexture(m_lightMap.getTexture());
 
-		m_compositeLightAndShadow.create(1920, 1080);
+		m_compositeLightAndShadow.create(windowSize.x, windowSize.y);
 		m_compositeLightAndShadowSprite.setTexture(m_compositeLightAndShadow.getTexture());
 
 		m_lightShape = _lightShape;
 		m_lightShader = const_cast<sf::Shader*>(AssetsManager::Get<sf::Shader>("LightShader"));
 		m_lightMapStates.blendMode = sf::BlendAdd;
 		m_lightMapStates.shader = m_lightShader;
+
+		LightManager::Add(this);
 	}
 
 	void Light::Update()
@@ -75,26 +81,19 @@ namespace Engine
 		const size_t objectVertexCount = _object.getVertexCount();
 
 		// Early out if object is outside light radius
+		float offsetSecurity = 90.f;
 		for (int i = 0; i < objectVertexCount; ++i)
 		{
 			sf::Vector2f pos = _object[i].position;
 			sf::Vector2f lightPos = {m_pos.x, m_pos.y};
 			sf::Vector2f ap = { pos.x - lightPos.x, pos.y - lightPos.y };
-			if (std::sqrt((ap.x * ap.x) + (ap.y * ap.y)) > m_radius)
+			if (std::sqrt((ap.x * ap.x) + (ap.y * ap.y)) > m_radius + offsetSecurity)
 			{
 				return;
 			}
 		}
 
-		// Calulate the area of the object
-		float area = 0.f;
-		for (size_t i = 0; i < objectVertexCount; ++i)
-		{
-			const sf::Vector2f a = _object[i].position;
-			const sf::Vector2f b = _object[(i + 1) % objectVertexCount].position;
-			area += (a.x * b.y) - (b.x * a.y);
-		}
-		area *= 0.5f;
+		float area = Math::GetAreaOfVA(_object);
 
 		// Project shadows
 		for (size_t i = 0; i < objectVertexCount; ++i)

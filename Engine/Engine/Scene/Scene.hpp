@@ -47,9 +47,8 @@ namespace Engine
 		 * 
 		 * Called each frame to update game logic, physics, and object states.
 		 * 
-		 * @param _dt Delta time in seconds since last frame
 		 */
-		virtual void Update(float _dt);
+		virtual void Update();
 
 		/**
 		 * @brief Renders the scene

@@ -3,6 +3,6 @@
 
 #include "../../Common.h"
 
-void Update(sf::Time _time, float _dt);
+void Update();
 
 #endif

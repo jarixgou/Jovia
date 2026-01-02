@@ -1,21 +1,20 @@
 #include "LightManager.hpp"
 
 #include "Light.hpp"
-#include "../Camera/Camera.hpp"
-#include "../Render/RenderAPI.hpp"
+
 
 namespace Engine
 {
-	std::vector<std::unique_ptr<Light>> LightManager::m_lightList;
+	std::vector<Light*> LightManager::m_lightList;
 
-	void LightManager::Add(std::unique_ptr<Light>& _light)
+	void LightManager::Add(Light* _light)
 	{
-		m_lightList.push_back(std::move(_light));
+		m_lightList.push_back(_light);
 	}
 
-	void LightManager::Update(Camera* _camera)
+	void LightManager::Update()
 	{
-		for (auto & light : m_lightList)
+		for (auto& light : m_lightList)
 		{
 
 		}
@@ -23,22 +22,19 @@ namespace Engine
 
 	void LightManager::Display()
 	{
-		for (auto& light : m_lightList)
-		{
-			if (RenderAPI::GetIsUsed())
-			{
-				light->Display();
-				RenderAPI::m_lightMap->draw(light->GetCompositeLightAndShadow(), sf::BlendAdd);
-			}
-		}
+		
 	}
 
 	void LightManager::Cleanup()
 	{
+		for (auto& light : m_lightList)
+		{
+			delete light;
+		}
 		m_lightList.clear();
 	}
 
-	const std::vector<std::unique_ptr<Light>>& LightManager::GetLightList()
+	const std::vector<Light*>& LightManager::GetLightList()
 	{
 		return m_lightList;
 	}

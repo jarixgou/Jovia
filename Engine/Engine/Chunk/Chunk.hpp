@@ -127,7 +127,7 @@ namespace Engine
 		/**
 		 * @brief Clears all vertices in the chunk
 		 */
-		void Clear();
+		void Cleanup();
 	};
 }
 

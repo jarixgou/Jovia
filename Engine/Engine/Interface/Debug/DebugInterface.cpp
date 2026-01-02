@@ -40,13 +40,13 @@ static std::string GetCPUName()
 	return std::string(cpuName);
 }
 
-void Engine::DebugInterface::Update(float _dt, float _gpuTime)
+void Engine::DebugInterface::Update(float _gpuTime)
 {
-	timer += _dt;
+	timer += System::time.GetDeltaTime();
 
 	if (timer >= 0.08f)
 	{
-		m_dt = _dt;
+		m_dt = System::time.GetDeltaTime();
 		m_gpuTime = _gpuTime;
 
 		// Update historic fps

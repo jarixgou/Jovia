@@ -21,7 +21,7 @@ namespace Engine
 		~ScenesManager() = default;
 
 		static void PollEvents(sf::Event& _event);
-		static void Update(float _dt);
+		static void Update();
 		static void Display();
 		static void Cleanup();
 

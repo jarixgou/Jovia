@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\SVN\Eleves\mtena\Projet\Jovia\x64\Release\EncryptFile.exe</FullPath>
+      <FullPath>D:\Jovia\x64\Release\EncryptFile.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

@@ -7,7 +7,7 @@ namespace Engine
 
 	namespace CameraInterface
 	{
-		void Update(Camera* _cam);
+		void Update();
 	}
 }
 

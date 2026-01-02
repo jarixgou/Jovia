@@ -6,13 +6,13 @@
 
 void Display()
 {
-	System::window->clear(sf::Color::Black);
+	Engine::System::window->clear(sf::Color::Black);
 
-	System::verticeNb = 0;
-	System::drawCall = 0;
+	Engine::System::verticeNb = 0;
+	Engine::System::drawCall = 0;
 
 	Engine::ScenesManager::Display();
-	ImGui::SFML::Render(*System::window);
+	ImGui::SFML::Render(*Engine::System::window);
 
-	System::window->display();
+	Engine::System::window->display();
 }

@@ -17,10 +17,10 @@ void Init()
 
 void InitSystem()
 {
-    System::window = std::make_unique<sf::RenderWindow>();
-    System::window->create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia",sf::Style::Default);
-
-    System::window->setActive(true);
+	Engine::System::window = std::make_unique<sf::RenderWindow>();
+	Engine::System::window->create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Jovia",sf::Style::Default);
+	Engine::System::time.SetClockSpeed(1.f);
+	Engine::System::window->setActive(true);
 
     GLenum err = glewInit();
     if (err != GLEW_OK)
@@ -40,9 +40,9 @@ void InitSystem()
     std::string message = "OpenGL : " + std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
     LOG_INFO(message.c_str(), true);
 
-    System::window->setActive(false);
+	Engine::System::window->setActive(false);
 
-	ImGui::SFML::Init(*System::window);
+	ImGui::SFML::Init(*Engine::System::window);
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	LOG_INFO("ImGui was initialized", true);

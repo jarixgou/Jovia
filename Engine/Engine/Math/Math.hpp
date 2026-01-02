@@ -1,6 +1,7 @@
 #ifndef MATH__HPP
 #define MATH__HPP
 #include <array>
+#include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Vector3.hpp>
 
@@ -25,7 +26,15 @@ namespace Engine
 		 * @param _b Second matrix
 		 * @return Result of matrix multiplication (_a * _b)
 		 */
-		Mat3x3 MultiplyMat(const Mat3x3& _a, const Mat3x3& _b);
+		Mat3x3 MultiplyMatrix(const Mat3x3& _a, const Mat3x3& _b);
+
+		/**
+		 * @brief Inverts a 3x3 matrix
+		 * 
+		 * @param _a Matrix to invert
+		 * @return Inverted matrix
+		 */
+		Mat3x3 InvertMatrix(const Mat3x3& _a);
 
 		/**
 		 * @brief Multiplies a 3x3 matrix by a 3D vector
@@ -34,19 +43,17 @@ namespace Engine
 		 * @param _b Vector to transform
 		 * @return Transformed vector
 		 */
-		sf::Vector3f MultiplyMatVector(const Mat3x3& _a, const sf::Vector3f& _b);
+		sf::Vector3f MultiplyMatrixVector(const Mat3x3& _a, const sf::Vector3f& _b);
 
 		/**
 		 * @brief Creates a 3D rotation matrix from Euler angles
 		 *
 		 * Combines rotations around X, Y, and Z axes into a single rotation matrix.
 		 *
-		 * @param _angleX Rotation around X axis in degrees
-		 * @param _angleY Rotation around Y axis in degrees
-		 * @param _angleZ Rotation around Z axis in degrees
+		 * @param _rotation Rotation around X axis in degrees
 		 * @return Combined rotation matrix
 		 */
-		Mat3x3 CreateRotationMatrix(float _angleX, float _angleY, float _angleZ);
+		Mat3x3 CreateRotationMatrix(const sf::Vector3f& _rotation);
 
 		/**
 		 * @brief Creates an isometric projection matrix
@@ -65,7 +72,15 @@ namespace Engine
 		 * @param _b Second matrix
 		 * @return Result of matrix multiplication (_a * _b)
 		 */
-		Mat2x2 MultiplyMat(const Mat2x2& _a, const Mat2x2& _b);
+		Mat2x2 MultiplyMatrix(const Mat2x2& _a, const Mat2x2& _b);
+		
+		/**
+		 * @brief Inverts a 2x2 matrix
+		 *
+		 * @param _a Matrix to invert
+		 * @return Inverted matrix
+		 */
+		Mat2x2 InvertMatrix(const Mat2x2& _a);
 
 		/**
 		 * @brief Multiplies a 2x2 matrix by a 2D vector
@@ -74,7 +89,7 @@ namespace Engine
 		 * @param _b Vector to transform
 		 * @return Transformed vector
 		 */
-		sf::Vector2f MultiplyMatVector(const Mat2x2& _a, const sf::Vector2f& _b);
+		sf::Vector2f MultiplyMatrixVector(const Mat2x2& _a, const sf::Vector2f& _b);
 
 		/**
 		 * @brief Creates a 2D rotation matrix
@@ -83,6 +98,8 @@ namespace Engine
 		 * @return 2D rotation matrix
 		 */
 		Mat2x2 CreateRotationMatrix(const float& _angle);
+
+		float GetAreaOfVA(const sf::VertexArray& _va);
 
 		/**
 		 * @brief Converts radians to degrees

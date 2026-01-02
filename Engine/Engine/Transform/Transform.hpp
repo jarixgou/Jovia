@@ -18,7 +18,12 @@ namespace Engine
 		sf::Vector3f position; ///< Position in 3D world space (x, y, z)
 		sf::Vector3f size;     ///< Object dimensions (width, height, depth)
 		sf::Vector2f scale;    ///< Scale factors (x, y)
-		float angle;           ///< Rotation angle in degrees
+		sf::Vector3f rotation;    ///< Rotation angle in degrees (x, y, z)
+
+
+		// Surcharge operators
+		bool operator==(const Transform& _other) const;
+		bool operator!=(const Transform& _other) const;
 	};
 }
 

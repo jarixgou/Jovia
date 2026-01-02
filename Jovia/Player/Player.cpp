@@ -2,22 +2,30 @@
 
 #include "Engine/Asset/AssetsManager.hpp"
 
-void Player::Init()
+Player::Player()
 {
-	sf::Sprite sprite(*Engine::AssetsManager::Get<sf::Texture>("Monstre"));
+	sf::Sprite* sprite = new sf::Sprite(*Engine::AssetsManager::Get<sf::Texture>("Monstre"));
 
-	m_object = new Engine::Object();
-	m_object->shape = new sf::Sprite(sprite);
-	m_transform = Engine::Transform();
-	m_transform.size = { 32,32, 0 };
+	Engine::Object* obj = new Engine::Object();
+	obj->shape = sprite;
+
+	Engine::Transform transform;
+	transform.position = { 0.f, 0.f, -2.f };
+	transform.rotation = { 0.f, 0.f, 0.f };
+	transform.size = { 32.f, 32.f, 0.f };
+	transform.scale = { 1.f, 1.f };
+
+	SetObject(&obj);
+	SetTransform(transform);
+	SetTag("Player");
 }
 
-void Player::Update(const float& _dt)
+void Player::Update()
 {
 
 }
 
-void Player::Display(const Engine::Camera* _camera)
+void Player::Display()
 {
-	GameObject::Display(_camera);
+	GameObject::Display();
 }

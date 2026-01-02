@@ -12,10 +12,7 @@
 
 WindowState windowState;
 
-std::atomic<bool> running{ true };
-std::atomic<bool> initialized{ false };
-
-void GameLoopThread();
+void GameLoopThread(std::stop_token _stopToken);
 
 int main()
 {
@@ -30,56 +27,43 @@ int main()
 
 	Init();
 
-	initialized = true;
+	Engine::System::window->setActive(false);
 
-	System::window->setActive(false);
+	std::jthread gameLoop(GameLoopThread);
 
-	std::thread renderThread(GameLoopThread);
-
-	while (System::window->isOpen())
+	while (Engine::System::window->isOpen())
 	{
 		PollEvents();
 	}
 
-	running = false;
-	if (renderThread.joinable())
-	{
-		renderThread.join();
-	}
+	gameLoop.request_stop();
 
 	Cleanup();
 }
 
-void GameLoopThread()
+void GameLoopThread(std::stop_token _stopToken)
 {
-	while (!initialized)
-	{
-		sf::sleep(sf::milliseconds(10));
-	}
+	Engine::System::window->setActive(true);
 
-	System::window->setActive(true);
-
-	sf::Clock deltaTime;
 	float gpuTime = 0.0f;
 
-	const int QUERY_BUFFER_SIZE = 8; // taille du buffer circulaire (à ajuster)
-	GLuint queries[QUERY_BUFFER_SIZE] = { 0u };
-	glGenQueries(QUERY_BUFFER_SIZE, queries);
+	const int queryBufferSize = 8; // taille du buffer circulaire (à ajuster)
+	GLuint queries[queryBufferSize] = { 0 };
+	glGenQueries(queryBufferSize, queries);
 
 	int writeIndex = 0;   // où on place la prochaine query
 	int readIndex = 0;    // où on check la plus ancienne query non lue
 	int outstanding = 0;  // nombre de queries en attente de résultat
 
-	while (running)
+	while (!_stopToken.stop_requested())
 	{
-		sf::Time time = deltaTime.restart();
-		float dt = time.asSeconds();
+		Engine::System::time.Restart();
 
-		Update(time, dt);
-		Engine::DebugInterface::Update(dt, gpuTime);
+		Update();
+		Engine::DebugInterface::Update(gpuTime);
 
 		// Si buffer plein, tenter de libérer des résultats disponibles sans bloquer
-		if (outstanding == QUERY_BUFFER_SIZE)
+		if (outstanding == queryBufferSize)
 		{
 			GLint available = 0;
 			glGetQueryObjectiv(queries[readIndex], GL_QUERY_RESULT_AVAILABLE, &available);
@@ -88,7 +72,7 @@ void GameLoopThread()
 				GLuint64 elapsed = 0;
 				glGetQueryObjectui64v(queries[readIndex], GL_QUERY_RESULT, &elapsed);
 				gpuTime = static_cast<float>(elapsed) / 1000000.0f;
-				readIndex = (readIndex + 1) % QUERY_BUFFER_SIZE;
+				readIndex = (readIndex + 1) % queryBufferSize;
 				--outstanding;
 			}
 			else
@@ -107,7 +91,7 @@ void GameLoopThread()
 		glEndQuery(GL_TIME_ELAPSED);
 
 		// Marquer la query comme en attente puis avancer writeIndex
-		writeIndex = (writeIndex + 1) % QUERY_BUFFER_SIZE;
+		writeIndex = (writeIndex + 1) % queryBufferSize;
 		++outstanding;
 
 		// Lire autant de résultats disponibles que possible (non bloquant)
@@ -120,12 +104,12 @@ void GameLoopThread()
 			glGetQueryObjectui64v(queries[readIndex], GL_QUERY_RESULT, &elapsed);
 			// elapsed en nanosecondes -> millisecondes
 			gpuTime = static_cast<float>(elapsed) / 1000000.0f;
-			readIndex = (readIndex + 1) % QUERY_BUFFER_SIZE;
+			readIndex = (readIndex + 1) % queryBufferSize;
 			--outstanding;
 		}
 	}
 
-	glDeleteQueries(QUERY_BUFFER_SIZE, queries);
+	glDeleteQueries(queryBufferSize, queries);
 
-	System::window->setActive(false);
+	Engine::System::window->setActive(false);
 }

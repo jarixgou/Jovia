@@ -12,11 +12,11 @@ void Engine::ScenesManager::PollEvents(sf::Event& _event)
 	}
 }
 
-void Engine::ScenesManager::Update(float _dt)
+void Engine::ScenesManager::Update()
 {
 	if (m_currentScene != nullptr)
 	{
-		m_currentScene->Update(_dt);
+		m_currentScene->Update();
 	}
 }
 

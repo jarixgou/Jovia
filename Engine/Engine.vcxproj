@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Collider\ColliderManager.cpp" />
     <ClCompile Include="Engine\Asset\Asset.cpp" />
     <ClCompile Include="Engine\Asset\AssetsManager.cpp" />
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Chunk\Chunk.cpp" />
     <ClCompile Include="Engine\Chunk\ChunkManager.cpp" />
+    <ClCompile Include="Engine\Collider\Collider.cpp" />
     <ClCompile Include="Engine\GameObject\GameObject.cpp" />
     <ClCompile Include="Engine\Interface\Assets\AssetsInterface.cpp" />
     <ClCompile Include="Engine\Interface\Camera\CameraInterface.cpp" />
@@ -42,6 +44,7 @@
     <ClCompile Include="Engine\Scene\ScenesManager.cpp" />
     <ClCompile Include="Engine\System\System.cpp" />
     <ClCompile Include="Engine\TextureSlice\TextureSlice.cpp" />
+    <ClCompile Include="Engine\Time\Time.cpp" />
     <ClCompile Include="Engine\Transform\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +53,8 @@
     <ClInclude Include="Engine\Camera\Camera.hpp" />
     <ClInclude Include="Engine\Chunk\Chunk.hpp" />
     <ClInclude Include="Engine\Chunk\ChunkManager.hpp" />
+    <ClInclude Include="Engine\Collider\Collider.hpp" />
+    <ClInclude Include="Engine\Collider\ColliderManager.hpp" />
     <ClInclude Include="Engine\Interface\Log\LogInterface.hpp" />
     <ClInclude Include="Engine\Interface\SceneExplorer\SceneExplorerInterface.hpp" />
     <ClInclude Include="Engine\Interface\System\SystemInterface.hpp" />
@@ -70,6 +75,7 @@
     <ClInclude Include="Engine\Scene\ScenesManager.hpp" />
     <ClInclude Include="Engine\System\System.hpp" />
     <ClInclude Include="Engine\TextureSlice\TextureSlice.hpp" />
+    <ClInclude Include="Engine\Time\Time.hpp" />
     <ClInclude Include="Engine\Transform\Transform.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

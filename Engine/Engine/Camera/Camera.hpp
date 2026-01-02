@@ -8,9 +8,11 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Vector3.hpp>
 
+#include "../GameObject/GameObject.hpp"
+#include "../Math/Math.hpp"
+
 namespace Engine
 {
-	class GameObject;
 	struct Transform;
 
 	/**
@@ -30,27 +32,29 @@ namespace Engine
 	 * The Camera class handles both orthogonal and isometric projections,
 	 * providing world-to-screen coordinate transformations and viewport management.
 	 */
-	class Camera
+	class Camera : public GameObject
 	{
 	private:
-		sf::Vector3f m_pos = { 0,0,0 };             ///< Camera position in 3D space
-		sf::Vector2f m_size = { 1920,1080 };        ///< Viewport size in pixels
-		sf::Vector3f m_angle = { 0,0,0 };           ///< Camera rotation angles (degrees)
-		bool m_free = false;                        ///< Free movement mode flag
+		Transform* m_lastTransform;					///< Last frame's transform for interpolation
+		bool m_free;								///< Free movement mode flag
 
-		sf::Vector3f m_target = { 0,0,0 };          ///< Target position to follow
+		float m_renderDistance;
+
+		Math::Mat3x3 m_rotationMatrix;				///< Cached rotation matrix for transformations
+
+		sf::Vector3f m_target;						///< Target position to follow
 
 		CameraType m_type = CameraType::ORTHOGONAL; ///< Current projection type
 	public:
 		/**
 		 * @brief Default constructor
 		 */
-		Camera() = default;
+		Camera(const Transform& _transform, CameraType _type = CameraType::ORTHOGONAL, float _renderDistance = 5.f);
 
 		/**
 		 * @brief Default destructor
 		 */
-		~Camera() = default;
+		~Camera();
 
 		/**
 		 * @brief Updates the camera each frame
@@ -58,9 +62,8 @@ namespace Engine
 		 * Handles keyboard input for free camera movement and normalizes rotation angles.
 		 * Movement behavior depends on the camera type (orthogonal or isometric).
 		 *
-		 * @param _dt Delta time in seconds since last frame
 		 */
-		void Update(float _dt);
+		void Update() override;
 
 		/**
 		 * @brief Enables or disables free camera movement
@@ -75,27 +78,6 @@ namespace Engine
 		 * @param _target 3D position of the target
 		 */
 		void SetFollow(sf::Vector3f _target);
-
-		/**
-		 * @brief Sets the camera position in 3D space
-		 *
-		 * @param _pos New camera position (x, y, z)
-		 */
-		void SetPos(sf::Vector3f _pos);
-
-		/**
-		 * @brief Sets the viewport size
-		 *
-		 * @param _size Viewport dimensions in pixels (width, height)
-		 */
-		void SetSize(sf::Vector2f _size);
-
-		/**
-		 * @brief Sets the camera rotation angles
-		 *
-		 * @param _angle Rotation angles in degrees (x, y, z)
-		 */
-		void SetAngle(const sf::Vector3f& _angle);
 
 		/**
 		 * @brief Sets the camera projection type
@@ -116,32 +98,11 @@ namespace Engine
 		sf::FloatRect GetVisibleArea(sf::Vector2f _tileSize) const;
 
 		/**
-		 * @brief Gets the current camera position
-		 *
-		 * @return 3D position vector (x, y, z)
-		 */
-		sf::Vector3f GetPos() const;
-
-		/**
-		 * @brief Gets the viewport size
-		 *
-		 * @return Viewport dimensions in pixels (width, height)
-		 */
-		sf::Vector2f GetSize() const;
-
-		/**
 		 * @brief Gets the free movement mode state
 		 *
 		 * @return True if free movement is enabled, false otherwise
 		 */
 		bool GetFree() const;
-
-		/**
-		 * @brief Gets the current rotation angles
-		 *
-		 * @return Const reference to rotation angles in degrees (x, y, z)
-		 */
-		const sf::Vector3f& GetAngle() const;
 
 		/**
 		 * @brief Gets the current projection type
@@ -160,6 +121,8 @@ namespace Engine
 		 */
 		void DrawObject(GameObject* _gameObject, sf::RenderTarget& _renderTarget) const;
 
+		void DrawLight(GameObject* _gameObject, sf::RenderTarget& _renderTarget) const;
+
 		/**
 		 * @brief Converts world coordinates to screen coordinates
 		 *
@@ -169,7 +132,7 @@ namespace Engine
 		 * @param _transform Transform containing world position and properties
 		 * @return 2D screen position in pixels
 		 */
-		sf::Vector2f WorldToScreen(const Transform& _transform) const;
+		std::pair<sf::Vector2f, sf::Vector2f> WorldToScreen(const Transform& _transform) const;
 
 	private:
 		/**

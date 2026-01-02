@@ -37,7 +37,7 @@ namespace Engine
 
 		Chunk* GetChunk(const sf::Vector2i& _chunkPos) const;
 
-		void UpdateVisibleChunks(const Camera* _camera);
+		void UpdateVisibleChunks();
 
 		void SetChunkDirty(const sf::Vector2i& _chunkPos) const;
 
@@ -45,7 +45,7 @@ namespace Engine
 
 		void SetTileAt(const sf::Vector2i& _worldPos, const uint8_t& _tileId, const float& _tileHeight);
 
-		void RebuildDirtyChunks(const Camera* _camera);
+		void RebuildDirtyChunks();
 
 		void Clear();
 

@@ -22,9 +22,9 @@ void Menu::PollEvents(sf::Event& _event)
 {
 }
 
-void Menu::Update(float _dt)
+void Menu::Update()
 {
-
+	Scene::Update();
 }
 
 void Menu::Display()

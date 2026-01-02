@@ -4,8 +4,8 @@
 #include <algorithm>
 
 #include "../Camera/Camera.hpp"
-
 #include "../GameObject/GameObject.hpp"
+#include "../System/System.hpp"
 
 namespace Engine
 {
@@ -32,17 +32,12 @@ namespace Engine
 			m_sortTask.wait();
 		}
 
-		for (auto & layer : m_layers)
-		{
-			
-		}
-
 		m_layers.clear();
 		m_layersBuffer.clear();
 		m_useBuffer = false;
 	}
 
-	void LayerManager::Update(CameraType _camType)
+	void LayerManager::Update()
 	{
 		if (m_layers.size() <= 1)
 		{
@@ -57,10 +52,11 @@ namespace Engine
 		m_useBuffer = false;
 		m_layersBuffer.resize(m_layers.size());
 		std::copy(std::execution::par_unseq, m_layers.begin(), m_layers.end(), m_layersBuffer.begin());
+		CameraType camType = (*System::currentCamera)->GetType();
 
-		m_sortTask = std::async(std::launch::async, [_camType, &layers = m_layersBuffer]()
+		m_sortTask = std::async(std::launch::async, [camType, &layers = m_layersBuffer]()
 			{
-				if (_camType == CameraType::ORTHOGONAL)
+				if (camType == CameraType::ORTHOGONAL)
 				{
 					auto orthographiqueCompare = [](const Layer& _a, const Layer& _b) noexcept -> bool
 						{
@@ -83,7 +79,7 @@ namespace Engine
 						std::ranges::sort(layers, orthographiqueCompare);
 					}
 				}
-				else if (_camType == CameraType::ISOMETRIC)
+				else if (camType == CameraType::ISOMETRIC)
 				{
 					auto isometricCompare = [](const Layer& _a, const Layer& _b) noexcept -> bool
 						{
@@ -131,7 +127,7 @@ namespace Engine
 			});
 	}
 
-	void LayerManager::Draw(Camera* _cam)
+	void LayerManager::Display()
 	{
 		const auto& layersToDraw = m_useBuffer ? m_layersBuffer : m_layers;
 
@@ -144,7 +140,7 @@ namespace Engine
 		{
 			const Layer& layer = *it;
 
-			layer.object->Display(_cam);
+			layer.object->Display();
 		}
 	}
 }

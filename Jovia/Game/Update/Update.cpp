@@ -1,22 +1,12 @@
 #include "Update.hpp"
 
 #include <Engine/Scene/ScenesManager.hpp>
-
-#include <Engine/Interface/Assets/AssetsInterface.hpp>
-#include <Engine/Interface/Debug/DebugInterface.hpp>
-#include <Engine/Interface/System/SystemInterface.hpp>
 #include <Engine/System/System.hpp>
-#include <Engine/Interface/Log/LogInterface.hpp>
-#include <Engine/Interface/SceneExplorer/SceneExplorerInterface.hpp>
 
-void Update(sf::Time _time, float _dt)
+
+void Update()
 {
-	ImGui::SFML::Update(*System::window, _time);
+	ImGui::SFML::Update(*Engine::System::window, Engine::System::time.GetTime());
 
-	Engine::ScenesManager::Update(_dt);
-
-	Engine::AssetsInterface::Update();
-	Engine::SystemInterface::Update();
-	Engine::LogInterface::Update();
-	Engine::SceneExplorerInterface::Update();
+	Engine::ScenesManager::Update();
 }

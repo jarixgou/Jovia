@@ -72,18 +72,16 @@ namespace Engine
 		 * Sorts layers based on camera type (Y-position for isometric,
 		 * Z-position for orthogonal). Sorting is done asynchronously.
 		 *
-		 * @param _camType Type of camera projection used for sorting
 		 */
-		static void Update(CameraType _camType);
+		static void Update();
 
 		/**
 		 * @brief Draws all layers in sorted order
 		 *
 		 * Renders all GameObjects in the layer list using the provided camera.
 		 *
-		 * @param _cam Camera used for rendering transformations
 		 */
-		static void Draw(Camera* _cam);
+		static void Display();
 	};
 }
 

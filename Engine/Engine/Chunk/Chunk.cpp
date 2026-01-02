@@ -73,8 +73,9 @@ namespace Engine
 		m_groundVertices.clear();
 		m_objectVertices.clear();
 
-		const sf::Vector3f camPos = _cam->GetPos();
-		const sf::Vector3f camAngle = _cam->GetAngle();
+		Transform camTransform = _cam->GetTransform();
+
+		const sf::Vector3f camRotation = camTransform.rotation;
 
 		for (int y = 0; y < chunkSize; ++y)
 		{
@@ -90,22 +91,21 @@ namespace Engine
 				tempTransform.position = {worldX, worldY, tileData.height};
 				tempTransform.size = {static_cast<float>(rect.width), static_cast<float>(rect.height), 0.f};
 				tempTransform.scale = {1.f ,1.f};
-				tempTransform.angle = 0.f;
-				sf::Vector2f screenPos = _cam->WorldToScreen(tempTransform);
+				tempTransform.rotation = {0.f, 0.f, 0.f};
+				auto [screenPos, scale] = _cam->WorldToScreen(tempTransform);
 
-				const float scale = 1.0f / (tileData.height - camPos.z);
-				const float scaledWidth = static_cast<float>(rect.width) * scale;
-				const float scaledHeight = static_cast<float>(rect.height) * scale;
+				const float scaledWidth = static_cast<float>(rect.width) * scale.x;
+				const float scaledHeight = static_cast<float>(rect.height) * scale.y;
 
-				sf::VertexArray& targetVertices = (tileData.height < 0.5f) ? m_groundVertices : m_objectVertices;
+				sf::VertexArray& targetVertices = (tileData.height < 0.5f) ? m_groundVertices : m_groundVertices;
 
-				Math::Mat3x3 r = Math::CreateRotationMatrix(camAngle.x, camAngle.y, camAngle.z);
-				sf::Vector3f dirWorld = Math::MultiplyMatVector(r, sf::Vector3f{ 1.f, 0.f, 0.f });
+				Math::Mat3x3 r = Math::CreateRotationMatrix(camRotation);
+				sf::Vector3f dirWorld = Math::MultiplyMatrixVector(r, sf::Vector3f{ 1.f, 0.f, 0.f });
 
 				const float angle = Math::RadToDeg(atan2f(dirWorld.y, dirWorld.x));
 				Math::Mat2x2 rMatrix = Math::CreateRotationMatrix(angle);
 
-				sf::Vector2f p1 = {scaledWidth, 0.f};
+				sf::Vector2f p1 = { scaledWidth, 0.f};
 				sf::Vector2f p2 = { scaledWidth, scaledHeight };
 				sf::Vector2f p3 = { 0.f, scaledHeight };
 
@@ -113,13 +113,13 @@ namespace Engine
 				targetVertices.append(sf::Vertex(screenPos, sf::Color::White,
 					{ static_cast<float>(rect.left), static_cast<float>(rect.top) }));
 
-				targetVertices.append(sf::Vertex(screenPos + Math::MultiplyMatVector(rMatrix, p1), sf::Color::White,
+				targetVertices.append(sf::Vertex(screenPos + Math::MultiplyMatrixVector(rMatrix, p1), sf::Color::White,
 					{ static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top) }));
 
-				targetVertices.append(sf::Vertex(screenPos + Math::MultiplyMatVector(rMatrix, p2), sf::Color::White,
+				targetVertices.append(sf::Vertex(screenPos + Math::MultiplyMatrixVector(rMatrix, p2), sf::Color::White,
 					{ static_cast<float>(rect.left + rect.width), static_cast<float>(rect.top + rect.height) }));
 
-				targetVertices.append(sf::Vertex(screenPos + Math::MultiplyMatVector(rMatrix, p3), sf::Color::White,
+				targetVertices.append(sf::Vertex(screenPos + Math::MultiplyMatrixVector(rMatrix, p3), sf::Color::White,
 					{ static_cast<float>(rect.left), static_cast<float>(rect.top + rect.height) }));
 
 				System::verticeNb += 4;
@@ -128,7 +128,7 @@ namespace Engine
 		m_isDirty = false;
 	}
 
-	void Chunk::Clear()
+	void Chunk::Cleanup()
 	{
 		m_tiles.clear();
 		m_groundVertices.clear();

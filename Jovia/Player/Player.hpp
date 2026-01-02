@@ -8,9 +8,10 @@ class Player : public Engine::GameObject
 private:
 	
 public:
-	void Init() override;
-	void Update(const float& _dt) override;
-	void Display(const Engine::Camera* _camera) override;
+	Player();
+
+	void Update() override;
+	void Display() override;
 };
 
 #endif

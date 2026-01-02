@@ -31,7 +31,6 @@ void Game::Init()
 	Engine::AssetsManager::Add<sf::Texture>("Assets/Monstre.asset");
 
 	monstre = new Player();
-	monstre->Init();
 
 	Engine::RenderAPI::Init();
 
@@ -42,11 +41,9 @@ void Game::Init()
 	std::string message = "Sliced texture into " + std::to_string(m_textureSliced.size()) + " sprites.";
 	LOG_DEBUG(message.c_str(), false);
 
-	m_camera = new Engine::Camera();
-	m_camera->SetType(Engine::CameraType::ISOMETRIC);
-	m_camera->SetPos({ 0.f,0.f,-0.5f });
-	m_camera->SetSize({ 1920.f,1080.f });
-	m_camera->SetFree(false);
+	Engine::Transform camTransform = { {0.f,0.f,-0.5f}, {1920.f,1080.f,0.f}, {1.f,1.f}, {0.f,0.f,0.f} };
+	m_camera = new Engine::Camera(camTransform);
+	Engine::System::currentCamera = &m_camera;
 
 	Engine::Light* light = new Engine::Light(&lightCircle);
 	light->SetPos({ 0,0,0, });
@@ -79,8 +76,8 @@ void Game::Init()
 	colliderTest.append(sf::Vertex({ SCREEN_WIDTH / 2,SCREEN_HEIGHT / 2 + 100 }, sf::Color::Red));
 
 	colliderTest2.setPrimitiveType(sf::Quads);
-	float cosAngle = cosf(M_PI / 4);
-	float sinAngle = sinf(M_PI / 4);
+	float cosAngle = std::cos(M_PI / 4);
+	float sinAngle = std::sin(M_PI / 4);
 	sf::Vector2f pos = { SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 2 - 600 };
 	colliderTest2.append(sf::Vertex(
 		{ pos.x * cosAngle - pos.y * sinAngle,
@@ -124,11 +121,11 @@ void Game::PollEvents(sf::Event& _event)
 
 }
 
-void Game::Update(float _dt)
+void Game::Update()
 {
 	Engine::LayerManager::Clear();
 
-	sf::Vector2i mousePos = sf::Mouse::getPosition(*System::window);
+	sf::Vector2i mousePos = sf::Mouse::getPosition(*Engine::System::window);
 	Engine::Light* light = lightList[0];
 	light->SetPos({ static_cast<float>(mousePos.x), static_cast<float>(mousePos.y),0 });
 
@@ -139,22 +136,22 @@ void Game::Update(float _dt)
 		light->BuildProjectedShadow(colliderTest2);
 	}
 
-	m_chunkManager->UpdateVisibleChunks(m_camera);
-	m_chunkManager->RebuildDirtyChunks(m_camera);
+	m_chunkManager->UpdateVisibleChunks();
+	m_chunkManager->RebuildDirtyChunks();
 
-	Engine::CameraInterface::Update(m_camera);
-	m_camera->Update(_dt);
+	Scene::Update();
 }
 
 void Game::Display()
 {
 	Engine::RenderAPI::Clear();
+
 	for (auto& light : lightList)
 	{
 		if (Engine::RenderAPI::GetIsUsed())
 		{
 			light->Display();
-			System::drawCall += 1;
+			Engine::System::drawCall += 1;
 			Engine::RenderAPI::m_lightMap->draw(light->GetCompositeLightAndShadow(), sf::BlendAdd);
 		}
 	}
@@ -163,28 +160,28 @@ void Game::Display()
 	{
 		if (Engine::RenderAPI::GetIsUsed())
 		{
-			System::drawCall += 2;
+			Engine::System::drawCall += 2;
 			Engine::RenderAPI::m_sceneMap->draw(chunk->GetGroundVertices(), m_renderStates);
 			Engine::RenderAPI::m_sceneMap->draw(chunk->GetObjectVertices(), m_renderStates);
 		}
 		else
 		{
-			System::drawCall += 2;
-			System::window->draw(chunk->GetGroundVertices(), m_renderStates);
-			System::window->draw(chunk->GetObjectVertices(), m_renderStates);
+			Engine::System::drawCall += 2;
+			Engine::System::window->draw(chunk->GetGroundVertices(), m_renderStates);
+			Engine::System::window->draw(chunk->GetObjectVertices(), m_renderStates);
 		}
 	}
 
-	Engine::LayerManager::Draw(m_camera);
+	Engine::LayerManager::Display();
 
 	if (Engine::RenderAPI::GetIsUsed())
 	{
-		System::drawCall += 2;
+		Engine::System::drawCall += 2;
 		Engine::RenderAPI::m_sceneMap->draw(colliderTest);
 		Engine::RenderAPI::m_sceneMap->draw(colliderTest2);
 	}
 
-	monstre->Display(m_camera);
+	monstre->Display();
 
 	Engine::RenderAPI::Display();
 }

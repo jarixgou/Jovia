@@ -12,13 +12,13 @@ namespace Engine
 	class LightManager
 	{
 	private:
-		static std::vector<std::unique_ptr<Light>> m_lightList;
+		static std::vector<Light*> m_lightList;
 	public:
-		static void Add(std::unique_ptr<Light>& _light);
-		static void Update(Camera* _camera);
+		static void Add(Light* _light);
+		static void Update();
 		static void Display();
 		static void Cleanup();
-		static const std::vector<std::unique_ptr<Light>>& GetLightList();
+		static const std::vector<Light*>& GetLightList();
 	};
 }
 

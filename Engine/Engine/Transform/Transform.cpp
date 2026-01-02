@@ -2,11 +2,20 @@
 
 namespace Engine
 {
-	Transform::Transform()
+	bool Transform::operator==(const Transform& _other) const
 	{
-		position = { 0.f,0.f,0.f };
-		size = { 0.f,0.f,0.f };
-		scale = { 1.f, 1.f };
-		angle = 0.f;
+		if (position == _other.position && 
+			size == _other.size &&
+			scale == _other.scale &&
+			rotation == _other.rotation)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool Transform::operator!=(const Transform& _other) const
+	{
+		return !(*this == _other);
 	}
 }

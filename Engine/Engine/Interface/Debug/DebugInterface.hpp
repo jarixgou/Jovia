@@ -13,7 +13,7 @@ namespace Engine
 		static float m_dt;
 		static float m_gpuTime;
 	public:
-		static void Update(float _dt, float _gpuTime);
+		static void Update(float _gpuTime);
 	};
 }
 

@@ -2,6 +2,7 @@
 
 #include "../Camera/Camera.hpp"
 #include "Chunk.hpp"
+#include "../System/System.hpp"
 
 namespace Engine
 {
@@ -53,12 +54,17 @@ namespace Engine
 		return nullptr;
 	}
 
-	void ChunkManager::UpdateVisibleChunks(const Camera* _camera)
+	void ChunkManager::UpdateVisibleChunks()
 	{
+		if (System::currentCamera == nullptr)
+		{
+			return;
+		}
+
 		m_visibleChunks.clear();
 
 		const sf::IntRect rect = m_textureRects.at(0);
-		const sf::FloatRect visibleArea = _camera->GetVisibleArea({ static_cast<float>(rect.width), static_cast<float>(rect.height)});
+		const sf::FloatRect visibleArea = (*System::currentCamera)->GetVisibleArea({ static_cast<float>(rect.width), static_cast<float>(rect.height)});
 
 		// Frustum culling for chunks
 		const int startX = std::max(0, static_cast<int>(visibleArea.left / chunkSize));
@@ -113,19 +119,20 @@ namespace Engine
 	void ChunkManager::SetTileAt(const sf::Vector2i& _worldPos, const uint8_t& _tileId, const float& _tileHeight)
 	{
 		sf::Vector2i chunkPos = WorldToChunkPos(_worldPos);
-		sf::Vector2i localPos = WorldToLocalPos(_worldPos);
 
 		Chunk* chunk = GetOrCreateChunk(chunkPos);
 		if (chunk)
 		{
+			sf::Vector2i localPos = WorldToLocalPos(_worldPos);
+
 			chunk->SetTile(localPos, _tileId, _tileHeight);
 			chunk->SetDirty(true);
 		}
 	}
 
-	void ChunkManager::RebuildDirtyChunks(const Camera* _camera)
+	void ChunkManager::RebuildDirtyChunks()
 	{
-		if (!_camera)
+		if (System::currentCamera == nullptr)
 		{
 			return;
 		}
@@ -134,7 +141,7 @@ namespace Engine
 		{
 			if (chunk->GetIsVisible() && chunk->GetIsDirty())
 			{
-				chunk->Build(m_textureRects, _camera);
+				chunk->Build(m_textureRects, (*System::currentCamera));
 			}
 		}
 	}
