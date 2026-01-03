@@ -27,7 +27,6 @@ namespace Engine
 
 	void GameObject::Display()
 	{
-		System::drawCall += 1;
 		if (System::currentCamera != nullptr)
 		{
 			if (RenderAPI::GetIsUsed())

@@ -1,7 +1,5 @@
 ﻿#include "Chunk.hpp"
 
-#include <iostream>
-
 #include "../Transform/Transform.hpp"
 
 #include "../Camera/Camera.hpp"
@@ -9,18 +7,26 @@
 #include "../System/System.hpp"
 
 namespace Engine
-
 {
-	Chunk::Chunk(const sf::Vector2i& _chunkPos) :
-		m_chunkPos(_chunkPos), m_tiles(chunkSize* chunkSize, { 0,0 }), m_groundVertices(sf::Quads),
-		m_objectVertices(sf::Quads), m_isDirty(true), m_isVisible(true)
+	Chunk::Chunk(const Transform& _transform, sf::RenderStates _renderStates) :
+		GameObject(_transform), m_tileId(chunkSize* chunkSize, { 0 }), m_groundVertices(sf::Quads),
+		m_isDirty(true), m_isVisible(true)
+	{
+		Object* chunkObject = new Object();
+		chunkObject->renderStates = _renderStates;
+		chunkObject->shape = &m_groundVertices;
+		SetObject(&chunkObject);
+		SetTag("Chunk");
+	}
+
+	void Chunk::Update()
 	{
 
 	}
 
-	const sf::Vector2i& Chunk::GetChunkPos() const
+	void Chunk::Display()
 	{
-		return m_chunkPos;
+		GameObject::Display();
 	}
 
 	const sf::VertexArray& Chunk::GetGroundVertices() const
@@ -28,14 +34,9 @@ namespace Engine
 		return m_groundVertices;
 	}
 
-	const sf::VertexArray& Chunk::GetObjectVertices() const
-	{
-		return m_objectVertices;
-	}
-
 	int Chunk::GetTile(const sf::Vector2i& _pos) const
 	{
-		return m_tiles[_pos.y * chunkSize + _pos.x].tileId;
+		return m_tileId[_pos.y * chunkSize + _pos.x];
 	}
 
 	bool Chunk::GetIsVisible() const
@@ -48,13 +49,12 @@ namespace Engine
 		return m_isDirty;
 	}
 
-	void Chunk::SetTile(const sf::Vector2i& _pos, const uint8_t& _tileId, const float& _tileHeight)
+	void Chunk::SetTile(const sf::Vector2i& _pos, const uint8_t& _tileId)
 	{
 		if (_pos.x >= 0 && _pos.x < chunkSize &&
 			_pos.y >= 0 && _pos.y < chunkSize)
 		{
-			m_tiles[_pos.y * chunkSize + _pos.x].tileId = _tileId;
-			m_tiles[_pos.y * chunkSize + _pos.x].height = _tileHeight;
+			m_tileId[_pos.y * chunkSize + _pos.x] = _tileId;
 		}
 	}
 
@@ -68,44 +68,42 @@ namespace Engine
 		m_isVisible = _visible;
 	}
 
-	void Chunk::Build(const std::vector<sf::IntRect>& _textureRect, const Camera* _cam)
+	void Chunk::Build(const std::vector<sf::IntRect>& _textureRect)
 	{
 		m_groundVertices.clear();
-		m_objectVertices.clear();
 
-		Transform camTransform = _cam->GetTransform();
-
-		const sf::Vector3f camRotation = camTransform.rotation;
+		Transform camTransform = (*System::currentCamera)->GetTransform();
+		Transform chunkTransform = GetTransform();
 
 		for (int y = 0; y < chunkSize; ++y)
 		{
 			for (int x = 0; x < chunkSize; ++x)
 			{
-				TileData tileData = m_tiles[y * chunkSize + x];
-				sf::IntRect rect = _textureRect[tileData.tileId];
+				uint8_t tileId = m_tileId[y * chunkSize + x];
+				sf::IntRect rect = _textureRect[tileId];
 
-				float worldX = static_cast<float>(m_chunkPos.x * chunkSize + x);
-				float worldY = static_cast<float>(m_chunkPos.y * chunkSize + y);
+				float worldX = static_cast<float>(chunkTransform.position.x + x);
+				float worldY = static_cast<float>(chunkTransform.position.y + y);
 
 				Transform tempTransform;
-				tempTransform.position = {worldX, worldY, tileData.height};
-				tempTransform.size = {static_cast<float>(rect.width), static_cast<float>(rect.height), 0.f};
-				tempTransform.scale = {1.f ,1.f};
-				tempTransform.rotation = {0.f, 0.f, 0.f};
-				auto [screenPos, scale] = _cam->WorldToScreen(tempTransform);
+				tempTransform.position = { worldX, worldY, chunkTransform.position.z };
+				tempTransform.size = { static_cast<float>(rect.width), static_cast<float>(rect.height), 0.f };
+				tempTransform.scale = { 1.f ,1.f };
+				tempTransform.rotation = { 0.f, 0.f, 0.f };
+				auto [screenPos, scale] = (*System::currentCamera)->WorldToScreen(tempTransform);
 
 				const float scaledWidth = static_cast<float>(rect.width) * scale.x;
 				const float scaledHeight = static_cast<float>(rect.height) * scale.y;
 
-				sf::VertexArray& targetVertices = (tileData.height < 0.5f) ? m_groundVertices : m_groundVertices;
+				sf::VertexArray& targetVertices = m_groundVertices;
 
-				Math::Mat3x3 r = Math::CreateRotationMatrix(camRotation);
+				Math::Mat3x3 r = Math::CreateRotationMatrix(camTransform.rotation);
 				sf::Vector3f dirWorld = Math::MultiplyMatrixVector(r, sf::Vector3f{ 1.f, 0.f, 0.f });
 
 				const float angle = Math::RadToDeg(atan2f(dirWorld.y, dirWorld.x));
 				Math::Mat2x2 rMatrix = Math::CreateRotationMatrix(angle);
 
-				sf::Vector2f p1 = { scaledWidth, 0.f};
+				sf::Vector2f p1 = { scaledWidth, 0.f };
 				sf::Vector2f p2 = { scaledWidth, scaledHeight };
 				sf::Vector2f p3 = { 0.f, scaledHeight };
 
@@ -121,8 +119,6 @@ namespace Engine
 
 				targetVertices.append(sf::Vertex(screenPos + Math::MultiplyMatrixVector(rMatrix, p3), sf::Color::White,
 					{ static_cast<float>(rect.left), static_cast<float>(rect.top + rect.height) }));
-
-				System::verticeNb += 4;
 			}
 		}
 		m_isDirty = false;
@@ -130,8 +126,7 @@ namespace Engine
 
 	void Chunk::Cleanup()
 	{
-		m_tiles.clear();
+		m_tileId.clear();
 		m_groundVertices.clear();
-		m_objectVertices.clear();
 	}
 }

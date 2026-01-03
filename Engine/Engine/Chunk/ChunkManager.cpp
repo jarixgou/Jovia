@@ -2,7 +2,9 @@
 
 #include "../Camera/Camera.hpp"
 #include "Chunk.hpp"
+#include "../Asset/AssetsManager.hpp"
 #include "../System/System.hpp"
+#include "../TextureSlice/TextureSlice.hpp"
 
 namespace Engine
 {
@@ -15,10 +17,21 @@ namespace Engine
 		Clear();
 	}
 
-	void ChunkManager::Init(const sf::Vector2i& _worldSize, const std::vector<sf::IntRect>& _textureRects)
+	void ChunkManager::Init(const sf::Vector2i& _worldSize, const float& _height, const sf::Vector2i& _cellSize, const char* _textureName)
 	{
 		m_worldSize = _worldSize;
-		m_textureRects = _textureRects;
+		m_height = _height;
+
+		sf::Texture const* texture = AssetsManager::Get<sf::Texture>(_textureName);
+		m_renderStates = sf::RenderStates(texture);
+
+		std::vector<TextureSliced> slicedTextures = SliceTexture(*texture, _cellSize);
+		for (const auto & slicedTexture : slicedTextures)
+		{
+			m_textureRects.push_back(slicedTexture.rect);
+		}
+		slicedTextures.clear();
+
 		Clear();
 	}
 
@@ -37,7 +50,26 @@ namespace Engine
 			return it->second.get();
 		}
 
-		auto newChunk = std::make_unique<Chunk>(_chunkPos);
+		const sf::IntRect rect = m_textureRects.at(0);
+		const float tileWidth = static_cast<float>(rect.width);
+		const float tileHeight = static_cast<float>(rect.height);
+
+		Transform tempTransform;
+		// Position en COORDONNÉES MONDE (en tiles, pas en chunks)
+		tempTransform.position = {
+			static_cast<float>(_chunkPos.x * chunkSize),  // Position X en TILES
+			static_cast<float>(_chunkPos.y * chunkSize),  // Position Y en TILES
+			m_height
+		};
+		tempTransform.rotation = { 0.0f, 0.0f, 0.0f };
+		tempTransform.scale = { 1.0f, 1.0f };
+		tempTransform.size = {
+			static_cast<float>(chunkSize),  // Largeur du chunk en TILES
+			static_cast<float>(chunkSize),  // Hauteur du chunk en TILES
+			0.0f
+		};
+
+		auto newChunk = std::make_unique<Chunk>(tempTransform, m_renderStates);
 		Chunk* chunkPtr = newChunk.get();
 		m_chunks[_chunkPos] = std::move(newChunk);
 
@@ -64,9 +96,12 @@ namespace Engine
 		m_visibleChunks.clear();
 
 		const sf::IntRect rect = m_textureRects.at(0);
-		const sf::FloatRect visibleArea = (*System::currentCamera)->GetVisibleArea({ static_cast<float>(rect.width), static_cast<float>(rect.height)});
+		const float tileWidth = static_cast<float>(rect.width);
+		const float tileHeight = static_cast<float>(rect.height);
+		
+		const sf::FloatRect visibleArea = (*System::currentCamera)->GetVisibleArea({ tileWidth, tileHeight }, m_height);
 
-		// Frustum culling for chunks
+		// Frustum culling for chunks - visibleArea est en coordonnées MONDE (tiles)
 		const int startX = std::max(0, static_cast<int>(visibleArea.left / chunkSize));
 		const int startY = std::max(0, static_cast<int>(visibleArea.top / chunkSize));
 		const int endX = std::min(m_worldSize.x, static_cast<int>((visibleArea.left + visibleArea.width) / chunkSize) + 1);
@@ -125,7 +160,7 @@ namespace Engine
 		{
 			sf::Vector2i localPos = WorldToLocalPos(_worldPos);
 
-			chunk->SetTile(localPos, _tileId, _tileHeight);
+			chunk->SetTile(localPos, _tileId);
 			chunk->SetDirty(true);
 		}
 	}
@@ -141,7 +176,7 @@ namespace Engine
 		{
 			if (chunk->GetIsVisible() && chunk->GetIsDirty())
 			{
-				chunk->Build(m_textureRects, (*System::currentCamera));
+				chunk->Build(m_textureRects);
 			}
 		}
 	}
@@ -151,6 +186,14 @@ namespace Engine
 		m_chunks.clear();
 	}
 
+	void ChunkManager::Display()
+	{
+		for (auto & chunk : m_visibleChunks)
+		{
+			chunk->Display();
+		}
+	}
+
 	const std::vector<Chunk*> ChunkManager::GetChunks() const
 	{
 		return m_visibleChunks;
@@ -158,11 +201,13 @@ namespace Engine
 
 	sf::Vector2i ChunkManager::WorldToChunkPos(const sf::Vector2i& _worldPos) const
 	{
+		// _worldPos est en TILES
 		return { _worldPos.x / chunkSize, _worldPos.y / chunkSize };
 	}
 
 	sf::Vector2i ChunkManager::WorldToLocalPos(const sf::Vector2i& _worldPos) const
 	{
+		// _worldPos est en TILES
 		return { _worldPos.x % chunkSize, _worldPos.y % chunkSize };
 	}
 }

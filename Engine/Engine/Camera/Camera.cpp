@@ -155,20 +155,25 @@ namespace Engine
 		m_type = _type;
 	}
 
-	sf::FloatRect Camera::GetVisibleArea(sf::Vector2f _tileSize) const
+	sf::FloatRect Camera::GetVisibleArea(const sf::Vector2f& _tileSize, const float& _height) const
 	{
 		Transform currentTransform = GetTransform();
 		sf::Vector3f& currentPos = currentTransform.position;
 		sf::Vector3f& currentSize = currentTransform.size;
 
-		const float scale = 1.0f / -currentPos.z;
+		const float scale = (1.0f / (_height - currentPos.z));
 
 		if (m_type == CameraType::ORTHOGONAL)
 		{
-			const float w = currentSize.x / (scale * _tileSize.x);
-			const float h = currentSize.y / (scale * _tileSize.y);
+			const float worldWidth = currentSize.x / (_tileSize.x * scale);
+			const float worldHeight = currentSize.y / (_tileSize.y * scale);
 
-			return { currentPos.x - w / 2.0f, currentPos.y - h / 2.0f, w, h };
+			return {
+				currentPos.x - worldWidth * 0.5f,
+				currentPos.y - worldHeight * 0.5f,
+				worldWidth,
+				worldHeight
+			};
 		}
 		else if (m_type == CameraType::ISOMETRIC)
 		{
@@ -246,6 +251,7 @@ namespace Engine
 
 		if (zValue >= 2.220446e-16 && zValue <= m_renderDistance)
 		{
+			System::drawCall += 1;
 			Object* object = _gameObject->GetShape();
 
 			if (object != nullptr && object->shape != nullptr)
@@ -339,30 +345,36 @@ namespace Engine
 
 		if (sprite != nullptr)
 		{
+			System::verticeNb += 4;
 			sprite->setScale(scale);
 			sprite->setPosition(pos);
 			sprite->setRotation(angle);
 		}
 		else if (shape != nullptr)
 		{
+			System::verticeNb += shape->getPointCount();
 			shape->setScale(scale);
 			shape->setPosition(pos);
 			shape->setRotation(angle);
 		}
 		else if (vertexArray != nullptr)
 		{
-			const Math::Mat2x2 rotationMatrix = Math::CreateRotationMatrix(angle);
-			for (size_t i = 0; i < vertexArray->getVertexCount(); i += 4)
-			{
-				sf::Vertex& vertex = (*vertexArray)[i];
+			System::verticeNb += vertexArray->getVertexCount();
+			//const Math::Mat2x2 rotationMatrix = Math::CreateRotationMatrix(angle);
+			//const size_t vertexCount = vertexArray->getVertexCount();
 
-				sf::Vector2f rotated = Math::MultiplyMatrixVector(rotationMatrix, vertex.position);
+			///*#pragma omp parallel for schedule(static) if(vertexCount > 1000)*/
+			//for (int i = 0; i < static_cast<int>(vertexCount); i++)
+			//{
+			//	sf::Vertex& vertex = (*vertexArray)[i];
 
-				rotated.x *= scale.x;
-				rotated.y *= scale.y;
+			//	sf::Vector2f rotated = Math::MultiplyMatrixVector(rotationMatrix, vertex.position);
 
-				vertex.position = pos + rotated;
-			}
+			//	rotated.x *= scale.x;
+			//	rotated.y *= scale.y;
+
+			//	vertex.position = pos + rotated;
+			//}
 		}
 	}
 }

@@ -93,9 +93,10 @@ namespace Engine
 		 * The calculation method differs based on projection type.
 		 *
 		 * @param _tileSize Size of a single tile in pixels (for scale calculation)
+		 * @param _height
 		 * @return FloatRect representing the visible area (x, y, width, height)
 		 */
-		sf::FloatRect GetVisibleArea(sf::Vector2f _tileSize) const;
+		sf::FloatRect GetVisibleArea(const sf::Vector2f& _tileSize, const float& _height) const;
 
 		/**
 		 * @brief Gets the free movement mode state

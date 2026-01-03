@@ -104,7 +104,7 @@ void Game::Init()
 	{
 		textureRects.push_back(slice.rect);
 	}
-	m_chunkManager->Init({ 32, 32 }, textureRects);
+	m_chunkManager->Init({ 32, 32 }, 0, {32,32}, "Tile");
 
 	for (int y = 0; y < 32 * 16; ++y)
 	{
@@ -151,26 +151,11 @@ void Game::Display()
 		if (Engine::RenderAPI::GetIsUsed())
 		{
 			light->Display();
-			Engine::System::drawCall += 1;
 			Engine::RenderAPI::m_lightMap->draw(light->GetCompositeLightAndShadow(), sf::BlendAdd);
 		}
 	}
 
-	for (const auto& chunk : m_chunkManager->GetChunks())
-	{
-		if (Engine::RenderAPI::GetIsUsed())
-		{
-			Engine::System::drawCall += 2;
-			Engine::RenderAPI::m_sceneMap->draw(chunk->GetGroundVertices(), m_renderStates);
-			Engine::RenderAPI::m_sceneMap->draw(chunk->GetObjectVertices(), m_renderStates);
-		}
-		else
-		{
-			Engine::System::drawCall += 2;
-			Engine::System::window->draw(chunk->GetGroundVertices(), m_renderStates);
-			Engine::System::window->draw(chunk->GetObjectVertices(), m_renderStates);
-		}
-	}
+	m_chunkManager->Display();
 
 	Engine::LayerManager::Display();
 

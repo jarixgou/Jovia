@@ -3,6 +3,7 @@
 #include <functional>
 #include <memory>
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/System/Vector2.hpp>
 
 namespace Engine
@@ -25,13 +26,16 @@ namespace Engine
 		std::vector<Chunk*> m_visibleChunks;
 
 		sf::Vector2i m_worldSize;
+		float m_height;
+
+		sf::RenderStates m_renderStates;
 
 		std::vector<sf::IntRect> m_textureRects;
 	public:
 		ChunkManager();
 		~ChunkManager();
 
-		void Init(const sf::Vector2i& _worldSize, const std::vector<sf::IntRect>& _textureRects);
+		void Init(const sf::Vector2i& _worldSize, const float& _height, const sf::Vector2i& _cellSize, const char* _textureName);
 
 		Chunk* GetOrCreateChunk(const sf::Vector2i& _chunkPos);
 
@@ -48,6 +52,8 @@ namespace Engine
 		void RebuildDirtyChunks();
 
 		void Clear();
+
+		void Display();
 
 		const std::vector<Chunk*> GetChunks() const;
 

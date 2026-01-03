@@ -4,21 +4,13 @@
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/System/Vector2.hpp>
 
+#include "../GameObject/GameObject.hpp"
+
 namespace Engine
 {
 	class Camera;
 
 	constexpr int chunkSize = 16; ///< Number of tiles per chunk dimension (16x16)
-
-	/**
-	 * @struct TileData
-	 * @brief Data for a single tile in a chunk
-	 */
-	struct TileData
-	{
-		uint8_t tileId; ///< Index to the tile texture in the tileset
-		float height;   ///< Height/elevation of the tile for 3D rendering
-	};
 
 	/**
 	 * @class Chunk
@@ -28,13 +20,11 @@ namespace Engine
 	 * frustum culling, batched rendering, and efficient updates. Each chunk
 	 * maintains separate vertex arrays for ground and object layers.
 	 */
-	class Chunk
+	class Chunk : public GameObject
 	{
 	private:
-		sf::Vector2i m_chunkPos;              ///< Chunk position in chunk-space coordinates
-		std::vector<TileData> m_tiles;        ///< Tile data array (chunkSize * chunkSize)
+		std::vector<uint8_t> m_tileId;        ///< Tile data array (chunkSize * chunkSize)
 		sf::VertexArray m_groundVertices;     ///< Batched vertices for ground layer
-		sf::VertexArray m_objectVertices;     ///< Batched vertices for object layer
 		bool m_isDirty;                       ///< Flag indicating vertices need rebuilding
 		bool m_isVisible;                     ///< Flag indicating chunk is in camera view
 	public:
@@ -43,30 +33,22 @@ namespace Engine
 		 *
 		 * @param _chunkPos Chunk coordinates (not world coordinates)
 		 */
-		Chunk(const sf::Vector2i& _chunkPos);
+		Chunk(const Transform& _transform, sf::RenderStates _renderStates);
 
 		/**
 		 * @brief Default destructor
 		 */
 		~Chunk() = default;
 
-		/**
-		 * @brief Gets the chunk position
-		 * @return Chunk coordinates
-		 */
-		const sf::Vector2i& GetChunkPos() const;
+
+		void Update() override;
+		void Display() override;
 
 		/**
 		 * @brief Gets the ground layer vertices
 		 * @return Const reference to ground vertex array
 		 */
 		const sf::VertexArray& GetGroundVertices() const;
-
-		/**
-		 * @brief Gets the object layer vertices
-		 * @return Const reference to object vertex array
-		 */
-		const sf::VertexArray& GetObjectVertices() const;
 
 		/**
 		 * @brief Gets a tile at the specified local position
@@ -95,9 +77,8 @@ namespace Engine
 		 *
 		 * @param _pos Local position within chunk (0-15, 0-15)
 		 * @param _tileId Tile texture index
-		 * @param _tileHeight Elevation of the tile
 		 */
-		void SetTile(const sf::Vector2i& _pos, const uint8_t& _tileId, const float& _tileHeight);
+		void SetTile(const sf::Vector2i& _pos, const uint8_t& _tileId);
 
 		/**
 		 * @brief Sets the dirty flag
@@ -120,9 +101,8 @@ namespace Engine
 		 * applying camera transformations and separating ground/object layers.
 		 *
 		 * @param _textureRect Array of texture rectangles from the tileset
-		 * @param _cam Camera used for world-to-screen transformations
 		 */
-		void Build(const std::vector<sf::IntRect>& _textureRect, const Camera* _cam);
+		void Build(const std::vector<sf::IntRect>& _textureRect);
 
 		/**
 		 * @brief Clears all vertices in the chunk
