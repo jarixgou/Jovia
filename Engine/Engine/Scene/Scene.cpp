@@ -43,7 +43,7 @@ namespace Engine
 		SceneExplorerInterface::Update();
 		CameraInterface::Update();
 
-		if (System::currentCamera != nullptr)
+		if (*System::currentCamera != nullptr)
 		{
 			(*System::currentCamera)->Update();
 		}

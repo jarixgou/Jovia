@@ -1,10 +1,13 @@
 #ifndef CHUNK_MANAGER__HPP
 #define CHUNK_MANAGER__HPP
+
 #include <functional>
 #include <memory>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/System/Vector2.hpp>
+
+#include "../GameObject/GameObject.hpp"
 
 namespace Engine
 {
@@ -19,7 +22,7 @@ namespace Engine
 		}
 	};
 
-	class TileMap
+	class TileMap : public GameObject
 	{
 	private:
 		std::unordered_map<sf::Vector2i, std::unique_ptr<Chunk>, Vector2iHash> m_chunks;
@@ -32,10 +35,10 @@ namespace Engine
 
 		std::vector<sf::IntRect> m_textureRects;
 	public:
-		TileMap();
-		~TileMap();
+		TileMap(const sf::Vector2i& _worldSize, const float& _height, const sf::Vector2i& _cellSize, const char* _textureName);
+		~TileMap() override;
 
-		void Init(const sf::Vector2i& _worldSize, const float& _height, const sf::Vector2i& _cellSize, const char* _textureName);
+		void Update() override;
 
 		Chunk* GetOrCreateChunk(const sf::Vector2i& _chunkPos);
 
@@ -53,7 +56,7 @@ namespace Engine
 
 		void Clear();
 
-		void Display();
+		void Display() override;
 
 		const std::vector<Chunk*> GetChunks() const;
 

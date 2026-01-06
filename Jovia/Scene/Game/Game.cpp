@@ -96,15 +96,14 @@ void Game::Init()
 			 pos.x * sinAngle + (pos.y + 100) * cosAngle },
 		sf::Color::Blue));
 
-	m_chunkManager = new Engine::TileMap();
-
 	m_renderStates.texture = spritesheetTexture;
 	std::vector<sf::IntRect> textureRects;
 	for (const auto& slice : m_textureSliced)
 	{
 		textureRects.push_back(slice.rect);
 	}
-	m_chunkManager->Init({ 32, 32 }, 0, {32,32}, "Tile");
+
+	m_chunkManager = new Engine::TileMap({ 32, 32 }, 0, { 32,32 }, "Tile");
 
 	for (int y = 0; y < 32 * 16; ++y)
 	{
@@ -136,8 +135,7 @@ void Game::Update()
 		light->BuildProjectedShadow(colliderTest2);
 	}
 
-	m_chunkManager->UpdateVisibleChunks();
-	m_chunkManager->RebuildDirtyChunks();
+	m_chunkManager->Update();
 
 	Scene::Update();
 }
@@ -173,6 +171,9 @@ void Game::Display()
 
 void Game::Cleanup()
 {
+	m_camera = nullptr;
+	delete m_camera;
+
 	for (auto & light : lightList)
 	{
 		light = nullptr;

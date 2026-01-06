@@ -36,7 +36,7 @@ namespace Engine
 		/**
 		 * @brief Default destructor
 		 */
-		~GameObject();
+		virtual ~GameObject();
 
 		/**
 		 * @brief Updates the game object each frame

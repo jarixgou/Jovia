@@ -8,16 +8,7 @@
 
 namespace Engine
 {
-	TileMap::TileMap() : m_worldSize(0, 0)
-	{
-	}
-
-	TileMap::~TileMap()
-	{
-		Clear();
-	}
-
-	void TileMap::Init(const sf::Vector2i& _worldSize, const float& _height, const sf::Vector2i& _cellSize, const char* _textureName)
+	TileMap::TileMap(const sf::Vector2i& _worldSize, const float& _height, const sf::Vector2i& _cellSize, const char* _textureName)
 	{
 		m_worldSize = _worldSize;
 		m_height = _height;
@@ -26,13 +17,26 @@ namespace Engine
 		m_renderStates = sf::RenderStates(texture);
 
 		std::vector<TextureSliced> slicedTextures = SliceTexture(*texture, _cellSize);
-		for (const auto & slicedTexture : slicedTextures)
+		for (const auto& slicedTexture : slicedTextures)
 		{
 			m_textureRects.push_back(slicedTexture.rect);
 		}
 		slicedTextures.clear();
 
 		Clear();
+	}
+
+	TileMap::~TileMap()
+	{
+		Clear();
+
+		GameObject::~GameObject();
+	}
+
+	void TileMap::Update()
+	{
+		UpdateVisibleChunks();
+		RebuildDirtyChunks();
 	}
 
 	Chunk* TileMap::GetOrCreateChunk(const sf::Vector2i& _chunkPos)

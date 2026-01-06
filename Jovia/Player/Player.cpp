@@ -20,6 +20,11 @@ Player::Player()
 	SetTag("Player");
 }
 
+Player::~Player()
+{
+	GameObject::~GameObject();
+}
+
 void Player::Update()
 {
 

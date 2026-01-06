@@ -9,7 +9,7 @@
 
 void Engine::CameraInterface::Update()
 {
-	if (System::currentCamera != nullptr)
+	if (*System::currentCamera != nullptr)
 	{
 		ImGui::Begin("Camera");
 
