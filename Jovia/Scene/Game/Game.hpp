@@ -9,7 +9,7 @@
 namespace Engine
 {
 	class Camera;
-	class ChunkManager;
+	class TileMap;
 	class Light;
 	class GameObject;
 }
@@ -33,7 +33,7 @@ private:
 	sf::VertexArray colliderTest;
 	sf::VertexArray colliderTest2;
 
-	Engine::ChunkManager* m_chunkManager;
+	Engine::TileMap* m_chunkManager;
 public:
 	Game() = default;
 	~Game() = default;

@@ -24,7 +24,7 @@
     <ClCompile Include="Engine\Asset\AssetsManager.cpp" />
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Chunk\Chunk.cpp" />
-    <ClCompile Include="Engine\Chunk\ChunkManager.cpp" />
+    <ClCompile Include="Engine\Chunk\TileMap.cpp" />
     <ClCompile Include="Engine\Collider\Collider.cpp" />
     <ClCompile Include="Engine\GameObject\GameObject.cpp" />
     <ClCompile Include="Engine\Interface\Assets\AssetsInterface.cpp" />
@@ -52,7 +52,7 @@
     <ClInclude Include="Engine\Asset\AssetsManager.hpp" />
     <ClInclude Include="Engine\Camera\Camera.hpp" />
     <ClInclude Include="Engine\Chunk\Chunk.hpp" />
-    <ClInclude Include="Engine\Chunk\ChunkManager.hpp" />
+    <ClInclude Include="Engine\Chunk\TileMap.hpp" />
     <ClInclude Include="Engine\Collider\Collider.hpp" />
     <ClInclude Include="Engine\Collider\ColliderManager.hpp" />
     <ClInclude Include="Engine\Interface\Log\LogInterface.hpp" />

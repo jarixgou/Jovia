@@ -19,7 +19,7 @@ namespace Engine
 		}
 	};
 
-	class ChunkManager
+	class TileMap
 	{
 	private:
 		std::unordered_map<sf::Vector2i, std::unique_ptr<Chunk>, Vector2iHash> m_chunks;
@@ -32,8 +32,8 @@ namespace Engine
 
 		std::vector<sf::IntRect> m_textureRects;
 	public:
-		ChunkManager();
-		~ChunkManager();
+		TileMap();
+		~TileMap();
 
 		void Init(const sf::Vector2i& _worldSize, const float& _height, const sf::Vector2i& _cellSize, const char* _textureName);
 

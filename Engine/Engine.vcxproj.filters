@@ -57,7 +57,7 @@
     <ClCompile Include="Engine\Chunk\Chunk.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Chunk\ChunkManager.cpp">
+    <ClCompile Include="Engine\Chunk\TileMap.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Light\Light.cpp">
@@ -143,7 +143,7 @@
     <ClInclude Include="Engine\Chunk\Chunk.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Chunk\ChunkManager.hpp">
+    <ClInclude Include="Engine\Chunk\TileMap.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Light\Light.hpp">

@@ -16,10 +16,9 @@
 namespace Engine
 {
 	Camera::Camera(const Transform& _transform, CameraType _type, float _renderDistance) : 
-		GameObject(_transform), m_free(false), m_target({ 0,0,0 }), m_type(_type), m_renderDistance(_renderDistance)
+		GameObject(_transform), m_free(false), m_target({ 0,0,0 }), m_type(_type), m_hasMoved(false), m_renderDistance(_renderDistance)
 	{
 		m_lastTransform = new Transform();
-		*m_lastTransform = _transform;
 
 		m_rotationMatrix = Math::CreateRotationMatrix(_transform.rotation);
 
@@ -134,7 +133,13 @@ namespace Engine
 				m_rotationMatrix = Math::CreateRotationMatrix(currentTransform.rotation);
 			}
 
+			m_hasMoved = true;
+
 			*m_lastTransform = currentTransform;
+		}
+		else
+		{
+			m_hasMoved = false;
 		}
 
 		SetTransform(currentTransform);
@@ -153,6 +158,21 @@ namespace Engine
 	void Camera::SetType(CameraType _type)
 	{
 		m_type = _type;
+	}
+
+	void Camera::SetRenderDistance(const float& _renderDistance)
+	{
+		m_renderDistance = _renderDistance;
+	}
+
+	const float& Camera::GetRenderDistance() const
+	{
+		return m_renderDistance;
+	}
+
+	const bool& Camera::GetHasMoved() const
+	{
+		return m_hasMoved;
 	}
 
 	sf::FloatRect Camera::GetVisibleArea(const sf::Vector2f& _tileSize, const float& _height) const

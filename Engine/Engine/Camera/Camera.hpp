@@ -37,8 +37,9 @@ namespace Engine
 	private:
 		Transform* m_lastTransform;					///< Last frame's transform for interpolation
 		bool m_free;								///< Free movement mode flag
+		bool m_hasMoved;							///< Indicates if the camera has moved this frame
 
-		float m_renderDistance;
+		float m_renderDistance;						///< Render distance for culling objects
 
 		Math::Mat3x3 m_rotationMatrix;				///< Cached rotation matrix for transformations
 
@@ -85,6 +86,12 @@ namespace Engine
 		 * @param _type Projection type (ORTHOGONAL or ISOMETRIC)
 		 */
 		void SetType(CameraType _type);
+
+		void SetRenderDistance(const float& _renderDistance);
+
+		const float& GetRenderDistance() const;
+
+		const bool& GetHasMoved() const;
 
 		/**
 		 * @brief Calculates the visible area in world coordinates

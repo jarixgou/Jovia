@@ -4,7 +4,7 @@
 #include <execution>
 
 #include <Engine/GameObject/GameObject.hpp>
-#include <Engine/Chunk/ChunkManager.hpp>
+#include <Engine/Chunk/TileMap.hpp>
 
 #include <Engine/Asset/AssetsManager.hpp>
 #include <Engine/Scene/ScenesManager.hpp>
@@ -96,7 +96,7 @@ void Game::Init()
 			 pos.x * sinAngle + (pos.y + 100) * cosAngle },
 		sf::Color::Blue));
 
-	m_chunkManager = new Engine::ChunkManager();
+	m_chunkManager = new Engine::TileMap();
 
 	m_renderStates.texture = spritesheetTexture;
 	std::vector<sf::IntRect> textureRects;

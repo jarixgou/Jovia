@@ -1,4 +1,4 @@
-#include "ChunkManager.hpp"
+#include "TileMap.hpp"
 
 #include "../Camera/Camera.hpp"
 #include "Chunk.hpp"
@@ -8,16 +8,16 @@
 
 namespace Engine
 {
-	ChunkManager::ChunkManager() : m_worldSize(0, 0)
+	TileMap::TileMap() : m_worldSize(0, 0)
 	{
 	}
 
-	ChunkManager::~ChunkManager()
+	TileMap::~TileMap()
 	{
 		Clear();
 	}
 
-	void ChunkManager::Init(const sf::Vector2i& _worldSize, const float& _height, const sf::Vector2i& _cellSize, const char* _textureName)
+	void TileMap::Init(const sf::Vector2i& _worldSize, const float& _height, const sf::Vector2i& _cellSize, const char* _textureName)
 	{
 		m_worldSize = _worldSize;
 		m_height = _height;
@@ -35,7 +35,7 @@ namespace Engine
 		Clear();
 	}
 
-	Chunk* ChunkManager::GetOrCreateChunk(const sf::Vector2i& _chunkPos)
+	Chunk* TileMap::GetOrCreateChunk(const sf::Vector2i& _chunkPos)
 	{
 		if (_chunkPos.x < 0 || _chunkPos.x >= m_worldSize.x ||
 			_chunkPos.y < 0 || _chunkPos.y >= m_worldSize.y)
@@ -76,7 +76,7 @@ namespace Engine
 		return chunkPtr;
 	}
 
-	Chunk* ChunkManager::GetChunk(const sf::Vector2i& _chunkPos) const
+	Chunk* TileMap::GetChunk(const sf::Vector2i& _chunkPos) const
 	{
 		auto it = m_chunks.find(_chunkPos);
 		if (it != m_chunks.end())
@@ -86,50 +86,59 @@ namespace Engine
 		return nullptr;
 	}
 
-	void ChunkManager::UpdateVisibleChunks()
+	void TileMap::UpdateVisibleChunks()
 	{
 		if (System::currentCamera == nullptr)
 		{
 			return;
 		}
 
-		m_visibleChunks.clear();
-
-		const sf::IntRect rect = m_textureRects.at(0);
-		const float tileWidth = static_cast<float>(rect.width);
-		const float tileHeight = static_cast<float>(rect.height);
-		
-		const sf::FloatRect visibleArea = (*System::currentCamera)->GetVisibleArea({ tileWidth, tileHeight }, m_height);
-
-		// Frustum culling for chunks - visibleArea est en coordonnées MONDE (tiles)
-		const int startX = std::max(0, static_cast<int>(visibleArea.left / chunkSize));
-		const int startY = std::max(0, static_cast<int>(visibleArea.top / chunkSize));
-		const int endX = std::min(m_worldSize.x, static_cast<int>((visibleArea.left + visibleArea.width) / chunkSize) + 1);
-		const int endY = std::min(m_worldSize.y, static_cast<int>((visibleArea.top + visibleArea.height) / chunkSize) + 1);
-
-		m_visibleChunks.reserve((endX - startX) * (endY - startY));
-
-		for (auto& [pos, chunk] : m_chunks)
+		if ((*System::currentCamera)->GetHasMoved())
 		{
-			chunk->SetVisible(false);
-		}
+			const float zCamera = (*System::currentCamera)->GetTransform().position.z;
 
-		for (int y = startY; y < endY; ++y)
-		{
-			for (int x = startX; x < endX; ++x)
+			const float zValue = m_height - zCamera;
+
+			if (zValue >= 2.220446e-16 && zValue <= (*System::currentCamera)->GetRenderDistance())
 			{
-				Chunk* chunk = GetOrCreateChunk({ x, y });
-				if (chunk)
+				m_visibleChunks.clear();
+
+				const sf::IntRect rect = m_textureRects.at(0);
+				const float tileWidth = static_cast<float>(rect.width);
+				const float tileHeight = static_cast<float>(rect.height);
+
+				const sf::FloatRect visibleArea = (*System::currentCamera)->GetVisibleArea({ tileWidth, tileHeight }, m_height);
+
+				const int startX = std::max(0, static_cast<int>(visibleArea.left / chunkSize));
+				const int startY = std::max(0, static_cast<int>(visibleArea.top / chunkSize));
+				const int endX = std::min(m_worldSize.x, static_cast<int>((visibleArea.left + visibleArea.width) / chunkSize) + 1);
+				const int endY = std::min(m_worldSize.y, static_cast<int>((visibleArea.top + visibleArea.height) / chunkSize) + 1);
+
+				m_visibleChunks.reserve((endX - startX) * (endY - startY));
+
+				for (auto& [pos, chunk] : m_chunks)
 				{
-					chunk->SetVisible(true);
-					chunk->SetDirty(true);
-					m_visibleChunks.emplace_back(chunk);
+					chunk->SetVisible(false);
+				}
+
+				for (int y = startY; y < endY; ++y)
+				{
+					for (int x = startX; x < endX; ++x)
+					{
+						Chunk* chunk = GetOrCreateChunk({ x, y });
+						if (chunk)
+						{
+							chunk->SetVisible(true);
+							chunk->SetDirty(true);
+							m_visibleChunks.emplace_back(chunk);
+						}
+					}
 				}
 			}
 		}
 	}
 
-	void ChunkManager::SetChunkDirty(const sf::Vector2i& _chunkPos) const
+	void TileMap::SetChunkDirty(const sf::Vector2i& _chunkPos) const
 	{
 		Chunk* chunk = GetChunk(_chunkPos);
 		if (chunk)
@@ -138,7 +147,7 @@ namespace Engine
 		}
 	}
 
-	int ChunkManager::GetTileAt(const sf::Vector2i& _worldPos) const
+	int TileMap::GetTileAt(const sf::Vector2i& _worldPos) const
 	{
 		sf::Vector2i chunkPos = WorldToChunkPos(_worldPos);
 		sf::Vector2i localPos = WorldToLocalPos(_worldPos);
@@ -151,7 +160,7 @@ namespace Engine
 		return -1;
 	}
 
-	void ChunkManager::SetTileAt(const sf::Vector2i& _worldPos, const uint8_t& _tileId, const float& _tileHeight)
+	void TileMap::SetTileAt(const sf::Vector2i& _worldPos, const uint8_t& _tileId, const float& _tileHeight)
 	{
 		sf::Vector2i chunkPos = WorldToChunkPos(_worldPos);
 
@@ -165,7 +174,7 @@ namespace Engine
 		}
 	}
 
-	void ChunkManager::RebuildDirtyChunks()
+	void TileMap::RebuildDirtyChunks()
 	{
 		if (System::currentCamera == nullptr)
 		{
@@ -181,12 +190,12 @@ namespace Engine
 		}
 	}
 
-	void ChunkManager::Clear()
+	void TileMap::Clear()
 	{
 		m_chunks.clear();
 	}
 
-	void ChunkManager::Display()
+	void TileMap::Display()
 	{
 		for (auto & chunk : m_visibleChunks)
 		{
@@ -194,20 +203,18 @@ namespace Engine
 		}
 	}
 
-	const std::vector<Chunk*> ChunkManager::GetChunks() const
+	const std::vector<Chunk*> TileMap::GetChunks() const
 	{
 		return m_visibleChunks;
 	}
 
-	sf::Vector2i ChunkManager::WorldToChunkPos(const sf::Vector2i& _worldPos) const
+	sf::Vector2i TileMap::WorldToChunkPos(const sf::Vector2i& _worldPos) const
 	{
-		// _worldPos est en TILES
 		return { _worldPos.x / chunkSize, _worldPos.y / chunkSize };
 	}
 
-	sf::Vector2i ChunkManager::WorldToLocalPos(const sf::Vector2i& _worldPos) const
+	sf::Vector2i TileMap::WorldToLocalPos(const sf::Vector2i& _worldPos) const
 	{
-		// _worldPos est en TILES
 		return { _worldPos.x % chunkSize, _worldPos.y % chunkSize };
 	}
 }
