@@ -23,9 +23,9 @@ std::vector<Engine::TextureSliced> Engine::SliceTexture(const sf::Texture& _text
 				texture.rect.left + texture.rect.width <= textureSize.x)
 			{
 				bool found = false;
-				for (int yI = texture.rect.top; yI <= texture.rect.top + texture.rect.height && !found; ++yI)
+				for (int yI = texture.rect.top; yI <= texture.rect.top + texture.rect.height; ++yI)
 				{
-					for (int xI = texture.rect.left; xI <= texture.rect.left + texture.rect.width && !found; ++xI)
+					for (int xI = texture.rect.left; xI <= texture.rect.left + texture.rect.width; ++xI)
 					{
 						if (image.getPixel(xI, yI).a > 0 && !found)
 						{
