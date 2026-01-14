@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\SVN\Eleves\mtena\Projet\Jovia\x64\Release\ShaderGraph.exe</FullPath>
+      <FullPath>D:\Jovia\x64\Release\ShaderGraph.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

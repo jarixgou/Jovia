@@ -152,6 +152,17 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="Nodes\Add\AddNode.hpp" />
+    <ClInclude Include="Nodes\Color\ColorNode.hpp" />
+    <ClInclude Include="Nodes\Divide\DivideNode.hpp" />
+    <ClInclude Include="Nodes\Link.hpp" />
+    <ClInclude Include="Nodes\Multiply\MultiplyNode.hpp" />
+    <ClInclude Include="Nodes\Node.hpp" />
+    <ClInclude Include="Nodes\Pin.h" />
+    <ClInclude Include="Nodes\Subtract\Subtract.hpp" />
+    <ClInclude Include="Nodes\Texture\TextureNode.hpp" />
+    <ClInclude Include="Nodes\UV\UVNode.hpp" />
+    <ClInclude Include="ShaderGraph.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

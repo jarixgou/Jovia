@@ -3,52 +3,6 @@
 #define IMNODES_IMPLEMENTATION
 #include "ImGui/imnodes.h"
 
-struct ShaderNode
-{
-	int id;
-	std::string name;
-	
-	
-};
-
-struct ShaderGraph
-{
-	std::vector<ShaderNode> nodes;
-	std::vector<std::pair<int, int>> links;
-	std::string defaultTemplate;
-
-	ShaderGraph()
-	{
-		defaultTemplate =
-			"precision mediump float;\n"
-			"void main()\n"
-			"{\n"
-			"	float r = %r;\n"
-			"	float g = %g;\n"
-			"	float b = %b;\n"
-			"	float a = %a;\n"
-			"	gl_FragColor = vec4(r, g, b, a);\n"
-			"}\n";
-	}
-
-	std::string GenerateShader()
-	{
-		std::string shader = defaultTemplate;
-
-		// Remplacer les placeholders par les valeurs des nodes
-		for (const auto& node : nodes)
-		{
-			size_t pos = shader.find(node.name);
-			if (pos != std::string::npos)
-			{
-				shader.replace(pos, node.name.length(), std::to_string(node.value));
-			}
-		}
-
-		return shader;
-	}
-};
-
 void main()
 {
 	sf::Vector2f screenSize = { 1920 * 0.5f, 1080 * 0.5f };
@@ -62,7 +16,6 @@ void main()
 	bool isDragging = false;
 
 	int nodeIdCounter = 0;
-	ShaderGraph shaderGraph;
 
 	while (window.isOpen())
 	{
@@ -127,7 +80,6 @@ void main()
 		ImGui::Separator();
 		ImGui::Text("Shader generate :");
 		ImGui::NewLine();
-		ImGui::TextWrapped("%s", shaderGraph.GenerateShader().c_str());
 
 		ImGui::End();
 

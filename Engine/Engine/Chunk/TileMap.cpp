@@ -59,10 +59,9 @@ namespace Engine
 		const float tileHeight = static_cast<float>(rect.height);
 
 		Transform tempTransform;
-		// Position en COORDONNÉES MONDE (en tiles, pas en chunks)
 		tempTransform.position = {
-			static_cast<float>(_chunkPos.x * chunkSize),  // Position X en TILES
-			static_cast<float>(_chunkPos.y * chunkSize),  // Position Y en TILES
+			static_cast<float>(_chunkPos.x * chunkSize),  
+			static_cast<float>(_chunkPos.y * chunkSize),  
 			m_height
 		};
 		tempTransform.rotation = { 0.0f, 0.0f, 0.0f };
