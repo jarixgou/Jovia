@@ -1,0 +1,18 @@
+﻿  main.cpp
+D:\SVN\Eleves\mtena\Projet\Jovia\ShaderGraph\main.cpp(52,6): warning C4326: le type de retour de 'main' doit être 'int' au lieu de 'void'
+D:\SVN\Eleves\mtena\Projet\Jovia\ShaderGraph\main.cpp(55,64): warning C4244: 'argument' : conversion de 'T' en 'unsigned int', perte possible de données
+D:\SVN\Eleves\mtena\Projet\Jovia\ShaderGraph\main.cpp(55,64): warning C4244:         with
+D:\SVN\Eleves\mtena\Projet\Jovia\ShaderGraph\main.cpp(55,64): warning C4244:         [
+D:\SVN\Eleves\mtena\Projet\Jovia\ShaderGraph\main.cpp(55,64): warning C4244:             T=float
+D:\SVN\Eleves\mtena\Projet\Jovia\ShaderGraph\main.cpp(55,64): warning C4244:         ]
+D:\SVN\Eleves\mtena\Projet\Jovia\ShaderGraph\main.cpp(55,50): warning C4244: 'argument' : conversion de 'T' en 'unsigned int', perte possible de données
+D:\SVN\Eleves\mtena\Projet\Jovia\ShaderGraph\main.cpp(55,50): warning C4244:         with
+D:\SVN\Eleves\mtena\Projet\Jovia\ShaderGraph\main.cpp(55,50): warning C4244:         [
+D:\SVN\Eleves\mtena\Projet\Jovia\ShaderGraph\main.cpp(55,50): warning C4244:             T=float
+D:\SVN\Eleves\mtena\Projet\Jovia\ShaderGraph\main.cpp(55,50): warning C4244:         ]
+  Génération de code en cours
+  2 of 2187 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    22 functions had inline decision re-evaluated but remain unchanged
+  Fin de la génération du code
+  ShaderGraph.vcxproj -> D:\SVN\Eleves\mtena\Projet\Jovia\x64\Release\ShaderGraph.exe

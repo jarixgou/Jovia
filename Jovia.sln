@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36310.24 d17.14
+VisualStudioVersion = 17.14.36310.24
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Jovia", "Jovia\Jovia.vcxproj", "{72D7254C-B344-478D-8B82-72D0AF8569FB}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SceneGenerator", "SceneGenerator\SceneGenerator.vcxproj", "{CC90DB99-0801-42DF-9BA4-02178345C3D6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EncryptFile", "EncryptFile\EncryptFile.vcxproj", "{F4C71D50-58FC-4FBF-9324-C32600238D82}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShaderGraph", "ShaderGraph\ShaderGraph.vcxproj", "{D4DAB1C2-CC85-44EF-A4EB-E31A75026FEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,14 @@ Global
 		{F4C71D50-58FC-4FBF-9324-C32600238D82}.Release|x64.Build.0 = Release|x64
 		{F4C71D50-58FC-4FBF-9324-C32600238D82}.Release|x86.ActiveCfg = Release|Win32
 		{F4C71D50-58FC-4FBF-9324-C32600238D82}.Release|x86.Build.0 = Release|Win32
+		{D4DAB1C2-CC85-44EF-A4EB-E31A75026FEB}.Debug|x64.ActiveCfg = Debug|x64
+		{D4DAB1C2-CC85-44EF-A4EB-E31A75026FEB}.Debug|x64.Build.0 = Debug|x64
+		{D4DAB1C2-CC85-44EF-A4EB-E31A75026FEB}.Debug|x86.ActiveCfg = Debug|Win32
+		{D4DAB1C2-CC85-44EF-A4EB-E31A75026FEB}.Debug|x86.Build.0 = Debug|Win32
+		{D4DAB1C2-CC85-44EF-A4EB-E31A75026FEB}.Release|x64.ActiveCfg = Release|x64
+		{D4DAB1C2-CC85-44EF-A4EB-E31A75026FEB}.Release|x64.Build.0 = Release|x64
+		{D4DAB1C2-CC85-44EF-A4EB-E31A75026FEB}.Release|x86.ActiveCfg = Release|Win32
+		{D4DAB1C2-CC85-44EF-A4EB-E31A75026FEB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
