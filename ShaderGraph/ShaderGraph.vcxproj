@@ -158,7 +158,7 @@
     <ClInclude Include="Nodes\Link.hpp" />
     <ClInclude Include="Nodes\Multiply\MultiplyNode.hpp" />
     <ClInclude Include="Nodes\Node.hpp" />
-    <ClInclude Include="Nodes\Pin.h" />
+    <ClInclude Include="Nodes\Pin.hpp" />
     <ClInclude Include="Nodes\Subtract\Subtract.hpp" />
     <ClInclude Include="Nodes\Texture\TextureNode.hpp" />
     <ClInclude Include="Nodes\UV\UVNode.hpp" />

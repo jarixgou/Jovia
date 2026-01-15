@@ -104,7 +104,7 @@
     <ClInclude Include="Nodes\Divide\DivideNode.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Nodes\Pin.h">
+    <ClInclude Include="Nodes\Pin.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Nodes\Link.hpp">
